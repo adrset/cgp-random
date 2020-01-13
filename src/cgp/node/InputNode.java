@@ -1,4 +1,4 @@
-package cgp.nodes;
+package cgp.node;
 
 public class InputNode extends Node {
     public InputNode(){}

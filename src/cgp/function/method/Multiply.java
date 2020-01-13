@@ -1,4 +1,4 @@
-package cgp.functions;
+package cgp.function.method;
 
 public class Multiply <T extends Number> implements Function<T> {
 

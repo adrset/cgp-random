@@ -1,4 +1,4 @@
-package cgp.functions;
+package cgp.function.method;
 
 public class Add <T extends Number> implements Function <T>{
 
