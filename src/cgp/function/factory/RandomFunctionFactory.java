@@ -11,7 +11,7 @@ public class RandomFunctionFactory implements IFunctionFactory {
         this.generator = new Random();
     }
     @Override
-    public Function getFunction() {
+    public ArityFunction getFunction() {
 
         return randomFunction();
     }
@@ -19,7 +19,7 @@ public class RandomFunctionFactory implements IFunctionFactory {
     /*
     Just for quick testing! XD
      */
-    private Function randomFunction(){
+    private ArityFunction randomFunction(){
         double nextDouble = generator.nextDouble();
         double numOfFunctions = 4.0;
         double dx = 1.0 / numOfFunctions;

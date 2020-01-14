@@ -1,9 +1,10 @@
 package cgp.function.method;
 
-public class Multiply <T extends Number> implements Function<T> {
+public class Multiply <T extends Number> implements ArityFunction<T> {
 
     @Override
-    public <T extends Number> double calculate(T arg1, T arg2) {
-        return arg1.doubleValue() * arg2.doubleValue();
+    public <T extends Number> double calculate(T ...args) {
+        return args[0].doubleValue() * args[1].doubleValue();
     }
+
 }

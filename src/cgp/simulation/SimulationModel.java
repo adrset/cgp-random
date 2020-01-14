@@ -2,56 +2,60 @@ package cgp.simulation;
 
 import cgp.function.factory.IFunctionFactory;
 import cgp.node.Node;
-import cgp.node.factory.RandomNodeFactory;
+import cgp.node.factory.NodeFactory;
+import cgp.simulation.individual.IIndividual;
+import cgp.simulation.individual.Individual;
 import cgp.simulation.input.InputParams;
+import cgp.simulation.mutator.IMutator;
+import cgp.simulation.mutator.RandomMutator;
 
 import java.util.Random;
 
 public class SimulationModel implements ISimulation{
 
-    public Node cartesian[][];
+
     private int columns;
     private int rows;
     Random generator;
-    private Node inputs[];
-    private Node outputs[];
+    IIndividual individuals[];
+
     private InputParams params;
     private IFunctionFactory factory;
-    private RandomNodeFactory nodeFactory;
+    private NodeFactory nodeFactory;
+    private IMutator mutator;
 
     public SimulationModel(InputParams params) {
+
         this.columns = params.getColumns();
         this.rows    = params.getRows();
-        this.inputs = new Node[params.getInputs()];
-        this.outputs = new Node[params.getOutputs()];
         this.generator = new Random();
         this.params = params;
-        nodeFactory = new RandomNodeFactory(params);
+        individuals = new Individual[params.getIndividuals()];
+        nodeFactory = new NodeFactory(params);
+        mutator = new RandomMutator(params, factory);
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                System.out.println(cartesian[i][j].getStrategy().getClass());
-            }
+        int currentGeneration = 1;
+//        while (currentGeneration <= params.getGenerationThreshold() && evaluate() > params.getMinError()) {
+//
+//        }
+        for (int ii = 0; ii < this.individuals.length; ii++) {
+            individuals[ii].evaluate();
         }
     }
 
     @Override
-    public void evaluate() {
-
+    public double evaluate() {
+        return 1;
     }
 
     @Override
     public void init(){
-        boolean NU[] = new boolean[columns*rows];
-        this.cartesian = new Node[columns][rows];
-
-        for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                this.cartesian[i][j] = nodeFactory.getNode();
-            }
+        for (int ii=0;ii<params.getIndividuals();ii++){
+            individuals[ii] = new Individual(this.columns, this.rows, params, nodeFactory);
+            individuals[ii].init();
         }
     }
 }

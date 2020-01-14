@@ -7,6 +7,16 @@ public class InputParams {
     int inputs = 2;
     int outputs = 2;
     int maxArity = 2;
+    double minError = 0.01;
+    int generationThreshold = 10000;
+
+
+    int individuals = 5;
+
+
+    public int getIndividuals() {
+        return individuals;
+    }
 
     public int getMaxArity() {
         return maxArity;
@@ -22,7 +32,14 @@ public class InputParams {
     InputParams() {
     }
 
-    ;
+
+    public double getMinError() {
+        return minError;
+    }
+
+    public int getGenerationThreshold() {
+        return generationThreshold;
+    }
 
     public static InputParams getSingleton() {
         return singleton;

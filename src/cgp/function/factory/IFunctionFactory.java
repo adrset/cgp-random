@@ -1,7 +1,7 @@
 package cgp.function.factory;
 
-import cgp.function.method.Function;
+import cgp.function.method.ArityFunction;
 
 public interface IFunctionFactory {
-     Function getFunction();
+     ArityFunction getFunction();
 }

@@ -1,30 +1,35 @@
 package cgp.node;
 
-import cgp.function.method.Function;
+import cgp.function.method.ArityFunction;
 import cgp.node.adapter.ConnectionAdapter;
 
 public class Node implements INode{
-    Function strategy;
+    ArityFunction strategy;
     ConnectionAdapter adapter;
-    public Node(Function fun, ConnectionAdapter adapter) {
+    public Node(ArityFunction fun, ConnectionAdapter adapter) {
         this.strategy = fun;
         this.adapter = adapter;
     }
 
     public Node() {}
 
-    public void setStrategy(Function f){
+    public void setStrategy(ArityFunction f){
         this.strategy = f;
     }
 
     @Override
-    public Function getStrategy() {
+    public ArityFunction getStrategy() {
         return strategy;
     }
 
     @Override
     public ConnectionAdapter getAdapter() {
         return adapter;
+    }
+
+    @Override
+    public double evaluate() {
+        return 0;
     }
 
 }
