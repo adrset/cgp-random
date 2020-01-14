@@ -1,7 +1,7 @@
 package cgp.simulation.individual;
 
-import cgp.node.Node;
-import cgp.node.factory.AbstractNodeFactory;
+import cgp.simulation.node.Node;
+import cgp.simulation.node.factory.AbstractNodeFactory;
 import cgp.simulation.input.InputParams;
 
 public class Individual implements IIndividual{

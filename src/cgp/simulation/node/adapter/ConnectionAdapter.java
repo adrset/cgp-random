@@ -1,7 +1,7 @@
-package cgp.node.adapter;
+package cgp.simulation.node.adapter;
 
-import cgp.node.INode;
-import cgp.node.Node;
+import cgp.simulation.node.INode;
+import cgp.simulation.node.Node;
 
 import java.util.ArrayList;
 import java.util.List;

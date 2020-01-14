@@ -1,6 +1,6 @@
 package cgp.simulation.mutator;
 
-import cgp.node.INode;
+import cgp.simulation.node.INode;
 
 public interface IMutator {
     public void mutateConnections (INode nodes[][]);

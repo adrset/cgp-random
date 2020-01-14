@@ -1,8 +1,8 @@
 package cgp.simulation;
 
 import cgp.function.factory.IFunctionFactory;
-import cgp.node.Node;
-import cgp.node.factory.NodeFactory;
+import cgp.function.factory.RandomFunctionFactory;
+import cgp.simulation.node.factory.NodeFactory;
 import cgp.simulation.individual.IIndividual;
 import cgp.simulation.individual.Individual;
 import cgp.simulation.input.InputParams;
@@ -13,12 +13,10 @@ import java.util.Random;
 
 public class SimulationModel implements ISimulation{
 
-
     private int columns;
     private int rows;
     Random generator;
     IIndividual individuals[];
-
     private InputParams params;
     private IFunctionFactory factory;
     private NodeFactory nodeFactory;
@@ -30,9 +28,10 @@ public class SimulationModel implements ISimulation{
         this.rows    = params.getRows();
         this.generator = new Random();
         this.params = params;
+        factory = new RandomFunctionFactory();
         individuals = new Individual[params.getIndividuals()];
-        nodeFactory = new NodeFactory(params);
         mutator = new RandomMutator(params, factory);
+        nodeFactory = new NodeFactory(params,factory,mutator);
     }
 
     @Override

@@ -10,7 +10,6 @@ public class InputParams {
     double minError = 0.01;
     int generationThreshold = 10000;
 
-
     int individuals = 5;
 
 

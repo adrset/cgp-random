@@ -1,7 +1,7 @@
-package cgp.node;
+package cgp.simulation.node;
 
 import cgp.function.method.ArityFunction;
-import cgp.node.adapter.ConnectionAdapter;
+import cgp.simulation.node.adapter.ConnectionAdapter;
 
 public class Node implements INode{
     ArityFunction strategy;
