@@ -1,6 +1,6 @@
 package cgp.simulation;
 
-import cgp.function.factory.IFunctionFactory;
+import cgp.function.factory.FunctionFactory;
 import cgp.function.factory.RandomFunctionFactory;
 import cgp.simulation.node.factory.NodeFactory;
 import cgp.simulation.individual.IIndividual;
@@ -18,7 +18,7 @@ public class SimulationModel implements ISimulation{
     Random generator;
     IIndividual individuals[];
     private InputParams params;
-    private IFunctionFactory factory;
+    private FunctionFactory factory;
     private NodeFactory nodeFactory;
     private IMutator mutator;
 

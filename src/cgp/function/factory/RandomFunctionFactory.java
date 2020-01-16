@@ -2,39 +2,35 @@ package cgp.function.factory;
 
 import cgp.function.method.*;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class RandomFunctionFactory implements IFunctionFactory {
+public class RandomFunctionFactory extends FunctionFactory {
     Random generator;
 
     public RandomFunctionFactory(){
         this.generator = new Random();
     }
     @Override
-    public ArityFunction getFunction() {
-
+    public ArityFunction getFunction() throws Exception{
         return randomFunction();
     }
 
     /*
     Just for quick testing! XD
      */
-    private ArityFunction randomFunction(){
+    private ArityFunction randomFunction() throws Exception{
         double nextDouble = generator.nextDouble();
         double numOfFunctions = 4.0;
         double dx = 1.0 / numOfFunctions;
         double x = dx;
-        if (nextDouble < dx) {
-            return new Add();
-        }
-        if (nextDouble < dx * 2) {
-            return new Divide();
-        }
-        if (nextDouble < dx * 3) {
-            return new Multiply();
-        }
+        List<Class<?>> keysAsArray = new ArrayList<>(elementBuilder.keySet());
+        return elementBuilder.get(keysAsArray.get(generator.nextInt(keysAsArray.size()))).build();
 
-        return new Subtract();
+
+
 
     }
 }

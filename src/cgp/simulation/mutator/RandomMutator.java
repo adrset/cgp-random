@@ -1,6 +1,6 @@
 package cgp.simulation.mutator;
 
-import cgp.function.factory.IFunctionFactory;
+import cgp.function.factory.FunctionFactory;
 import cgp.simulation.node.INode;
 import cgp.simulation.node.adapter.ConnectionAdapter;
 import cgp.simulation.input.InputParams;
@@ -11,8 +11,8 @@ import java.util.Random;
 public class RandomMutator implements IMutator {
     Random generator;
     InputParams params;
-    IFunctionFactory factory;
-    public RandomMutator(InputParams params, IFunctionFactory factory){
+    FunctionFactory factory;
+    public RandomMutator(InputParams params, FunctionFactory factory){
         generator = new Random();
         this.params = params;
         this.factory = factory;
@@ -43,7 +43,12 @@ public class RandomMutator implements IMutator {
                 INode node = nodes[ii][jj];
                 double randomDouble = generator.nextDouble();
                 if (randomDouble > 1.0 - params.getMutationProbability()) {
-                    node.setStrategy(factory.getFunction());
+                    try {
+                        node.setStrategy(factory.getFunction());
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
     }
