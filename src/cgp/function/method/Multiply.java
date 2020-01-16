@@ -7,4 +7,9 @@ public class Multiply <T extends Number> implements ArityFunction<T> {
         return args[0].doubleValue() * args[1].doubleValue();
     }
 
+    @Override
+    public Multiply clone() {
+        return new Multiply();
+    }
+
 }

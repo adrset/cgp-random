@@ -1,6 +1,7 @@
 package cgp.simulation.individual;
 
-public interface IIndividual {
-    public void init();
-    public double evaluate();
-}
+import cgp.simulation.ICloneable;
+
+public interface IIndividual extends ICloneable {
+    void init();
+    double evaluate();}

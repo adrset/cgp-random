@@ -7,4 +7,9 @@ public class Add <T extends Number> implements ArityFunction <T>{
     public <T1 extends Number> double calculate(T1... args) {
         return args[0].doubleValue() + args[1].doubleValue();
     }
+
+    @Override
+    public Add clone() {
+        return new Add();
+    }
 }

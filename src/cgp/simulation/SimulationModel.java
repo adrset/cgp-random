@@ -37,9 +37,17 @@ public class SimulationModel implements ISimulation{
     @Override
     public void run() {
         int currentGeneration = 1;
-//        while (currentGeneration <= params.getGenerationThreshold() && evaluate() > params.getMinError()) {
-//
-//        }
+        while (currentGeneration++ <= 100/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
+            for (int ii = 0; ii < 4;ii++) {
+                IIndividual i = individuals[0];
+                try {
+                    IIndividual j = (Individual)((Individual)i).clone();
+                    //System.out.println(j + " " + i);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
         for (int ii = 0; ii < this.individuals.length; ii++) {
             individuals[ii].evaluate();
         }

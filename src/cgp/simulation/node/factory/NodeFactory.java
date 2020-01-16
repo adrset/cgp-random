@@ -15,8 +15,9 @@ public class NodeFactory extends AbstractNodeFactory {
     }
 
     public Node getNode(){
-
-        return new Node(factory.getFunction(), new ConnectionAdapter(params.getMaxArity()));
+        Node n = new Node(factory.getFunction(), new ConnectionAdapter(params.getMaxArity()));
+        n.init();
+        return n;
     }
 
     @Override
