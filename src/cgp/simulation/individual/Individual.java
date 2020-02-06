@@ -36,12 +36,13 @@ public class Individual implements IIndividual {
 
     }
 
-    public void setNodes(INode nodes[]) {
+    public void setNodes(INode[] nodes) {
         this.cartesian = nodes;
     }
 
     @Override
     public double evaluate() {
+
         for (int i = 0; i < this.cartesian.length; i++) {
 
             System.out.println(cartesian[i].getStrategy().getClass());
@@ -86,12 +87,12 @@ public class Individual implements IIndividual {
         return ind;
     }
 
-    private static INode getNodeWithUID(INode nodes[], int uid) {
-        for (int i = 0; i < nodes.length; i++) {
+    private static INode getNodeWithUID(INode[] nodes, int uid) {
+        for (INode node : nodes) {
 
-            int aUID = nodes[i].getUID();
+            int aUID = node.getUID();
             if (aUID == uid) {
-                return nodes[i];
+                return node;
             }
 
         }

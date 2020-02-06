@@ -3,6 +3,11 @@ package cgp.simulation.node;
 import cgp.function.method.ArityFunction;
 import cgp.simulation.node.adapter.ConnectionAdapter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 public class Node implements INode{
     ArityFunction strategy;
     ConnectionAdapter adapter;
@@ -56,7 +61,14 @@ public class Node implements INode{
 
     @Override
     public double evaluate() {
-        return 0;
+        List<INode> inputs = adapter.getNodes();
+        Double[] inputValues = new Double[inputs.size()];
+        int i=0;
+        for(INode inputNode: inputs){
+            inputValues[i++] = inputNode.evaluate();
+        }
+
+        return strategy.calculate(inputValues);
     }
 
     @Override

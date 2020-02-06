@@ -19,43 +19,43 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public void mutateConnections(INode[][] nodes) {
+    public void mutateConnections(INode[] nodes) {
 
-        for (int ii=0; ii< nodes.length; ii++)
-            for (int jj = 0; jj < nodes[ii].length; jj++) {
-                INode node = nodes[ii][jj];
-                ConnectionAdapter adapter = node.getAdapter();
-                List<INode> adapterNodes = adapter.getNodes();
-                for (int kk=0;kk<adapterNodes.size();kk++){
-                    double randomDouble = generator.nextDouble();
-                    if (randomDouble > 1.0 - params.getMutationProbability()) {
-                        adapterNodes.set(kk, getRandomNode(nodes));
-                    }
+        for (int ii=0; ii< nodes.length; ii++) {
+            INode node = nodes[ii];
+            ConnectionAdapter adapter = node.getAdapter();
+            List<INode> adapterNodes = adapter.getNodes();
+            for (int kk = 0; kk < adapterNodes.size(); kk++) {
+                double randomDouble = generator.nextDouble();
+                if (randomDouble > 1.0 - params.getMutationProbability()) {
+                    adapterNodes.set(kk, getRandomNode(nodes));
                 }
             }
+        }
+
 
     }
 
     @Override
-    public void mutateFunctions(INode[][] nodes) {
-        for (int ii=0; ii< nodes.length; ii++)
-            for (int jj = 0; jj < nodes[ii].length; jj++) {
-                INode node = nodes[ii][jj];
-                double randomDouble = generator.nextDouble();
-                if (randomDouble > 1.0 - params.getMutationProbability()) {
-                    try {
-                        node.setStrategy(factory.getFunction());
+    public void mutateFunctions(INode[] nodes) {
+        for (int ii=0; ii< nodes.length; ii++) {
 
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
+            INode node = nodes[ii];
+            double randomDouble = generator.nextDouble();
+            if (randomDouble > 1.0 - params.getMutationProbability()) {
+                try {
+                    node.setStrategy(factory.getFunction());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+        }
+
     }
 
-    INode getRandomNode(INode[][] nodes){
+    INode getRandomNode(INode[] nodes){
         int randomIndex1 = generator.nextInt(nodes.length);
-        int randomIndex2 = generator.nextInt(nodes.length);
-        return nodes[randomIndex1][randomIndex2];
+        return nodes[randomIndex1];
     }
 }

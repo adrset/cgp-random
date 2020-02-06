@@ -17,7 +17,6 @@ public class ConnectionAdapter implements ICloneable {
         for (int ii=0;ii<maxArity;ii++){
             inputs.add(null);
         }
-        System.out.println(inputs.size());
 
     }
 
@@ -32,8 +31,6 @@ public class ConnectionAdapter implements ICloneable {
     public void setInputs(List<INode> inputs){
         this.inputs = inputs;
     }
-
-
 
     @Override
     public ConnectionAdapter clone() {
