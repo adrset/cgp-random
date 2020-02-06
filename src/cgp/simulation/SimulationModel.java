@@ -9,6 +9,7 @@ import cgp.simulation.input.InputParams;
 import cgp.simulation.mutator.IMutator;
 import cgp.simulation.mutator.RandomMutator;
 
+import java.io.*;
 import java.util.Random;
 
 public class SimulationModel implements ISimulation{
@@ -36,20 +37,20 @@ public class SimulationModel implements ISimulation{
 
     @Override
     public void run() {
-        int currentGeneration = 1;
-        while (currentGeneration++ <= 100/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
-            for (int ii = 0; ii < 4;ii++) {
-                IIndividual i = individuals[0];
-                try {
-                    IIndividual j = (Individual)((Individual)i).clone();
-                    //System.out.println(j + " " + i);
-                } catch (Exception e){
-                    e.printStackTrace();
+        try {
+            System.setOut(new PrintStream(new File("output-file.txt")));
+
+
+            int currentGeneration = 1;
+            while (currentGeneration++ <= 2/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
+                for (int ii = 0; ii < 4;ii++) {
+                    individuals[ii].evaluate();
+                    System.out.println("==========" + (ii+1) + "=========");
+                    individuals[ii].mutate(mutator);
                 }
             }
-        }
-        for (int ii = 0; ii < this.individuals.length; ii++) {
-            individuals[ii].evaluate();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

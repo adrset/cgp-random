@@ -1,5 +1,6 @@
 package cgp.simulation.individual;
 
+import cgp.simulation.mutator.IMutator;
 import cgp.simulation.node.INode;
 import cgp.simulation.node.Node;
 import cgp.simulation.node.adapter.ConnectionAdapter;
@@ -23,8 +24,8 @@ public class Individual implements IIndividual {
         this.params = params;
     }
 
-    private Node inputs[];
-    private Node outputs[];
+    private INode inputs[];
+    private INode outputs[];
 
     @Override
     public void init() {
@@ -49,6 +50,22 @@ public class Individual implements IIndividual {
 
         }
         return 0;
+    }
+
+    @Override
+    public void setInputs(INode[] in) {
+        this.inputs = in;
+    }
+
+    @Override
+    public void setOutputs(INode[] out) {
+        this.outputs = out;
+    }
+
+    @Override
+    public void mutate(IMutator mutator) {
+        cartesian = mutator.mutateFunctions(cartesian);
+        cartesian = mutator.mutateConnections(cartesian);
     }
 
     @Override

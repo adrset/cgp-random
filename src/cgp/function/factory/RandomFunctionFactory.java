@@ -11,7 +11,7 @@ public class RandomFunctionFactory extends FunctionFactory {
     Random generator;
 
     public RandomFunctionFactory(){
-        this.generator = new Random();
+        this.generator = new Random(System.currentTimeMillis());
     }
     @Override
     public ArityFunction getFunction() throws Exception{
@@ -22,7 +22,7 @@ public class RandomFunctionFactory extends FunctionFactory {
     Just for quick testing! XD
      */
     private ArityFunction randomFunction() throws Exception{
-        double nextDouble = generator.nextDouble();
+
         double numOfFunctions = 4.0;
         double dx = 1.0 / numOfFunctions;
         double x = dx;

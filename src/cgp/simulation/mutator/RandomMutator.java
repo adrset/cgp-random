@@ -1,6 +1,7 @@
 package cgp.simulation.mutator;
 
 import cgp.function.factory.FunctionFactory;
+import cgp.function.method.ArityFunction;
 import cgp.simulation.node.INode;
 import cgp.simulation.node.adapter.ConnectionAdapter;
 import cgp.simulation.input.InputParams;
@@ -19,7 +20,7 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public void mutateConnections(INode[] nodes) {
+    public INode[] mutateConnections(INode[] nodes) {
 
         for (int ii=0; ii< nodes.length; ii++) {
             INode node = nodes[ii];
@@ -33,25 +34,26 @@ public class RandomMutator implements IMutator {
             }
         }
 
-
+        return nodes;
     }
 
     @Override
-    public void mutateFunctions(INode[] nodes) {
+    public INode[] mutateFunctions(INode[] nodes) {
         for (int ii=0; ii< nodes.length; ii++) {
 
             INode node = nodes[ii];
             double randomDouble = generator.nextDouble();
             if (randomDouble > 1.0 - params.getMutationProbability()) {
                 try {
-                    node.setStrategy(factory.getFunction());
+                    ArityFunction f = factory.getFunction();
+                    node.setStrategy(f);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-
+        return nodes;
     }
 
     INode getRandomNode(INode[] nodes){
