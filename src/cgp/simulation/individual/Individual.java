@@ -10,14 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Individual implements IIndividual{
-    private int columns;
-    private int rows;
-    private INode cartesian[][];
+    private int nodeNo;
+    private INode cartesian[];
     private InputParams params;
     AbstractNodeFactory factory;
-    public Individual(int columns, int rows, InputParams params, AbstractNodeFactory factory){
-        this.columns = columns;
-        this.rows = rows;
+    public Individual(int nodeNo, InputParams params, AbstractNodeFactory factory){
+        this.nodeNo = nodeNo;
         this.inputs = new Node[params.getInputs()];
         this.outputs = new Node[params.getOutputs()];
         this.factory = factory;
@@ -28,74 +26,71 @@ public class Individual implements IIndividual{
 
     @Override
     public void init(){
-        this.cartesian = new Node[columns][rows];
+        this.cartesian = new Node[nodeNo];
 
         for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                this.cartesian[i][j] = factory.getNode();
-            }
+
         }
     }
 
-    public void setNodes(INode nodes[][]){
+    public void setNodes(INode nodes[]){
         this.cartesian = nodes;
     }
 
     @Override
     public double evaluate() {
         for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                System.out.println(cartesian[i][j].getStrategy().getClass());
-            }
+
+            System.out.println(cartesian[i].getStrategy().getClass());
+
         }
         return 0;
     }
 
     @Override
     public IIndividual clone(){
-        Individual ind = new Individual(this.columns, this.rows, this.params, this.factory);
-        INode cartesianCopy[][] = new Node[this.columns][this.rows];
+        Individual ind = new Individual(this.nodeNo, this.params, this.factory);
+        INode cartesianCopy[] = new Node[this.nodeNo];
         for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                 cartesianCopy[i][j] = (INode) this.cartesian[i][j].clone();
-            }
+             cartesianCopy[i] = (INode) this.cartesian[i].clone();
+
         }
         // Now let's create new adapters and recreate them basing on original ones
         for (int i = 0; i < this.cartesian.length; i++) {
-            for (int j = 0; j < this.cartesian[i].length; j++) {
-                List<INode> inputs = this.cartesian[i][j].getAdapter().getNodes();
-                ConnectionAdapter adapter = new ConnectionAdapter(this.cartesian[i][j].getAdapter().getMaxArity());
-                List<INode> newInputs = new ArrayList<>();
 
-                for (INode id: inputs) {
-                    if(id == null) {
-                        //Basically means that no node is connected there
-                        continue;
-                    }
-                    INode foundNode = getNodeWithUID( this.cartesian,id.getUID());
-                    if (foundNode == null){
-                        System.err.println("Severe error!!");
-                        continue;
-                    }
-                    newInputs.add(foundNode);
+            List<INode> inputs = this.cartesian[i].getAdapter().getNodes();
+            ConnectionAdapter adapter = new ConnectionAdapter(this.cartesian[i].getAdapter().getMaxArity());
+            List<INode> newInputs = new ArrayList<>();
+
+            for (INode id: inputs) {
+                if(id == null) {
+                    //Basically means that no node is connected there
+                    continue;
                 }
-                adapter.setInputs(newInputs);
-                this.cartesian[i][j].setAdapter(adapter);
+                INode foundNode = getNodeWithUID( this.cartesian,id.getUID());
+                if (foundNode == null){
+                    System.err.println("Severe error!!");
+                    continue;
+                }
+                newInputs.add(foundNode);
             }
+            adapter.setInputs(newInputs);
+            this.cartesian[i].setAdapter(adapter);
+
         }
         ind.setNodes(cartesianCopy);
 
         return ind;
     }
 
-    private static INode getNodeWithUID(INode nodes[][],int uid) {
+    private static INode getNodeWithUID(INode nodes[],int uid) {
         for (int i = 0; i < nodes.length; i++) {
-            for (int j = 0; j < nodes[i].length; j++) {
-                int aUID = nodes[i][j].getUID();
-                if (aUID == uid) {
-                    return nodes[i][j];
-                }
+
+            int aUID = nodes[i].getUID();
+            if (aUID == uid) {
+                return nodes[i];
             }
+
         }
 
         return null;

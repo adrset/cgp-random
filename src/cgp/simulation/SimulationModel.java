@@ -61,7 +61,7 @@ public class SimulationModel implements ISimulation{
     @Override
     public void init(){
         for (int ii=0;ii<params.getIndividuals();ii++){
-            individuals[ii] = new Individual(this.columns, this.rows, params, nodeFactory);
+            individuals[ii] = new Individual(this.columns*this.rows, params, nodeFactory);
             individuals[ii].init();
         }
     }
