@@ -28,12 +28,14 @@ public class Individual implements IIndividual {
     private INode outputs[];
 
     @Override
-    public void init() {
+    public void init(IMutator mutator) {
         this.cartesian = new Node[nodeNo];
 
         for (int i = 0; i < this.cartesian.length; i++) {
             this.cartesian[i] = factory.getNode();
         }
+
+        cartesian = mutator.mutateConnections(this.cartesian);
 
     }
 

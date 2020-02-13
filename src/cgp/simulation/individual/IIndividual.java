@@ -5,7 +5,7 @@ import cgp.simulation.mutator.IMutator;
 import cgp.simulation.node.INode;
 
 public interface IIndividual extends ICloneable {
-    void init();
+    void init(IMutator mutator);
 
     double evaluate();
 

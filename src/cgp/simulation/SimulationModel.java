@@ -2,6 +2,7 @@ package cgp.simulation;
 
 import cgp.function.factory.FunctionFactory;
 import cgp.function.factory.RandomFunctionFactory;
+import cgp.simulation.mutator.InitialRandomMutator;
 import cgp.simulation.node.factory.NodeFactory;
 import cgp.simulation.individual.IIndividual;
 import cgp.simulation.individual.Individual;
@@ -22,6 +23,8 @@ public class SimulationModel implements ISimulation{
     private FunctionFactory factory;
     private NodeFactory nodeFactory;
     private IMutator mutator;
+    private IMutator initialMutator;
+
 
     public SimulationModel(InputParams params) {
 
@@ -32,6 +35,7 @@ public class SimulationModel implements ISimulation{
         factory = new RandomFunctionFactory();
         individuals = new Individual[params.getIndividuals()];
         mutator = new RandomMutator(params, factory);
+        initialMutator = new InitialRandomMutator(params, factory);
         nodeFactory = new NodeFactory(params,factory,mutator);
     }
 
@@ -63,7 +67,7 @@ public class SimulationModel implements ISimulation{
     public void init(){
         for (int ii=0;ii<params.getIndividuals();ii++){
             individuals[ii] = new Individual(this.columns*this.rows, params, nodeFactory);
-            individuals[ii].init();
+            individuals[ii].init(initialMutator);
         }
     }
 }
