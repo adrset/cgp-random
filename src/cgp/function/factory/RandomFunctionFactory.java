@@ -29,8 +29,5 @@ public class RandomFunctionFactory extends FunctionFactory {
         List<Class<?>> keysAsArray = new ArrayList<>(elementBuilder.keySet());
         return elementBuilder.get(keysAsArray.get(generator.nextInt(keysAsArray.size()))).build();
 
-
-
-
     }
 }

@@ -1,9 +1,9 @@
 package cgp.simulation.mutator;
 
 import cgp.function.factory.FunctionFactory;
-import cgp.simulation.input.InputParams;;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.adapter.ConnectionAdapter;
+import cgp.input.InputParams;;
+import cgp.node.Node;
+import cgp.node.adapter.ConnectionAdapter;
 
 import java.util.List;
 

@@ -2,9 +2,9 @@ package cgp.simulation.mutator;
 
 import cgp.function.factory.FunctionFactory;
 import cgp.function.method.ArityFunction;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.adapter.ConnectionAdapter;
-import cgp.simulation.input.InputParams;
+import cgp.node.Node;
+import cgp.node.adapter.ConnectionAdapter;
+import cgp.input.InputParams;
 
 import java.util.List;
 import java.util.Random;

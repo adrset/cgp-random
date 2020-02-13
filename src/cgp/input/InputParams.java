@@ -1,4 +1,4 @@
-package cgp.simulation.input;
+package cgp.input;
 
 public class InputParams {
     static InputParams singleton;

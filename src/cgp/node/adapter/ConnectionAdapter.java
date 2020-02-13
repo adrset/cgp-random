@@ -1,8 +1,7 @@
-package cgp.simulation.node.adapter;
+package cgp.node.adapter;
 
 import cgp.simulation.ICloneable;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.Node;
+import cgp.node.Node;
 
 import java.util.ArrayList;
 import java.util.List;

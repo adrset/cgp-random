@@ -1,11 +1,10 @@
-package cgp.simulation.individual;
+package cgp.individual;
 
 import cgp.simulation.mutator.IMutator;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.adapter.ConnectionAdapter;
-import cgp.simulation.node.factory.AbstractNodeFactory;
-import cgp.simulation.input.InputParams;
+import cgp.node.Node;
+import cgp.node.adapter.ConnectionAdapter;
+import cgp.node.factory.AbstractNodeFactory;
+import cgp.input.InputParams;
 
 import java.util.ArrayList;
 import java.util.List;

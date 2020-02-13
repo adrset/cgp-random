@@ -1,7 +1,7 @@
 package cgp.app;
 
 import cgp.simulation.ISimulation;
-import cgp.simulation.input.InputParams;
+import cgp.input.InputParams;
 import cgp.simulation.SimulationModel;
 
 public class Main {

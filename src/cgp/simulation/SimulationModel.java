@@ -3,10 +3,10 @@ package cgp.simulation;
 import cgp.function.factory.FunctionFactory;
 import cgp.function.factory.RandomFunctionFactory;
 import cgp.simulation.mutator.InitialRandomMutator;
-import cgp.simulation.node.factory.NodeFactory;
-import cgp.simulation.individual.IIndividual;
-import cgp.simulation.individual.Individual;
-import cgp.simulation.input.InputParams;
+import cgp.node.factory.NodeFactory;
+import cgp.individual.IIndividual;
+import cgp.individual.Individual;
+import cgp.input.InputParams;
 import cgp.simulation.mutator.IMutator;
 import cgp.simulation.mutator.RandomMutator;
 

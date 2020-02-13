@@ -1,4 +1,4 @@
-package cgp.simulation.node;
+package cgp.node;
 
 public class ExternalNode extends Node {
     public ExternalNode(){}

@@ -1,12 +1,9 @@
-package cgp.simulation.node;
+package cgp.node;
 
 import cgp.function.method.ArityFunction;
-import cgp.simulation.node.adapter.ConnectionAdapter;
+import cgp.node.adapter.ConnectionAdapter;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class Node{
     ArityFunction strategy;

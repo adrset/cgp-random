@@ -1,12 +1,10 @@
-package cgp.simulation.node.factory;
+package cgp.node.factory;
 
 import cgp.function.factory.FunctionFactory;
-import cgp.function.factory.RandomFunctionFactory;
 import cgp.simulation.mutator.IMutator;
-import cgp.simulation.mutator.RandomMutator;
-import cgp.simulation.node.Node;
-import cgp.simulation.node.adapter.ConnectionAdapter;
-import cgp.simulation.input.InputParams;
+import cgp.node.Node;
+import cgp.node.adapter.ConnectionAdapter;
+import cgp.input.InputParams;
 
 public class NodeFactory extends AbstractNodeFactory {
     public NodeFactory(InputParams params, FunctionFactory factory, IMutator mutator){
