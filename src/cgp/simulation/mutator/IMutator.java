@@ -1,9 +1,9 @@
 package cgp.simulation.mutator;
 
-import cgp.simulation.node.INode;
+import cgp.simulation.node.Node;
 
 public interface IMutator {
-    INode[] mutateConnections (INode nodes[]);
-    INode[] mutateFunctions (INode nodes[]);
+    Node[] mutateConnections (Node nodes[]);
+    Node[] mutateFunctions (Node nodes[]);
 
 }

@@ -2,16 +2,16 @@ package cgp.simulation.individual;
 
 import cgp.simulation.ICloneable;
 import cgp.simulation.mutator.IMutator;
-import cgp.simulation.node.INode;
+import cgp.simulation.node.Node;
 
 public interface IIndividual extends ICloneable {
     void init(IMutator mutator);
 
     double evaluate();
 
-    void setInputs(INode[] nodes);
+    void setInputs(Node[] nodes);
 
-    void setOutputs(INode[] nodes);
+    void setOutputs(Node[] nodes);
 
     void mutate(IMutator mutator);
 }

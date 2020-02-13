@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class Node implements INode{
+public class Node{
     ArityFunction strategy;
     ConnectionAdapter adapter;
     private static int counter = 0;
@@ -21,7 +21,6 @@ public class Node implements INode{
     /**
      * Use only for completely new nodes!!! Not cloned ones!!!
      */
-    @Override
     public void init(){
         this.UID = counter++;
     }
@@ -35,22 +34,18 @@ public class Node implements INode{
         this.strategy = f;
     }
 
-    @Override
     public ArityFunction getStrategy() {
         return strategy;
     }
 
-    @Override
     public ConnectionAdapter getAdapter() {
         return adapter;
     }
 
-    @Override
     public void setAdapter(ConnectionAdapter adapter) {
         this.adapter = adapter;
     }
 
-    @Override
     public int getUID() {
         return counter;
     }
@@ -59,12 +54,11 @@ public class Node implements INode{
         this.UID = uid;
     }
 
-    @Override
     public double evaluate() {
-        List<INode> inputs = adapter.getNodes();
+        List<Node> inputs = adapter.getNodes();
         Double[] inputValues = new Double[inputs.size()];
         int i=0;
-        for(INode inputNode: inputs){
+        for(Node inputNode: inputs){
             inputValues[i++] = inputNode.evaluate();
         }
 
@@ -72,7 +66,7 @@ public class Node implements INode{
     }
 
     @Override
-    public INode clone() {
+    public Node clone() {
         Node clone = new Node();
         clone.setStrategy((ArityFunction) this.strategy.clone());
         clone.setUID(this.UID);

@@ -2,7 +2,7 @@ package cgp.simulation.mutator;
 
 import cgp.function.factory.FunctionFactory;
 import cgp.function.method.ArityFunction;
-import cgp.simulation.node.INode;
+import cgp.simulation.node.Node;
 import cgp.simulation.node.adapter.ConnectionAdapter;
 import cgp.simulation.input.InputParams;
 
@@ -20,12 +20,12 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public INode[] mutateConnections(INode[] nodes) {
+    public Node[] mutateConnections(Node[] nodes) {
 
         for (int ii=0; ii< nodes.length; ii++) {
-            INode node = nodes[ii];
+            Node node = nodes[ii];
             ConnectionAdapter adapter = node.getAdapter();
-            List<INode> adapterNodes = adapter.getNodes();
+            List<Node> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
                 double randomDouble = generator.nextDouble();
                 if (randomDouble > 1.0 - params.getMutationProbability()) {
@@ -38,10 +38,10 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public INode[] mutateFunctions(INode[] nodes) {
+    public Node[] mutateFunctions(Node[] nodes) {
         for (int ii=0; ii< nodes.length; ii++) {
 
-            INode node = nodes[ii];
+            Node node = nodes[ii];
             double randomDouble = generator.nextDouble();
             if (randomDouble > 1.0 - params.getMutationProbability()) {
                 try {
@@ -56,7 +56,7 @@ public class RandomMutator implements IMutator {
         return nodes;
     }
 
-    INode getRandomNode(INode[] nodes){
+    Node getRandomNode(Node[] nodes){
         int randomIndex1 = generator.nextInt(nodes.length);
         return nodes[randomIndex1];
     }

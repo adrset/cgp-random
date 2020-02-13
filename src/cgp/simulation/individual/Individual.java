@@ -1,7 +1,7 @@
 package cgp.simulation.individual;
 
 import cgp.simulation.mutator.IMutator;
-import cgp.simulation.node.INode;
+import cgp.simulation.node.Node;
 import cgp.simulation.node.Node;
 import cgp.simulation.node.adapter.ConnectionAdapter;
 import cgp.simulation.node.factory.AbstractNodeFactory;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Individual implements IIndividual {
     private int nodeNo;
-    private INode cartesian[];
+    private Node cartesian[];
     private InputParams params;
     AbstractNodeFactory factory;
 
@@ -24,8 +24,8 @@ public class Individual implements IIndividual {
         this.params = params;
     }
 
-    private INode inputs[];
-    private INode outputs[];
+    private Node inputs[];
+    private Node outputs[];
 
     @Override
     public void init(IMutator mutator) {
@@ -39,7 +39,7 @@ public class Individual implements IIndividual {
 
     }
 
-    public void setNodes(INode[] nodes) {
+    public void setNodes(Node[] nodes) {
         this.cartesian = nodes;
     }
 
@@ -55,12 +55,12 @@ public class Individual implements IIndividual {
     }
 
     @Override
-    public void setInputs(INode[] in) {
+    public void setInputs(Node[] in) {
         this.inputs = in;
     }
 
     @Override
-    public void setOutputs(INode[] out) {
+    public void setOutputs(Node[] out) {
         this.outputs = out;
     }
 
@@ -73,24 +73,24 @@ public class Individual implements IIndividual {
     @Override
     public IIndividual clone() {
         Individual ind = new Individual(this.nodeNo, this.params, this.factory);
-        INode cartesianCopy[] = new Node[this.nodeNo];
+        Node cartesianCopy[] = new Node[this.nodeNo];
         for (int i = 0; i < this.cartesian.length; i++) {
-            cartesianCopy[i] = (INode) this.cartesian[i].clone();
+            cartesianCopy[i] = (Node) this.cartesian[i].clone();
 
         }
         // Now let's create new adapters and recreate them basing on original ones
         for (int i = 0; i < this.cartesian.length; i++) {
 
-            List<INode> inputs = this.cartesian[i].getAdapter().getNodes();
+            List<Node> inputs = this.cartesian[i].getAdapter().getNodes();
             ConnectionAdapter adapter = new ConnectionAdapter(this.cartesian[i].getAdapter().getMaxArity());
-            List<INode> newInputs = new ArrayList<>();
+            List<Node> newInputs = new ArrayList<>();
 
-            for (INode id : inputs) {
+            for (Node id : inputs) {
                 if (id == null) {
                     //Basically means that no node is connected there
                     continue;
                 }
-                INode foundNode = getNodeWithUID(this.cartesian, id.getUID());
+                Node foundNode = getNodeWithUID(this.cartesian, id.getUID());
                 if (foundNode == null) {
                     System.err.println("Severe error!!");
                     continue;
@@ -106,8 +106,8 @@ public class Individual implements IIndividual {
         return ind;
     }
 
-    private static INode getNodeWithUID(INode[] nodes, int uid) {
-        for (INode node : nodes) {
+    private static Node getNodeWithUID(Node[] nodes, int uid) {
+        for (Node node : nodes) {
 
             int aUID = node.getUID();
             if (aUID == uid) {
