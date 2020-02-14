@@ -46,7 +46,7 @@ public class Individual<T> implements IIndividual<T> {
     public double evaluate() {
 
         for (int i = 0; i < this.cartesian.length; i++) {
-
+            // Recurrent evaluation here
             System.out.println(cartesian[i].getStrategy().getClass());
 
         }
@@ -84,12 +84,12 @@ public class Individual<T> implements IIndividual<T> {
             ConnectionAdapter adapter = new ConnectionAdapter(this.cartesian[i].getAdapter().getMaxArity());
             List<Node> newInputs = new ArrayList<>();
 
-            for (Node id : inputs) {
+            for (Node<T> id : inputs) {
                 if (id == null) {
                     //Basically means that no node is connected there
                     continue;
                 }
-                Node foundNode = getNodeWithUID(this.cartesian, id.getUID());
+                Node<T> foundNode = getNodeWithUID(this.cartesian, id.getUID());
                 if (foundNode == null) {
                     System.err.println("Severe error!!");
                     continue;
