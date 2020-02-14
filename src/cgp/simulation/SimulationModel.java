@@ -26,13 +26,14 @@ public class SimulationModel<T> implements ISimulation<T>{
     private IMutator initialMutator;
 
 
-    public SimulationModel(InputParams params) {
+    public SimulationModel(InputParams params, FunctionFactory<T> factory) {
 
         this.columns = params.getColumns();
         this.rows    = params.getRows();
         this.generator = new Random();
         this.params = params;
-        factory = new RandomFunctionFactory();
+        this.factory = factory;
+//        factory = new RandomFunctionFactory();
         individuals = new Individual[params.getIndividuals()];
         mutator = new RandomMutator<T>(params, factory);
         initialMutator = new InitialRandomMutator<T>(params, factory);

@@ -1,5 +1,7 @@
 package cgp.app;
 
+import cgp.function.factory.FunctionFactory;
+import cgp.function.factory.RandomDoubleFunctionFactory;
 import cgp.simulation.ISimulation;
 import cgp.input.InputParams;
 import cgp.simulation.SimulationModel;
@@ -11,7 +13,8 @@ public class Main {
     private ISimulation<Double> simulation;
     public Main(){
         this.params = InputParams.getInstance();
-        this.simulation = new SimulationModel<>(params);
+        FunctionFactory factory = new RandomDoubleFunctionFactory();
+        this.simulation = new SimulationModel<>(params, factory);
         this.simulation.init();
     }
 
