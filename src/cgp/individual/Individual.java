@@ -9,13 +9,13 @@ import cgp.input.InputParams;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual implements IIndividual {
+public class Individual<T> implements IIndividual<T> {
     private int nodeNo;
-    private Node cartesian[];
+    private Node<T> cartesian[];
     private InputParams params;
-    AbstractNodeFactory factory;
+    AbstractNodeFactory<T> factory;
 
-    public Individual(int nodeNo, InputParams params, AbstractNodeFactory factory) {
+    public Individual(int nodeNo, InputParams params, AbstractNodeFactory<T> factory) {
         this.nodeNo = nodeNo;
         this.inputs = new Node[params.getInputs()];
         this.outputs = new Node[params.getOutputs()];
@@ -23,8 +23,8 @@ public class Individual implements IIndividual {
         this.params = params;
     }
 
-    private Node inputs[];
-    private Node outputs[];
+    private Node<T> inputs[];
+    private Node<T> outputs[];
 
     @Override
     public void init(IMutator mutator) {
@@ -38,7 +38,7 @@ public class Individual implements IIndividual {
 
     }
 
-    public void setNodes(Node[] nodes) {
+    public void setNodes(Node<T>[] nodes) {
         this.cartesian = nodes;
     }
 
@@ -54,12 +54,12 @@ public class Individual implements IIndividual {
     }
 
     @Override
-    public void setInputs(Node[] in) {
+    public void setInputs(Node<T>[] in) {
         this.inputs = in;
     }
 
     @Override
-    public void setOutputs(Node[] out) {
+    public void setOutputs(Node<T>[] out) {
         this.outputs = out;
     }
 
@@ -105,8 +105,8 @@ public class Individual implements IIndividual {
         return ind;
     }
 
-    private static Node getNodeWithUID(Node[] nodes, int uid) {
-        for (Node node : nodes) {
+    private Node<T> getNodeWithUID(Node<T>[] nodes, int uid) {
+        for (Node<T> node : nodes) {
 
             int aUID = node.getUID();
             if (aUID == uid) {

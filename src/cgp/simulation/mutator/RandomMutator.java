@@ -9,7 +9,7 @@ import cgp.input.InputParams;
 import java.util.List;
 import java.util.Random;
 
-public class RandomMutator implements IMutator {
+public class RandomMutator<T> implements IMutator<T> {
     Random generator;
     InputParams params;
     FunctionFactory factory;
@@ -20,10 +20,10 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public Node[] mutateConnections(Node[] nodes) {
+    public Node<T>[] mutateConnections(Node<T>[] nodes) {
 
         for (int ii=0; ii< nodes.length; ii++) {
-            Node node = nodes[ii];
+            Node<T> node = nodes[ii];
             ConnectionAdapter adapter = node.getAdapter();
             List<Node> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
@@ -38,10 +38,10 @@ public class RandomMutator implements IMutator {
     }
 
     @Override
-    public Node[] mutateFunctions(Node[] nodes) {
+    public Node<T>[] mutateFunctions(Node<T>[] nodes) {
         for (int ii=0; ii< nodes.length; ii++) {
 
-            Node node = nodes[ii];
+            Node<T> node = nodes[ii];
             double randomDouble = generator.nextDouble();
             if (randomDouble > 1.0 - params.getMutationProbability()) {
                 try {
@@ -56,7 +56,7 @@ public class RandomMutator implements IMutator {
         return nodes;
     }
 
-    Node getRandomNode(Node[] nodes){
+    Node<T> getRandomNode(Node<T>[] nodes){
         int randomIndex1 = generator.nextInt(nodes.length);
         return nodes[randomIndex1];
     }

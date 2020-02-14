@@ -13,12 +13,12 @@ import cgp.simulation.mutator.RandomMutator;
 import java.io.*;
 import java.util.Random;
 
-public class SimulationModel implements ISimulation{
+public class SimulationModel<T> implements ISimulation<T>{
 
     private int columns;
     private int rows;
     Random generator;
-    IIndividual individuals[];
+    IIndividual<T> individuals[];
     private InputParams params;
     private FunctionFactory factory;
     private NodeFactory nodeFactory;
@@ -34,9 +34,9 @@ public class SimulationModel implements ISimulation{
         this.params = params;
         factory = new RandomFunctionFactory();
         individuals = new Individual[params.getIndividuals()];
-        mutator = new RandomMutator(params, factory);
-        initialMutator = new InitialRandomMutator(params, factory);
-        nodeFactory = new NodeFactory(params,factory,mutator);
+        mutator = new RandomMutator<T>(params, factory);
+        initialMutator = new InitialRandomMutator<T>(params, factory);
+        nodeFactory = new NodeFactory<T>(params,factory,mutator);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SimulationModel implements ISimulation{
     @Override
     public void init(){
         for (int ii=0;ii<params.getIndividuals();ii++){
-            individuals[ii] = new Individual(this.columns*this.rows, params, nodeFactory);
+            individuals[ii] = new Individual<T>(this.columns*this.rows, params, nodeFactory);
             individuals[ii].init(initialMutator);
         }
     }

@@ -3,11 +3,12 @@ package cgp.node;
 import cgp.function.method.ArityFunction;
 import cgp.node.adapter.ConnectionAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Node{
-    ArityFunction strategy;
-    ConnectionAdapter adapter;
+public class Node <T>{
+    ArityFunction<T> strategy;
+    ConnectionAdapter<T> adapter;
     private static int counter = 0;
     private int UID;
     public Node(ArityFunction fun, ConnectionAdapter adapter) {
@@ -51,21 +52,20 @@ public class Node{
         this.UID = uid;
     }
 
-    public double evaluate() {
+    public T evaluate() {
         List<Node> inputs = adapter.getNodes();
-        Double[] inputValues = new Double[inputs.size()];
-        int i=0;
+        List<T> inputValues = new ArrayList<>();
         for(Node inputNode: inputs){
-            inputValues[i++] = inputNode.evaluate();
+            inputValues.add((T) inputNode.evaluate());
         }
 
         return strategy.calculate(inputValues);
     }
 
     @Override
-    public Node clone() {
-        Node clone = new Node();
-        clone.setStrategy((ArityFunction) this.strategy.clone());
+    public Node<T> clone() {
+        Node<T> clone = new Node<>();
+        clone.setStrategy((ArityFunction<T>) this.strategy.clone());
         clone.setUID(this.UID);
         return clone;
     }

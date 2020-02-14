@@ -8,10 +8,10 @@ public class Main {
 
     private InputParams params;
 
-    private ISimulation simulation;
+    private ISimulation<Double> simulation;
     public Main(){
         this.params = InputParams.getInstance();
-        this.simulation = new SimulationModel(params);
+        this.simulation = new SimulationModel<>(params);
         this.simulation.init();
     }
 

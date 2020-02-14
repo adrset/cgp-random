@@ -6,7 +6,7 @@ import cgp.node.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectionAdapter implements ICloneable {
+public class ConnectionAdapter<T> implements ICloneable {
     List<Node> inputs;
     Node output;
     int maxArity;

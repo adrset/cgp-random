@@ -2,6 +2,8 @@ package cgp.function.method.impl;
 
 import cgp.function.method.ArityFunction;
 
+import java.util.List;
+
 public class Divide implements ArityFunction<Double> {
 
     @Override
@@ -10,7 +12,7 @@ public class Divide implements ArityFunction<Double> {
     }
 
     @Override
-    public Double calculate(Double[] args) {
-        return null;
+    public Double calculate(List<Double> args) {
+        return args.get(0) / args.get(1);
     }
 }

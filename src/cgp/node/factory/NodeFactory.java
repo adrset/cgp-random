@@ -6,16 +6,16 @@ import cgp.node.Node;
 import cgp.node.adapter.ConnectionAdapter;
 import cgp.input.InputParams;
 
-public class NodeFactory extends AbstractNodeFactory {
+public class NodeFactory<T> extends AbstractNodeFactory {
     public NodeFactory(InputParams params, FunctionFactory factory, IMutator mutator){
 
         super(params, factory, mutator);
     }
 
-    public Node getNode(){
-        Node n = null;
+    public Node<T> getNode(){
+        Node<T> n = null;
         try {
-            n = new Node(factory.getFunction(), new ConnectionAdapter(params.getMaxArity()));
+            n = new Node<>(factory.getFunction(), new ConnectionAdapter(params.getMaxArity()));
             n.init();
             return n;
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class NodeFactory extends AbstractNodeFactory {
     }
 
     @Override
-    public Node getMutatedNode() {
+    public Node<T> getMutatedNode() {
         return null;
     }
 

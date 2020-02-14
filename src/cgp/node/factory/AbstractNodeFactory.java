@@ -5,7 +5,7 @@ import cgp.simulation.mutator.IMutator;
 import cgp.node.Node;
 import cgp.input.InputParams;
 
-public abstract class AbstractNodeFactory {
+public abstract class AbstractNodeFactory<T> {
     FunctionFactory factory;
     InputParams params;
     IMutator mutator;
@@ -14,6 +14,6 @@ public abstract class AbstractNodeFactory {
         this.params = params;
         this.mutator = mutator;
     }
-    public abstract Node getNode();
-    public abstract Node getMutatedNode();
+    public abstract Node<T> getNode();
+    public abstract Node<T> getMutatedNode();
 }
