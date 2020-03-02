@@ -1,6 +1,7 @@
 package cgp.simulation.mutator;
 
 import cgp.function.factory.FunctionFactory;
+import cgp.individual.Individual;
 import cgp.input.InputParams;;
 import cgp.node.Node;
 import cgp.node.adapter.ConnectionAdapter;
@@ -13,8 +14,8 @@ public class InitialRandomMutator<T> extends RandomMutator<T> {
     }
 
     @Override
-    public Node<T>[] mutateConnections(Node<T>[] nodes) {
-
+    public Individual<T> mutate(Individual<T> ind) {
+        Node<T>[] nodes = ind.getNodes();
         for (int ii=0; ii< nodes.length; ii++) {
             Node<T> node = nodes[ii];
             ConnectionAdapter<T> adapter = node.getAdapter();
@@ -26,6 +27,7 @@ public class InitialRandomMutator<T> extends RandomMutator<T> {
             }
         }
 
-        return nodes;
+        ind.setNodes(nodes);
+        return ind;
     }
 }

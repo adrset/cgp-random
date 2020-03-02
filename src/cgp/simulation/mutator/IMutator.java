@@ -1,9 +1,8 @@
 package cgp.simulation.mutator;
 
-import cgp.node.Node;
+import cgp.individual.Individual;
 
 public interface IMutator <T> {
-    Node<T>[] mutateConnections (Node<T> nodes[]);
-    Node<T>[] mutateFunctions (Node<T> nodes[]);
+    Individual<T> mutate(Individual<T> ind);
 
 }

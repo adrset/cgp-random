@@ -64,10 +64,15 @@ public class Individual<T> implements IIndividual<T> {
     }
 
     @Override
-    public void mutate(IMutator mutator) {
-        cartesian = mutator.mutateFunctions(cartesian);
-        cartesian = mutator.mutateConnections(cartesian);
+    public Node<T>[] getNodes() {
+        return cartesian;
     }
+
+//    @Override
+//    public void mutate(IMutator mutator) {
+//        cartesian = mutator.mutateFunctions(cartesian);
+//        cartesian = mutator.mutateConnections(cartesian);
+//    }
 
     @Override
     public IIndividual clone() {

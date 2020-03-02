@@ -43,7 +43,7 @@ public class SimulationModel<T> implements ISimulation<T>{
     @Override
     public void run() {
         try {
-            System.setOut(new PrintStream(new File("output-file.txt")));
+            //System.setOut(new PrintStream(new File("output-file.txt")));
 
 
             int currentGeneration = 1;
@@ -54,7 +54,7 @@ public class SimulationModel<T> implements ISimulation<T>{
                     individuals[ii].mutate(mutator);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
