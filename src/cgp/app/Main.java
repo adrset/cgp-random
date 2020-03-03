@@ -14,7 +14,7 @@ public class Main {
     public Main(){
         this.params = InputParams.getInstance();
         FunctionFactory factory = new RandomDoubleFunctionFactory();
-        this.simulation = new SimulationModel<>(params, factory);
+        this.simulation = new SimulationModel<>(params, factory, new Double(0));
         this.simulation.init();
     }
 

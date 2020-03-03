@@ -20,10 +20,10 @@ public class RandomMutator<T> implements IMutator<T> {
     }
 
     @Override
-    public Node<T>[] mutateConnections(Node<T>[] nodes) {
+    public List<Node<T>> mutateConnections(List<Node<T>> nodes) {
 
-        for (int ii=0; ii< nodes.length; ii++) {
-            Node<T> node = nodes[ii];
+        for (int ii=0; ii< nodes.size(); ii++) {
+            Node<T> node = nodes.get(ii);
             ConnectionAdapter adapter = node.getAdapter();
             List<Node> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
@@ -38,10 +38,10 @@ public class RandomMutator<T> implements IMutator<T> {
     }
 
     @Override
-    public Node<T>[] mutateFunctions(Node<T>[] nodes) {
-        for (int ii=0; ii< nodes.length; ii++) {
+    public List<Node<T>> mutateFunctions(List<Node<T>> nodes) {
+        for (int ii=0; ii< nodes.size(); ii++) {
 
-            Node<T> node = nodes[ii];
+            Node<T> node = nodes.get(ii);
             double randomDouble = generator.nextDouble();
             if (randomDouble > 1.0 - params.getMutationProbability()) {
                 try {
@@ -56,8 +56,8 @@ public class RandomMutator<T> implements IMutator<T> {
         return nodes;
     }
 
-    Node<T> getRandomNode(Node<T>[] nodes){
-        int randomIndex1 = generator.nextInt(nodes.length);
-        return nodes[randomIndex1];
+    Node<T> getRandomNode(List<Node<T>> nodes){
+        int randomIndex1 = generator.nextInt(nodes.size());
+        return nodes.get(randomIndex1);
     }
 }

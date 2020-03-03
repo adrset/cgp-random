@@ -11,9 +11,12 @@ public class Node <T>{
     ConnectionAdapter<T> adapter;
     private static int counter = 0;
     private int UID;
-    public Node(ArityFunction fun, ConnectionAdapter adapter) {
+
+    T defaultValue;
+    public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
         this.strategy = fun;
         this.adapter = adapter;
+        this.defaultValue = defaultValue;
     }
 
     /**
@@ -45,7 +48,7 @@ public class Node <T>{
     }
 
     public int getUID() {
-        return counter;
+        return UID;
     }
 
     public void setUID(int uid) {

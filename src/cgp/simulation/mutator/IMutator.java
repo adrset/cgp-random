@@ -2,8 +2,9 @@ package cgp.simulation.mutator;
 
 import cgp.node.Node;
 
-public interface IMutator <T> {
-    Node<T>[] mutateConnections (Node<T> nodes[]);
-    Node<T>[] mutateFunctions (Node<T> nodes[]);
+import java.util.List;
 
+public interface IMutator <T> {
+    List<Node<T>> mutateConnections (List<Node<T>> nodes);
+    List<Node<T>> mutateFunctions (List<Node<T>> nodes);
 }

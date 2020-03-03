@@ -1,5 +1,6 @@
 package cgp.individual;
 
+import cgp.node.OutputNode;
 import cgp.simulation.mutator.IMutator;
 import cgp.node.Node;
 import cgp.node.adapter.ConnectionAdapter;
@@ -14,6 +15,10 @@ public class Individual<T> implements IIndividual<T> {
     private Node<T> cartesian[];
     private InputParams params;
     AbstractNodeFactory<T> factory;
+    List<Node<T>> allNodes;
+
+    private Node<T> inputs[];
+    private Node<T> outputs[];
 
     public Individual(int nodeNo, InputParams params, AbstractNodeFactory<T> factory) {
         this.nodeNo = nodeNo;
@@ -21,10 +26,13 @@ public class Individual<T> implements IIndividual<T> {
         this.outputs = new Node[params.getOutputs()];
         this.factory = factory;
         this.params = params;
+        allNodes = new ArrayList<>();
+        for (int i=0; i< params.getOutputs(); i++) {
+            outputs[i] = new OutputNode<>();
+        }
+
     }
 
-    private Node<T> inputs[];
-    private Node<T> outputs[];
 
     @Override
     public void init(IMutator mutator) {
@@ -33,8 +41,16 @@ public class Individual<T> implements IIndividual<T> {
         for (int i = 0; i < this.cartesian.length; i++) {
             this.cartesian[i] = factory.getNode();
         }
-
-        cartesian = mutator.mutateConnections(this.cartesian);
+        for (Node i:inputs) {
+            allNodes.add(i);
+        }
+        for (Node c:cartesian) {
+            allNodes.add(c);
+        }
+        for (Node o:outputs) {
+            allNodes.add(o);
+        }
+        allNodes = mutator.mutateConnections(allNodes);
 
     }
 
@@ -63,10 +79,28 @@ public class Individual<T> implements IIndividual<T> {
         this.outputs = out;
     }
 
-    @Override
     public void mutate(IMutator mutator) {
-        cartesian = mutator.mutateFunctions(cartesian);
-        cartesian = mutator.mutateConnections(cartesian);
+        allNodes = mutator.mutateFunctions(allNodes);
+        allNodes = mutator.mutateConnections(allNodes);
+    }
+
+    public List<Node<T>> getAllNodes(){
+        return allNodes;
+    }
+
+    @Override
+    public void describe() {
+        for (Node n: cartesian){
+            ConnectionAdapter<T> a = n.getAdapter();
+            StringBuilder stringBuilder = new StringBuilder();
+            List<Node> nodes = a.getNodes();
+            for (int i = 0; i < nodes.size(); i++) {
+
+                stringBuilder.append(nodes.get(i).getUID() + ", ");
+
+            }
+            System.out.println(n.getUID() + " -> [" + stringBuilder.toString() + "]");
+        }
     }
 
     @Override

@@ -13,10 +13,10 @@ public class InitialRandomMutator<T> extends RandomMutator<T> {
     }
 
     @Override
-    public Node<T>[] mutateConnections(Node<T>[] nodes) {
+    public List<Node<T>> mutateConnections(List<Node<T>> nodes) {
 
-        for (int ii=0; ii< nodes.length; ii++) {
-            Node<T> node = nodes[ii];
+        for (int ii=0; ii< nodes.size(); ii++) {
+            Node<T> node = nodes.get(ii);
             ConnectionAdapter<T> adapter = node.getAdapter();
             List<Node> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {

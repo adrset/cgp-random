@@ -26,7 +26,7 @@ public class SimulationModel<T> implements ISimulation<T>{
     private IMutator initialMutator;
 
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory) {
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue) {
 
         this.columns = params.getColumns();
         this.rows    = params.getRows();
@@ -37,7 +37,7 @@ public class SimulationModel<T> implements ISimulation<T>{
         individuals = new Individual[params.getIndividuals()];
         mutator = new RandomMutator<T>(params, factory);
         initialMutator = new InitialRandomMutator<T>(params, factory);
-        nodeFactory = new NodeFactory<T>(params,factory,mutator);
+        nodeFactory = new NodeFactory<T>(params,factory,mutator, defaultValue);
     }
 
     @Override
@@ -51,6 +51,7 @@ public class SimulationModel<T> implements ISimulation<T>{
                 for (int ii = 0; ii < 4;ii++) {
                     individuals[ii].evaluate();
                     System.out.println("==========" + (ii+1) + "=========");
+                    individuals[ii].describe();
                     individuals[ii].mutate(mutator);
                 }
             }
@@ -68,6 +69,7 @@ public class SimulationModel<T> implements ISimulation<T>{
     public void init(){
         for (int ii=0;ii<params.getIndividuals();ii++){
             individuals[ii] = new Individual<T>(this.columns*this.rows, params, nodeFactory);
+            // Inject input nodes.
             individuals[ii].init(initialMutator);
         }
     }
