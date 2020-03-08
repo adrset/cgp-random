@@ -12,6 +12,8 @@ public class Node <T>{
     private static int counter = 0;
     private int UID;
 
+    // Default value required by recurrent CGP
+    // Could be initial value for input nodes
     T defaultValue;
     public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
         this.strategy = fun;

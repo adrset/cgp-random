@@ -1,6 +1,5 @@
 package cgp.individual;
 
-import cgp.node.OutputNode;
 import cgp.simulation.mutator.IMutator;
 import cgp.node.Node;
 import cgp.node.adapter.ConnectionAdapter;
@@ -29,7 +28,6 @@ public class Individual<T> implements IIndividual<T> {
         outputs = new ArrayList<>();
 
     }
-
 
     @Override
     public void init(IMutator mutator) {
@@ -89,7 +87,7 @@ public class Individual<T> implements IIndividual<T> {
 
     @Override
     public void describe() {
-        for (Node n: cartesian){
+        for (Node n: allNodes){
             ConnectionAdapter<T> a = n.getAdapter();
             StringBuilder stringBuilder = new StringBuilder();
             List<Node> nodes = a.getNodes();

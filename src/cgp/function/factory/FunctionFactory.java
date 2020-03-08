@@ -1,12 +1,7 @@
 package cgp.function.factory;
 
 import cgp.function.method.*;
-import cgp.function.method.impl.Add;
-import cgp.function.method.impl.Divide;
-import cgp.function.method.impl.Multiply;
-import cgp.function.method.impl.Subtract;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 

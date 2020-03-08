@@ -1,4 +1,4 @@
-package cgp.function.method.impl;
+package cgp.user.function.method;
 
 import cgp.function.method.ArityFunction;
 

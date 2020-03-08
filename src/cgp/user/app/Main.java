@@ -1,7 +1,7 @@
-package cgp.app;
+package cgp.user.app;
 
 import cgp.function.factory.FunctionFactory;
-import cgp.function.factory.RandomDoubleFunctionFactory;
+import cgp.user.function.factory.RandomDoubleFunctionFactory;
 import cgp.simulation.ISimulation;
 import cgp.input.InputParams;
 import cgp.simulation.SimulationModel;
