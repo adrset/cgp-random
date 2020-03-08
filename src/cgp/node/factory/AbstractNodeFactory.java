@@ -15,5 +15,6 @@ public abstract class AbstractNodeFactory<T> {
         this.mutator = mutator;
     }
     public abstract Node<T> getNode();
+    public abstract Node<T> getInputNode(T value);
     public abstract Node<T> getMutatedNode();
 }

@@ -4,14 +4,16 @@ import cgp.simulation.ICloneable;
 import cgp.simulation.mutator.IMutator;
 import cgp.node.Node;
 
+import java.util.List;
+
 public interface IIndividual<T> extends ICloneable {
     void init(IMutator mutator);
 
     double evaluate();
 
-    void setInputs(Node<T>[] nodes);
+    void setInputs(List<Node<T>> inputs);
 
-    void setOutputs(Node<T>[] nodes);
+    void setOutputs(List<Node<T>> outputs);
 
     void mutate(IMutator mutator);
 

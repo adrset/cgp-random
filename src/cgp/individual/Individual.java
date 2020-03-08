@@ -14,22 +14,19 @@ public class Individual<T> implements IIndividual<T> {
     private int nodeNo;
     private Node<T> cartesian[];
     private InputParams params;
-    AbstractNodeFactory<T> factory;
-    List<Node<T>> allNodes;
+    private AbstractNodeFactory<T> factory;
+    private List<Node<T>> allNodes;
 
-    private Node<T> inputs[];
-    private Node<T> outputs[];
+    private List<Node<T>> inputs;
+    private List<Node<T>> outputs;
 
     public Individual(int nodeNo, InputParams params, AbstractNodeFactory<T> factory) {
         this.nodeNo = nodeNo;
-        this.inputs = new Node[params.getInputs()];
-        this.outputs = new Node[params.getOutputs()];
         this.factory = factory;
         this.params = params;
         allNodes = new ArrayList<>();
-        for (int i=0; i< params.getOutputs(); i++) {
-            outputs[i] = new OutputNode<>();
-        }
+        inputs = new ArrayList<>();
+        outputs = new ArrayList<>();
 
     }
 
@@ -37,7 +34,9 @@ public class Individual<T> implements IIndividual<T> {
     @Override
     public void init(IMutator mutator) {
         this.cartesian = new Node[nodeNo];
-
+        for (int i=0; i< params.getOutputs(); i++) {
+            outputs.add(factory.getNode());
+        }
         for (int i = 0; i < this.cartesian.length; i++) {
             this.cartesian[i] = factory.getNode();
         }
@@ -70,12 +69,12 @@ public class Individual<T> implements IIndividual<T> {
     }
 
     @Override
-    public void setInputs(Node<T>[] in) {
+    public void setInputs(List<Node<T>> in) {
         this.inputs = in;
     }
 
     @Override
-    public void setOutputs(Node<T>[] out) {
+    public void setOutputs(List<Node<T>> out) {
         this.outputs = out;
     }
 

@@ -1,20 +1,17 @@
 package cgp.node;
 
+import cgp.function.method.ArityFunction;
+import cgp.node.adapter.ConnectionAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class InputNode<T> extends Node<T> {
     T value;
 
-    public InputNode(T value) {
-        super();
-        this.value = value;
+    public InputNode(ConnectionAdapter adapter, T defaultValue) {
+        super(null, adapter, defaultValue);
     }
-
-    public InputNode() {
-        this(null);
-    }
-
 
     void setValue(T t) {
         this.value = t;

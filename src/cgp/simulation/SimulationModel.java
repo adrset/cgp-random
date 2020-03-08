@@ -2,6 +2,8 @@ package cgp.simulation;
 
 import cgp.function.factory.FunctionFactory;
 import cgp.function.factory.RandomFunctionFactory;
+import cgp.node.InputNode;
+import cgp.node.Node;
 import cgp.simulation.mutator.InitialRandomMutator;
 import cgp.node.factory.NodeFactory;
 import cgp.individual.IIndividual;
@@ -11,6 +13,8 @@ import cgp.simulation.mutator.IMutator;
 import cgp.simulation.mutator.RandomMutator;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SimulationModel<T> implements ISimulation<T>{
@@ -24,10 +28,10 @@ public class SimulationModel<T> implements ISimulation<T>{
     private NodeFactory nodeFactory;
     private IMutator mutator;
     private IMutator initialMutator;
+    private T[] inputValues;
 
-
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue) {
-
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues) {
+        this.inputValues = inputValues;
         this.columns = params.getColumns();
         this.rows    = params.getRows();
         this.generator = new Random();
@@ -69,8 +73,15 @@ public class SimulationModel<T> implements ISimulation<T>{
     public void init(){
         for (int ii=0;ii<params.getIndividuals();ii++){
             individuals[ii] = new Individual<T>(this.columns*this.rows, params, nodeFactory);
+            List<Node<T>> inputs = new ArrayList<>( );
+            for (T in: inputValues) {
+                inputs.add(nodeFactory.getInputNode(in));
+            }
+            individuals[ii].setInputs(inputs);
             // Inject input nodes.
             individuals[ii].init(initialMutator);
+
+
         }
     }
 }
