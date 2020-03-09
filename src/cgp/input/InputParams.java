@@ -25,7 +25,7 @@ public class InputParams {
         return mutationProbability;
     }
 
-    double mutationProbability = 0.01f;
+    double mutationProbability = 1f;
 
 
     InputParams() {

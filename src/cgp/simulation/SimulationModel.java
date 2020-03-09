@@ -53,10 +53,11 @@ public class SimulationModel<T> implements ISimulation<T>{
             while (currentGeneration++ <= 2/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
                 for (int ii = 0; ii < 4;ii++) {
                     individuals[ii].evaluate();
-                    System.out.println("==========" + (ii+1) + "=========");
+                    System.out.println("-" + (ii+1) + "-");
                     individuals[ii].mutate(mutator);
                     individuals[ii].describe();
                 }
+                System.out.println("==========" + (currentGeneration+1) + "=========");
             }
         } catch (Exception e) {
             e.printStackTrace();

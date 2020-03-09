@@ -10,7 +10,7 @@ public class Node <T>{
     ArityFunction<T> strategy;
     ConnectionAdapter<T> adapter;
     private static int counter = 0;
-    private int UID;
+    protected int UID;
 
     // Default value required by recurrent CGP
     // Could be initial value for input nodes
