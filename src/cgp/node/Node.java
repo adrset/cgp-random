@@ -67,10 +67,22 @@ public class Node <T>{
         return strategy.calculate(inputValues);
     }
 
+    public void printAdapter(){
+
+        for (Node<T> n : adapter.getNodes()) {
+            //n.printAdapter();
+            //System.out.println(n.getUID());
+        }
+    }
+
+
     @Override
     public Node<T> clone() {
         Node<T> clone = new Node<>();
-        clone.setStrategy((ArityFunction<T>) this.strategy.clone());
+        if (this.strategy != null){
+            clone.setStrategy((ArityFunction<T>) this.strategy.clone());
+
+        }
         clone.setUID(this.UID);
         return clone;
     }

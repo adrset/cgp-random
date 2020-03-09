@@ -22,7 +22,7 @@ public class InitialRandomMutator<T> extends RandomMutator<T> {
             List<Node> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
 
-                adapterNodes.set(kk, getRandomNode(nodes));
+                adapterNodes.set(kk, getRandomNode(nodes, nodes.indexOf(adapterNodes.get(kk))));
 
             }
         }

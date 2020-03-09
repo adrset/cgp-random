@@ -29,7 +29,7 @@ public class RandomMutator<T> implements IMutator<T> {
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
                 double randomDouble = generator.nextDouble();
                 if (randomDouble > 1.0 - params.getMutationProbability()) {
-                    adapterNodes.set(kk, getRandomNode(nodes));
+                    adapterNodes.set(kk, getRandomNode(nodes, nodes.indexOf(node)));
                 }
             }
         }
@@ -56,8 +56,14 @@ public class RandomMutator<T> implements IMutator<T> {
         return nodes;
     }
 
-    Node<T> getRandomNode(List<Node<T>> nodes){
-        int randomIndex1 = generator.nextInt(nodes.size());
+    Node<T> getRandomNode(List<Node<T>> nodes, int index){
+
+        int randomIndex1;
+
+        do {
+            randomIndex1 = generator.nextInt(nodes.size() - params.getOutputs());
+        } while (randomIndex1 == index);
+
         return nodes.get(randomIndex1);
     }
 }

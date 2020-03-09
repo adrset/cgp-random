@@ -2,10 +2,10 @@ package cgp.input;
 
 public class InputParams {
     static InputParams singleton;
-    int columns = 20;
-    int rows = 20;
+    int columns = 2;
+    int rows = 2;
     int inputs = 2;
-    int outputs = 2;
+    int outputs = 1;
     int maxArity = 2;
     double minError = 0.01;
     int generationThreshold = 10000;

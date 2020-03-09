@@ -11,10 +11,6 @@ public interface IIndividual<T> extends ICloneable {
 
     double evaluate();
 
-    void setInputs(List<Node<T>> inputs);
-
-    void setOutputs(List<Node<T>> outputs);
-
     void mutate(IMutator mutator);
 
     void describe();

@@ -16,5 +16,6 @@ public abstract class AbstractNodeFactory<T> {
     }
     public abstract Node<T> getNode();
     public abstract Node<T> getInputNode(T value);
+    public abstract Node<T> getOutputNode();
     public abstract Node<T> getMutatedNode();
 }
