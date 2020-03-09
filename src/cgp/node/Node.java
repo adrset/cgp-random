@@ -15,6 +15,7 @@ public class Node <T>{
     // Default value required by recurrent CGP
     // Could be initial value for input nodes
     T defaultValue;
+    T currentValue;
     public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
         this.strategy = fun;
         this.adapter = adapter;
@@ -63,14 +64,14 @@ public class Node <T>{
         for(Node inputNode: inputs){
             inputValues.add((T) inputNode.evaluate());
         }
-
-        return strategy.calculate(inputValues);
+        currentValue = strategy.calculate(inputValues);
+        return currentValue;
     }
 
     public void printAdapter(){
 
         for (Node<T> n : adapter.getNodes()) {
-            //n.printAdapter();
+            n.printAdapter();
             //System.out.println(n.getUID());
         }
     }

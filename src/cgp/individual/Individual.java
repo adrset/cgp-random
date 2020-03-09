@@ -39,7 +39,7 @@ public class Individual<T> implements IIndividual<T> {
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
             allNodes.add(factory.getNode());
         }
-        for (int i=basicNodesNo + inputNodesNo; i< basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
             allNodes.add(factory.getOutputNode());
         }
 
@@ -63,13 +63,13 @@ public class Individual<T> implements IIndividual<T> {
         allNodes = mutator.mutateConnections(allNodes);
     }
 
-    public List<Node<T>> getAllNodes(){
+    public List<Node<T>> getAllNodes() {
         return allNodes;
     }
 
     @Override
     public void describe() {
-        for (Node n: allNodes){
+        for (Node n : allNodes) {
             ConnectionAdapter<T> a = n.getAdapter();
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -79,8 +79,13 @@ public class Individual<T> implements IIndividual<T> {
                 stringBuilder.append(nodes.get(i).getUID() + ", ");
 
             }
-            System.out.println( n.getClass()+ " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
+            System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
         }
+
+//        Node<T> opt = allNodes.get(allNodes.size() - 1);
+//        ConnectionAdapter a = opt.getAdapter();
+
+
     }
 
     @Override
@@ -112,7 +117,7 @@ public class Individual<T> implements IIndividual<T> {
                 newInputs.add(foundNode);
             }
             adapter.setInputs(newInputs);
-           copy.get(i).setAdapter(adapter);
+            copy.get(i).setAdapter(adapter);
 
         }
         ind.setNodes(copy);
