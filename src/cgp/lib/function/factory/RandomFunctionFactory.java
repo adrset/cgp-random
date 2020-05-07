@@ -1,6 +1,5 @@
 package cgp.lib.function.factory;
 
-import cgp.function.method.*;
 import cgp.lib.function.method.ArityFunction;
 
 import java.util.ArrayList;

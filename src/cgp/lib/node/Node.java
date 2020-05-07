@@ -6,12 +6,13 @@ import cgp.lib.node.adapter.ConnectionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node <T>{
+public class Node<T> {
     ArityFunction<T> strategy;
     ConnectionAdapter<T> adapter;
     private static int counter = 0;
 
     private boolean active = false;
+
     public boolean isActive() {
         return active;
     }
@@ -20,7 +21,7 @@ public class Node <T>{
         this.active = active;
     }
 
-    public T getCurrentValue(){
+    public T getCurrentValue() {
         return currentValue;
     }
 
@@ -30,6 +31,7 @@ public class Node <T>{
     // Default value required by recurrent CGP
     // Could be initial value for input nodes
     T currentValue;
+
     public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
         this.strategy = fun;
         this.adapter = adapter;
@@ -40,16 +42,17 @@ public class Node <T>{
     /**
      * Use only for completely new nodes!!! Not cloned ones!!!
      */
-    public void init(){
+    public void init() {
         this.UID = counter++;
     }
 
     /**
      * Only for copy!!!
      */
-    public Node() {}
+    public Node() {
+    }
 
-    public void setStrategy(ArityFunction f){
+    public void setStrategy(ArityFunction f) {
         this.strategy = f;
     }
 
@@ -76,14 +79,15 @@ public class Node <T>{
     public T compute() {
         List<Node> inputs = adapter.getNodes();
         List<T> inputValues = new ArrayList<>();
-        for(Node inputNode: inputs){
+        for (Node inputNode : inputs) {
             inputValues.add((T) inputNode.getCurrentValue());
         }
+       
         currentValue = strategy.calculate(inputValues);
         return currentValue;
     }
 
-    public void printAdapter(){
+    public void printAdapter() {
 
         for (Node<T> n : adapter.getNodes()) {
             n.printAdapter();
@@ -95,7 +99,7 @@ public class Node <T>{
     @Override
     public Node<T> clone() {
         Node<T> clone = new Node<>();
-        if (this.strategy != null){
+        if (this.strategy != null) {
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
 
         }

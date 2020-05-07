@@ -68,7 +68,7 @@ public class Individual<T> implements IIndividual<T> {
     public void compute() {
         resetNodesActiveStatus();
         setActiveNodes();
-        for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+        for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
 
             Node n = allNodes.get(i);
             if (n.isActive()) {
