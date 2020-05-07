@@ -1,10 +1,10 @@
 package cgp.user.app;
 
-import cgp.function.factory.FunctionFactory;
+import cgp.lib.function.factory.FunctionFactory;
 import cgp.user.function.factory.RandomDoubleFunctionFactory;
-import cgp.simulation.ISimulation;
-import cgp.input.InputParams;
-import cgp.simulation.SimulationModel;
+import cgp.lib.simulation.ISimulation;
+import cgp.lib.input.InputParams;
+import cgp.lib.simulation.SimulationModel;
 
 public class Main {
 

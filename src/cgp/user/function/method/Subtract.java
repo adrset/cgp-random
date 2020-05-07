@@ -1,6 +1,6 @@
 package cgp.user.function.method;
 
-import cgp.function.method.ArityFunction;
+import cgp.lib.function.method.ArityFunction;
 
 import java.util.List;
 

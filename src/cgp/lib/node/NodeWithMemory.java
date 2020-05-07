@@ -1,7 +1,7 @@
-package cgp.node;
+package cgp.lib.node;
 
-import cgp.function.method.ArityFunction;
-import cgp.node.adapter.ConnectionAdapter;
+import cgp.lib.function.method.ArityFunction;
+import cgp.lib.node.adapter.ConnectionAdapter;
 
 import java.util.*;
 
@@ -16,8 +16,8 @@ public class NodeWithMemory<T> extends Node<T> {
     }
 
     @Override
-    public T evaluate(){
-        T val = super.evaluate();
+    public T compute(){
+        T val = super.compute();
         remember(val);
         return val;
     }

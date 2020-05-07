@@ -1,6 +1,7 @@
-package cgp.function.factory;
+package cgp.lib.function.factory;
 
 import cgp.function.method.*;
+import cgp.lib.function.method.ArityFunction;
 
 import java.util.HashMap;
 import java.util.Map;

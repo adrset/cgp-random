@@ -1,10 +1,11 @@
-package cgp.individual;
+package cgp.lib.individual;
 
-import cgp.simulation.mutator.IMutator;
-import cgp.node.Node;
-import cgp.node.adapter.ConnectionAdapter;
-import cgp.node.factory.AbstractNodeFactory;
-import cgp.input.InputParams;
+import cgp.lib.input.InputParams;
+import cgp.lib.node.Node;
+import cgp.lib.node.OutputNode;
+import cgp.lib.node.adapter.ConnectionAdapter;
+import cgp.lib.node.factory.AbstractNodeFactory;
+import cgp.lib.simulation.mutator.IMutator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,15 @@ public class Individual<T> implements IIndividual<T> {
         this.params = params;
         allNodes = new ArrayList<>();
 
+    }
+
+    public List<OutputNode<T>> getOutputNodes(){
+        List<OutputNode<T>> outputs = new ArrayList<>();
+        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+            outputs.add((OutputNode<T>)allNodes.get(i));
+        }
+
+        return outputs;
     }
 
     @Override
@@ -55,18 +65,18 @@ public class Individual<T> implements IIndividual<T> {
     }
 
     @Override
-    public double evaluate() {
+    public void compute() {
         resetNodesActiveStatus();
         setActiveNodes();
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
 
             Node n = allNodes.get(i);
             if (n.isActive()) {
-                allNodes.get(i).evaluate();
+                allNodes.get(i).compute();
             }
 
         }
-        return 0;
+
     }
 
 

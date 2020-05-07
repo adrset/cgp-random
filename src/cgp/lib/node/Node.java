@@ -1,7 +1,7 @@
-package cgp.node;
+package cgp.lib.node;
 
-import cgp.function.method.ArityFunction;
-import cgp.node.adapter.ConnectionAdapter;
+import cgp.lib.function.method.ArityFunction;
+import cgp.lib.node.adapter.ConnectionAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class Node <T>{
         this.UID = uid;
     }
 
-    public T evaluate() {
+    public T compute() {
         List<Node> inputs = adapter.getNodes();
         List<T> inputValues = new ArrayList<>();
         for(Node inputNode: inputs){

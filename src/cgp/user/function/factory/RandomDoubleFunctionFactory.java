@@ -1,10 +1,10 @@
 package cgp.user.function.factory;
 
-import cgp.function.factory.RandomFunctionFactory;
-import cgp.user.function.method.Add;
+import cgp.lib.function.factory.RandomFunctionFactory;
 import cgp.user.function.method.Divide;
-import cgp.user.function.method.Multiply;
 import cgp.user.function.method.Subtract;
+import cgp.user.function.method.Add;
+import cgp.user.function.method.Multiply;
 
 public class RandomDoubleFunctionFactory extends RandomFunctionFactory<Double> {
     {

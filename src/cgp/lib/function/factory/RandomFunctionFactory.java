@@ -1,8 +1,8 @@
-package cgp.function.factory;
+package cgp.lib.function.factory;
 
 import cgp.function.method.*;
+import cgp.lib.function.method.ArityFunction;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

@@ -1,6 +1,6 @@
-package cgp.function.method;
+package cgp.lib.function.method;
 
-import cgp.simulation.ICloneable;
+import cgp.lib.simulation.ICloneable;
 
 import java.util.List;
 

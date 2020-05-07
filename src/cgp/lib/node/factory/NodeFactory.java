@@ -1,11 +1,11 @@
-package cgp.node.factory;
+package cgp.lib.node.factory;
 
-import cgp.function.factory.FunctionFactory;
-import cgp.node.OutputNode;
-import cgp.simulation.mutator.IMutator;
-import cgp.node.Node;
-import cgp.node.adapter.ConnectionAdapter;
-import cgp.input.InputParams;
+import cgp.lib.function.factory.FunctionFactory;
+import cgp.lib.node.OutputNode;
+import cgp.lib.simulation.mutator.IMutator;
+import cgp.lib.node.Node;
+import cgp.lib.node.adapter.ConnectionAdapter;
+import cgp.lib.input.InputParams;
 
 public class NodeFactory<T> extends AbstractNodeFactory<T> {
     T defaultValue;

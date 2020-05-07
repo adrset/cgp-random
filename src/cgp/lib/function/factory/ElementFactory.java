@@ -1,6 +1,6 @@
-package cgp.function.factory;
+package cgp.lib.function.factory;
 
-import cgp.function.method.ArityFunction;
+import cgp.lib.function.method.ArityFunction;
 
 public interface ElementFactory {
     ArityFunction build() throws Exception;

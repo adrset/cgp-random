@@ -1,7 +1,7 @@
-package cgp.node;
+package cgp.lib.node;
 
-import cgp.function.method.ArityFunction;
-import cgp.node.adapter.ConnectionAdapter;
+import cgp.lib.function.method.ArityFunction;
+import cgp.lib.node.adapter.ConnectionAdapter;
 
 public class OutputNode<T> extends Node<T> {
     public OutputNode(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {

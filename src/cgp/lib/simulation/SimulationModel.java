@@ -1,19 +1,14 @@
-package cgp.simulation;
+package cgp.lib.simulation;
 
-import cgp.function.factory.FunctionFactory;
-import cgp.function.factory.RandomFunctionFactory;
-import cgp.node.Node;
-import cgp.simulation.mutator.InitialRandomMutator;
-import cgp.node.factory.NodeFactory;
-import cgp.individual.IIndividual;
-import cgp.individual.Individual;
-import cgp.input.InputParams;
-import cgp.simulation.mutator.IMutator;
-import cgp.simulation.mutator.RandomMutator;
+import cgp.lib.function.factory.FunctionFactory;
+import cgp.lib.individual.IIndividual;
+import cgp.lib.node.factory.NodeFactory;
+import cgp.lib.simulation.mutator.IMutator;
+import cgp.lib.simulation.mutator.InitialRandomMutator;
+import cgp.lib.individual.Individual;
+import cgp.lib.input.InputParams;
+import cgp.lib.simulation.mutator.RandomMutator;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class SimulationModel<T> implements ISimulation<T>{
@@ -52,7 +47,7 @@ public class SimulationModel<T> implements ISimulation<T>{
             int currentGeneration = 0;
             while (currentGeneration++ <= 3/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
                 for (int ii = 0; ii < 4;ii++) {
-                    individuals[ii].evaluate();
+                    individuals[ii].compute();
                     System.out.println("-" + (ii+1) + "-");
                     individuals[ii].mutate(mutator);
                     //individuals[ii].describe();

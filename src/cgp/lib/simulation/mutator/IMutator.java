@@ -1,6 +1,6 @@
-package cgp.simulation.mutator;
+package cgp.lib.simulation.mutator;
 
-import cgp.node.Node;
+import cgp.lib.node.Node;
 
 import java.util.List;
 

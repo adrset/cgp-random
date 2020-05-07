@@ -1,9 +1,9 @@
-package cgp.node.factory;
+package cgp.lib.node.factory;
 
-import cgp.function.factory.FunctionFactory;
-import cgp.simulation.mutator.IMutator;
-import cgp.node.Node;
-import cgp.input.InputParams;
+import cgp.lib.function.factory.FunctionFactory;
+import cgp.lib.simulation.mutator.IMutator;
+import cgp.lib.node.Node;
+import cgp.lib.input.InputParams;
 
 public abstract class AbstractNodeFactory<T> {
     FunctionFactory factory;
