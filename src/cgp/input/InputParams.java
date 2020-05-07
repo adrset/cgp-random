@@ -7,6 +7,7 @@ public class InputParams {
     int inputs = 2;
     int outputs = 1;
     int maxArity = 2;
+    int memoryLength = 10;
     double minError = 0.01;
     int generationThreshold = 10000;
 

@@ -58,6 +58,14 @@ public class Individual<T> implements IIndividual<T> {
     public double evaluate() {
         resetNodesActiveStatus();
         setActiveNodes();
+        for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+
+            Node n = allNodes.get(i);
+            if (n.isActive()) {
+                allNodes.get(i).evaluate();
+            }
+
+        }
         return 0;
     }
 
@@ -78,7 +86,7 @@ public class Individual<T> implements IIndividual<T> {
 
     }
 
-    private void recursivelySetActiveNodes(int index){
+    private void recursivelySetActiveNodes(int index) {
         // not checking for input nodes
         if (index < inputNodesNo) {
             return;
