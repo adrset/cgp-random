@@ -16,6 +16,10 @@ public class Individual<T> implements IIndividual<T> {
     private List<Node<T>> allNodes;
     private T[] inputValues;
 
+    int basicNodesNo;
+    int inputNodesNo;
+    int outputNodesNo;
+
 
     public Individual(int nodeNo, InputParams params, AbstractNodeFactory<T> factory, T[] inputValues) {
         this.inputValues = inputValues;
@@ -24,14 +28,13 @@ public class Individual<T> implements IIndividual<T> {
         this.params = params;
         allNodes = new ArrayList<>();
 
-
     }
 
     @Override
     public void init(IMutator mutator) {
-        int basicNodesNo = params.getColumns() * params.getRows();
-        int inputNodesNo = params.getInputs();
-        int outputNodesNo = params.getOutputs();
+        basicNodesNo = params.getColumns() * params.getRows();
+        inputNodesNo = params.getInputs();
+        outputNodesNo = params.getOutputs();
         for (int i = 0; i < inputNodesNo; i++) {
             allNodes.add(factory.getInputNode(inputValues[i]));
         }
@@ -53,10 +56,51 @@ public class Individual<T> implements IIndividual<T> {
 
     @Override
     public double evaluate() {
-
-
+        resetNodesActiveStatus();
+        setActiveNodes();
         return 0;
     }
+
+
+    private void setActiveNodes() {
+
+        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+            recursivelySetActiveNodes(i);
+        }
+
+    }
+
+    private void resetNodesActiveStatus() {
+
+        for (int i = 0; i < allNodes.size(); i++) {
+            allNodes.get(i).setActive(false);
+        }
+
+    }
+
+    private void recursivelySetActiveNodes(int index){
+        // not checking for input nodes
+        if (index < inputNodesNo) {
+            return;
+        }
+
+        Node<T> node = allNodes.get(index);
+
+        if (node.isActive()) {
+            return;
+        }
+
+        node.setActive(true);
+        System.out.println("Node " + index + " is active!");
+
+        ConnectionAdapter<T> adapter = node.getAdapter();
+        for (Node<T> child : adapter.getNodes()) {
+            int childIndex = child.getUID();
+            recursivelySetActiveNodes(childIndex);
+        }
+
+    }
+
 
     public void mutate(IMutator mutator) {
         allNodes = mutator.mutateFunctions(allNodes);

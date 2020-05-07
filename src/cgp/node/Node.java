@@ -10,17 +10,32 @@ public class Node <T>{
     ArityFunction<T> strategy;
     ConnectionAdapter<T> adapter;
     private static int counter = 0;
+
+    private boolean active = false;
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public T getCurrentValue(){
+        return currentValue;
+    }
+
+
     protected int UID;
 
     // Default value required by recurrent CGP
     // Could be initial value for input nodes
-    T defaultValue;
     T currentValue;
     public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
         this.strategy = fun;
         this.adapter = adapter;
-        this.defaultValue = defaultValue;
+        this.currentValue = defaultValue;
     }
+
 
     /**
      * Use only for completely new nodes!!! Not cloned ones!!!
@@ -62,7 +77,7 @@ public class Node <T>{
         List<Node> inputs = adapter.getNodes();
         List<T> inputValues = new ArrayList<>();
         for(Node inputNode: inputs){
-            inputValues.add((T) inputNode.evaluate());
+            inputValues.add((T) inputNode.getCurrentValue());
         }
         currentValue = strategy.calculate(inputValues);
         return currentValue;

@@ -49,15 +49,15 @@ public class SimulationModel<T> implements ISimulation<T>{
            // System.setOut(new PrintStream(new File("output-file.txt")));
 
 
-            int currentGeneration = 1;
-            while (currentGeneration++ <= 2/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
+            int currentGeneration = 0;
+            while (currentGeneration++ <= 3/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
                 for (int ii = 0; ii < 4;ii++) {
                     individuals[ii].evaluate();
                     System.out.println("-" + (ii+1) + "-");
                     individuals[ii].mutate(mutator);
-                    individuals[ii].describe();
+                    //individuals[ii].describe();
                 }
-                System.out.println("==========" + (currentGeneration+1) + "=========");
+                System.out.println("==========" + (currentGeneration) + "=========");
             }
         } catch (Exception e) {
             e.printStackTrace();
