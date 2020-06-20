@@ -1,6 +1,7 @@
 package cgp.lib.node.factory;
 
 import cgp.lib.function.factory.FunctionFactory;
+import cgp.lib.node.InputNode;
 import cgp.lib.node.OutputNode;
 import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.node.Node;
@@ -31,7 +32,7 @@ public class NodeFactory<T> extends AbstractNodeFactory<T> {
     public Node<T> getInputNode(T value) {
         Node<T> n = null;
         try {
-            n = new Node<>(null, new ConnectionAdapter(0), defaultValue);
+            n = new InputNode<>(value);
             n.init();
             return n;
         } catch (Exception e) {

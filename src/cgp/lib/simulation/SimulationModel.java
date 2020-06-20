@@ -53,7 +53,7 @@ public class SimulationModel<T>{
 
                     //individuals[ii].describe();
                 }
-                System.out.println("==========" + (currentGeneration) + "=========");
+                System.out.println("==========" + (currentGeneration) + "==========");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,8 +69,6 @@ public class SimulationModel<T>{
             individuals[ii] = new Individual<T>(this.nodeAmount, params, nodeFactory, inputValues);
 
             individuals[ii].init(initialConnectionSetter);
-
-
         }
 
         // Copy first individual
