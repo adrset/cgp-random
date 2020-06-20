@@ -1,55 +1,56 @@
 package cgp.lib.simulation;
 
 import cgp.lib.function.factory.FunctionFactory;
-import cgp.lib.individual.IIndividual;
 import cgp.lib.node.factory.NodeFactory;
+import cgp.lib.simulation.mutator.function.FunctionMutator;
 import cgp.lib.simulation.mutator.IMutator;
-import cgp.lib.simulation.mutator.InitialRandomMutator;
+import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
 import cgp.lib.individual.Individual;
-import cgp.lib.input.InputParams;
-import cgp.lib.simulation.mutator.RandomMutator;
+import cgp.user.simulation.input.InputParams;
+import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
 import java.util.Random;
 
-public class SimulationModel<T> implements ISimulation<T>{
+public class SimulationModel<T>{
 
-    private int columns;
-    private int rows;
+    private int nodeAmount;
     Random generator;
-    IIndividual<T> individuals[];
+    Individual<T> individuals[];
     private InputParams params;
     private FunctionFactory factory;
     private NodeFactory nodeFactory;
-    private IMutator mutator;
-    private IMutator initialMutator;
+    private IMutator connectionMutator;
+    private IMutator initialConnectionSetter;
+    private IMutator functionMutator;
     private T[] inputValues;
 
     public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues) {
         this.inputValues = inputValues;
-        this.columns = params.getColumns();
-        this.rows    = params.getRows();
+        this.nodeAmount = params.getNodeAmount();
         this.generator = new Random();
         this.params = params;
         this.factory = factory;
-//        factory = new RandomFunctionFactory();
+
         individuals = new Individual[params.getIndividuals()];
-        mutator = new RandomMutator<T>(params, factory);
-        initialMutator = new InitialRandomMutator<T>(params, factory);
-        nodeFactory = new NodeFactory<T>(params,factory,mutator, defaultValue);
+        connectionMutator = new RandomConnectionMutator<T>(params);
+        initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
+        functionMutator = new FunctionMutator(params, factory);
+        nodeFactory = new NodeFactory<T>(params, factory, defaultValue);
     }
 
-    @Override
     public void run() {
         try {
-           // System.setOut(new PrintStream(new File("output-file.txt")));
+            // System.setOut(new PrintStream(new File("output-file.txt")));
 
 
             int currentGeneration = 0;
             while (currentGeneration++ <= 3/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
-                for (int ii = 0; ii < 4;ii++) {
+                for (int ii = 0; ii < 4; ii++) {
                     individuals[ii].compute();
-                    System.out.println("-" + (ii+1) + "-");
-                    individuals[ii].mutate(mutator);
+                    System.out.println("-" + (ii + 1) + "-");
+                    individuals[ii].mutate(connectionMutator);
+                    individuals[ii].mutate(functionMutator);
+
                     //individuals[ii].describe();
                 }
                 System.out.println("==========" + (currentGeneration) + "=========");
@@ -59,25 +60,22 @@ public class SimulationModel<T> implements ISimulation<T>{
         }
     }
 
-    @Override
     public double evaluate() {
         return 1;
     }
 
-    @Override
-    public void init(){
-        for (int ii=0;ii<1;ii++){
-            individuals[ii] = new Individual<T>(this.columns*this.rows, params, nodeFactory, inputValues);
+    public void init() {
+        for (int ii = 0; ii < 1; ii++) {
+            individuals[ii] = new Individual<T>(this.nodeAmount, params, nodeFactory, inputValues);
 
-            individuals[ii].init(initialMutator);
+            individuals[ii].init(initialConnectionSetter);
 
 
         }
 
-        for (int ii=1;ii<params.getIndividuals();ii++){
+        for (int ii = 1; ii < params.getIndividuals(); ii++) {
             individuals[ii] = (Individual<T>) individuals[0].clone();
 
         }
-        System.out.println("1");
     }
 }

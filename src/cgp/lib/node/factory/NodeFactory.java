@@ -5,13 +5,13 @@ import cgp.lib.node.OutputNode;
 import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.node.Node;
 import cgp.lib.node.adapter.ConnectionAdapter;
-import cgp.lib.input.InputParams;
+import cgp.user.simulation.input.InputParams;
 
 public class NodeFactory<T> extends AbstractNodeFactory<T> {
     T defaultValue;
-    public NodeFactory(InputParams params, FunctionFactory factory, IMutator mutator, T defaultValue){
+    public NodeFactory(InputParams params, FunctionFactory factory, T defaultValue){
 
-        super(params, factory, mutator);
+        super(params, factory);
         this.defaultValue = defaultValue;
     }
 
@@ -53,10 +53,5 @@ public class NodeFactory<T> extends AbstractNodeFactory<T> {
         return null;
     }
 
-
-    @Override
-    public Node<T> getMutatedNode() {
-        return null;
-    }
 
 }

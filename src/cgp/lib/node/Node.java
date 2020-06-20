@@ -77,7 +77,7 @@ public class Node<T> {
     }
 
     public T compute() {
-        List<Node> inputs = adapter.getNodes();
+        List<Node<T>> inputs = adapter.getNodes();
         List<T> inputValues = new ArrayList<>();
         for (Node inputNode : inputs) {
             inputValues.add((T) inputNode.getCurrentValue());

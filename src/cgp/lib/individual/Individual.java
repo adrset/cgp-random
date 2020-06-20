@@ -1,6 +1,6 @@
 package cgp.lib.individual;
 
-import cgp.lib.input.InputParams;
+import cgp.user.simulation.input.InputParams;
 import cgp.lib.node.Node;
 import cgp.lib.node.OutputNode;
 import cgp.lib.node.adapter.ConnectionAdapter;
@@ -10,7 +10,7 @@ import cgp.lib.simulation.mutator.IMutator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual<T> implements IIndividual<T> {
+public class Individual<T>{
     private int nodeNo;
     private InputParams params;
     private AbstractNodeFactory<T> factory;
@@ -21,13 +21,13 @@ public class Individual<T> implements IIndividual<T> {
     int inputNodesNo;
     int outputNodesNo;
 
-
     public Individual(int nodeNo, InputParams params, AbstractNodeFactory<T> factory, T[] inputValues) {
         this.inputValues = inputValues;
         this.nodeNo = nodeNo;
         this.factory = factory;
         this.params = params;
         allNodes = new ArrayList<>();
+
 
     }
 
@@ -40,9 +40,8 @@ public class Individual<T> implements IIndividual<T> {
         return outputs;
     }
 
-    @Override
-    public void init(IMutator mutator) {
-        basicNodesNo = params.getColumns() * params.getRows();
+    public void init(IMutator connectionMutator) {
+        basicNodesNo = params.getNodeAmount();
         inputNodesNo = params.getInputs();
         outputNodesNo = params.getOutputs();
         for (int i = 0; i < inputNodesNo; i++) {
@@ -56,7 +55,7 @@ public class Individual<T> implements IIndividual<T> {
             allNodes.add(factory.getOutputNode());
         }
 
-        allNodes = mutator.mutateConnections(allNodes);
+        allNodes = connectionMutator.mutate(allNodes);
 
     }
 
@@ -64,7 +63,6 @@ public class Individual<T> implements IIndividual<T> {
         this.allNodes = nodes;
     }
 
-    @Override
     public void compute() {
         resetNodesActiveStatus();
         setActiveNodes();
@@ -121,21 +119,19 @@ public class Individual<T> implements IIndividual<T> {
 
 
     public void mutate(IMutator mutator) {
-        allNodes = mutator.mutateFunctions(allNodes);
-        allNodes = mutator.mutateConnections(allNodes);
+        allNodes = mutator.mutate(allNodes);
     }
 
     public List<Node<T>> getAllNodes() {
         return allNodes;
     }
 
-    @Override
     public void describe() {
         for (Node n : allNodes) {
             ConnectionAdapter<T> a = n.getAdapter();
 
             StringBuilder stringBuilder = new StringBuilder();
-            List<Node> nodes = a.getNodes();
+            List<Node<T>> nodes = a.getNodes();
             for (int i = 0; i < nodes.size(); i++) {
 
                 stringBuilder.append(nodes.get(i).getUID() + ", ");
@@ -144,14 +140,11 @@ public class Individual<T> implements IIndividual<T> {
             System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
         }
 
-//        Node<T> opt = allNodes.get(allNodes.size() - 1);
-//        ConnectionAdapter a = opt.getAdapter();
-
 
     }
 
     @Override
-    public IIndividual clone() {
+    public Individual clone() {
         Individual ind = new Individual(this.nodeNo, this.params, this.factory, inputValues);
         List<Node<T>> copy = new ArrayList<>();
 

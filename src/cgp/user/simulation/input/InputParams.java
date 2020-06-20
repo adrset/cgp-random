@@ -1,9 +1,8 @@
-package cgp.lib.input;
+package cgp.user.simulation.input;
 
 public class InputParams {
     static InputParams singleton;
-    int columns = 2;
-    int rows = 2;
+    int nodeAmount = 10;
     int inputs = 2;
     int outputs = 1;
     int maxArity = 2;
@@ -22,15 +21,18 @@ public class InputParams {
         return maxArity;
     }
 
-    public double getMutationProbability() {
+    public float getMutationProbability() {
         return mutationProbability;
     }
-
-    double mutationProbability = 1f;
-
-
-    InputParams() {
+    public float getRecursiveConnectionProbability() {
+        return recursiveConnectionProbability;
     }
+
+    float mutationProbability = 0.1f;
+    float recursiveConnectionProbability = 0.1f;
+
+
+    InputParams() {    }
 
 
     public double getMinError() {
@@ -52,12 +54,8 @@ public class InputParams {
         return singleton;
     }
 
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getRows() {
-        return rows;
+    public int getNodeAmount() {
+        return nodeAmount;
     }
 
     public int getInputs() {

@@ -1,7 +1,7 @@
 package cgp.lib.simulation.evaluation;
 
-import cgp.lib.individual.IIndividual;
+import cgp.lib.individual.Individual;
 
 public interface IEvaluate<T> {
-    public void evaluate(IIndividual<T> individual);
+    public void evaluate(Individual<T> individual);
 }

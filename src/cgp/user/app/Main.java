@@ -2,15 +2,14 @@ package cgp.user.app;
 
 import cgp.lib.function.factory.FunctionFactory;
 import cgp.user.function.factory.RandomDoubleFunctionFactory;
-import cgp.lib.simulation.ISimulation;
-import cgp.lib.input.InputParams;
+import cgp.user.simulation.input.InputParams;
 import cgp.lib.simulation.SimulationModel;
 
 public class Main {
 
     private InputParams params;
 
-    private ISimulation<Double> simulation;
+    private SimulationModel<Double> simulation;
     public Main(){
         this.params = InputParams.getInstance();
         FunctionFactory factory = new RandomDoubleFunctionFactory();
