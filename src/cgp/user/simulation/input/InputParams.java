@@ -8,7 +8,7 @@ public class InputParams {
     int maxArity = 2;
     int memoryLength = 10;
     double minError = 0.01;
-    int generationThreshold = 20;
+    int generationThreshold = 200;
 
     int individuals = 5;
 

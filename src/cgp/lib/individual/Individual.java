@@ -27,8 +27,6 @@ public class Individual<T>{
         this.factory = factory;
         this.params = params;
         allNodes = new ArrayList<>();
-
-
     }
 
     /**
@@ -46,9 +44,11 @@ public class Individual<T>{
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
             allNodes.add(factory.getNode());
         }
-        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
-            allNodes.add(factory.getOutputNode());
-        }
+
+        // One output node that has n outputs linked as inputs
+        // basically just a helper node. :)
+        allNodes.add(factory.getOutputNode());
+
 
         allNodes = connectionMutator.mutate(allNodes);
 
@@ -61,7 +61,7 @@ public class Individual<T>{
     /**
      * Computes active nodes from left to right (firstly determines which are active using respective methods).
      */
-    public void compute() {
+    public List<T> compute() {
         resetNodesActiveStatus();
         setActiveNodes();
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
@@ -73,16 +73,34 @@ public class Individual<T>{
 
         }
 
+        return getOutput();
+    }
+
+
+    private List<T> getOutput(){
+        /**
+         * Get values of nodes that are outputs.
+         */
+
+        List<T> values = new ArrayList<>();
+        List<Node<T>> outputs = allNodes.get(allNodes.size() - 1).getAdapter().getNodes();
+        for (Node<T> o : outputs) {
+            values.add(o.getCurrentValue());
+        }
+
+        return values;
     }
 
     /**
      * Loops trough output nodes and recursively marks all nodes that it's connected to.
      */
     private void setActiveNodes() {
-
-        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
-            recursivelySetActiveNodes(i);
+        List<T> values = new ArrayList<>();
+        List<Node<T>> outputs = allNodes.get(allNodes.size() - 1).getAdapter().getNodes();
+        for (Node<T> o : outputs) {
+            recursivelySetActiveNodes(allNodes.indexOf(o));
         }
+
 
     }
 
@@ -114,7 +132,8 @@ public class Individual<T>{
         }
 
         node.setActive(true);
-        System.out.println("Node " + index + " is active!");
+        // TODO: IS ACTIVE
+        //System.out.println("Node " + index + " is active!");
 
         ConnectionAdapter<T> adapter = node.getAdapter();
         for (Node<T> child : adapter.getNodes()) {
@@ -134,7 +153,21 @@ public class Individual<T>{
     }
 
     public void describe() {
-        for (Node n : allNodes) {
+//        for (Node n : allNodes) {
+//            ConnectionAdapter<T> a = n.getAdapter();
+//
+//            StringBuilder stringBuilder = new StringBuilder();
+//            List<Node<T>> nodes = a.getNodes();
+//            for (int i = 0; i < nodes.size(); i++) {
+//
+//                stringBuilder.append(nodes.get(i).getUID() + ", ");
+//
+//            }
+//            System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
+//        }
+
+        for (int j = allNodes.size() - 1; j >= allNodes.size() - outputNodesNo; j--) {
+            Node<T> n = allNodes.get(j);
             ConnectionAdapter<T> a = n.getAdapter();
 
             StringBuilder stringBuilder = new StringBuilder();

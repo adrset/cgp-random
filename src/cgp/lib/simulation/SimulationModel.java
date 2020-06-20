@@ -46,12 +46,11 @@ public class SimulationModel<T>{
             int currentGeneration = 0;
             while (currentGeneration++ < params.getGenerationThreshold()) {
                 for (int ii = 0; ii < params.getIndividuals(); ii++) {
-                    individuals[ii].compute();
-                    System.out.println("-" + (ii + 1) + "-");
-                    individuals[ii].mutate(connectionMutator);
-                    individuals[ii].mutate(functionMutator);
+                    System.out.println(individuals[ii].compute());
+                    //System.out.println("-" + (ii + 1) + "-");
+                    mutate(individuals[ii]);
 
-                    individuals[ii].describe();
+                    //individuals[ii].describe();
                 }
                 System.out.println("==========" + (currentGeneration) + "==========");
             }
@@ -59,6 +58,12 @@ public class SimulationModel<T>{
             e.printStackTrace();
         }
     }
+
+    public void mutate(Individual<T> i) {
+        i.mutate(connectionMutator);
+        i.mutate(functionMutator);
+    }
+
 
     public double evaluate() {
         return 1;

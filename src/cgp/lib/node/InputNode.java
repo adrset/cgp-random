@@ -1,6 +1,5 @@
 package cgp.lib.node;
 
-import cgp.lib.function.method.ArityFunction;
 import cgp.lib.node.adapter.ConnectionAdapter;
 
 public class InputNode<T> extends Node<T> {
