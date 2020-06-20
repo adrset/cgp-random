@@ -25,16 +25,21 @@ public class RandomConnectionMutator<T> implements IMutator<T> {
             ConnectionAdapter adapter = node.getAdapter();
             List<Node<T>> adapterNodes = adapter.getNodes();
             List<Node<T>> availableNodes = nodes.subList(0, ii - 1);
-
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
                 double randomDouble = generator.nextDouble();
                 if (randomDouble > 1.0 - params.getMutationProbability()) {
-                    adapterNodes.set(kk, getRandomNode(availableNodes));
+                    updateNode(kk, adapterNodes, availableNodes);
                 }
             }
+
         }
 
         return nodes;
+    }
+
+
+    protected void updateNode(int index, List<Node<T>> adapterNodes, List<Node<T>> availableNodes){
+        adapterNodes.set(index, getRandomNode(availableNodes));
     }
 
     protected Node<T> getRandomNode(List<Node<T>> nodes) {

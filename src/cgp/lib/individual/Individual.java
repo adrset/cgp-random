@@ -177,6 +177,10 @@ public class Individual<T>{
         }
         ind.setNodes(copy);
 
+        ind.inputNodesNo = this.inputNodesNo;
+        ind.basicNodesNo = this.basicNodesNo;
+        ind.outputNodesNo = this.outputNodesNo;
+
         return ind;
     }
 

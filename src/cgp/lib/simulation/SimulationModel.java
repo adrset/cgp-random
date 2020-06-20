@@ -35,7 +35,7 @@ public class SimulationModel<T>{
         connectionMutator = new RandomConnectionMutator<T>(params);
         initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
         functionMutator = new FunctionMutator(params, factory);
-        nodeFactory = new NodeFactory<T>(params, factory, defaultValue);
+        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
     }
 
     public void run() {
@@ -44,8 +44,8 @@ public class SimulationModel<T>{
 
 
             int currentGeneration = 0;
-            while (currentGeneration++ <= 3/*params.getGenerationThreshold() && evaluate() > params.getMinError()*/) {
-                for (int ii = 0; ii < 4; ii++) {
+            while (currentGeneration++ < params.getGenerationThreshold()) {
+                for (int ii = 0; ii < params.getIndividuals(); ii++) {
                     individuals[ii].compute();
                     System.out.println("-" + (ii + 1) + "-");
                     individuals[ii].mutate(connectionMutator);
@@ -73,9 +73,11 @@ public class SimulationModel<T>{
 
         }
 
+        // Copy first individual
         for (int ii = 1; ii < params.getIndividuals(); ii++) {
             individuals[ii] = (Individual<T>) individuals[0].clone();
 
         }
+
     }
 }

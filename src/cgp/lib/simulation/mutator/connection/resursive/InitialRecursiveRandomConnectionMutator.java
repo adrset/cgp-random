@@ -21,7 +21,12 @@ public class InitialRecursiveRandomConnectionMutator<T> extends RecursiveRandomC
             List<Node<T>> adapterNodes = adapter.getNodes();
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
 
-                adapterNodes.set(kk, getRandomNode(nodes));
+                double recursiveRandom = generator.nextDouble();
+                if (recursiveRandom > 1.0 - params.getRecursiveConnectionProbability()) {
+                    adapterNodes.set(kk, getRandomNode(nodes.subList(0, nodes.size() - params.getOutputs())));
+                } else {
+                    adapterNodes.set(kk, getRandomNode(nodes.subList(0, ii - 1)));
+                }
 
             }
         }

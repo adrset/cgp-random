@@ -22,8 +22,7 @@ public class InitialRandomConnectionMutator<T> extends RandomConnectionMutator<T
             List<Node<T>> adapterNodes = adapter.getNodes();
             List<Node<T>> availableNodes = nodes.subList(0, ii - 1);
             for (int kk = 0; kk < adapterNodes.size(); kk++) {
-
-                adapterNodes.set(kk, getRandomNode(availableNodes));
+                super.updateNode(kk, adapterNodes, availableNodes);
 
             }
         }

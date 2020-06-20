@@ -101,9 +101,14 @@ public class Node<T> {
         Node<T> clone = new Node<>();
         if (this.strategy != null) {
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
-
         }
         clone.setUID(this.UID);
+        /**
+         * TODO: not setting the adapter works too!!! ???
+         */
+        clone.setAdapter(this.adapter.clone());
+        clone.currentValue = this.currentValue;
+
         return clone;
     }
 }
