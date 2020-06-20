@@ -31,15 +31,10 @@ public class Individual<T>{
 
     }
 
-    public List<OutputNode<T>> getOutputNodes(){
-        List<OutputNode<T>> outputs = new ArrayList<>();
-        for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
-            outputs.add((OutputNode<T>)allNodes.get(i));
-        }
-
-        return outputs;
-    }
-
+    /**
+     *
+     * @param connectionMutator must be a connection mutator. Creates initial connections for all nodes.
+     */
     public void init(IMutator connectionMutator) {
         basicNodesNo = params.getNodeAmount();
         inputNodesNo = params.getInputs();
@@ -63,6 +58,9 @@ public class Individual<T>{
         this.allNodes = nodes;
     }
 
+    /**
+     * Computes active nodes from left to right (firstly determines which are active using respective methods).
+     */
     public void compute() {
         resetNodesActiveStatus();
         setActiveNodes();
@@ -77,7 +75,9 @@ public class Individual<T>{
 
     }
 
-
+    /**
+     * Loops trough output nodes and recursively marks all nodes that it's connected to.
+     */
     private void setActiveNodes() {
 
         for (int i = basicNodesNo + inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
@@ -86,6 +86,9 @@ public class Individual<T>{
 
     }
 
+    /**
+     * Set all node statuses to inactive.
+     */
     private void resetNodesActiveStatus() {
 
         for (int i = 0; i < allNodes.size(); i++) {
@@ -94,6 +97,10 @@ public class Individual<T>{
 
     }
 
+    /**
+     * Recursively finds nodes that have valid connections and marks them as active.
+     * @param index index of the node in the list
+     */
     private void recursivelySetActiveNodes(int index) {
         // not checking for input nodes
         if (index < inputNodesNo) {
@@ -118,12 +125,12 @@ public class Individual<T>{
     }
 
 
+    /**
+     * Mutates all nodes.
+     * @param mutator could be any user defined mutator, but initially meant for connection mutator and function mutator.
+     */
     public void mutate(IMutator mutator) {
         allNodes = mutator.mutate(allNodes);
-    }
-
-    public List<Node<T>> getAllNodes() {
-        return allNodes;
     }
 
     public void describe() {

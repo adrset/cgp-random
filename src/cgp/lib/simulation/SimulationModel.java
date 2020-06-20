@@ -51,7 +51,7 @@ public class SimulationModel<T>{
                     individuals[ii].mutate(connectionMutator);
                     individuals[ii].mutate(functionMutator);
 
-                    //individuals[ii].describe();
+                    individuals[ii].describe();
                 }
                 System.out.println("==========" + (currentGeneration) + "==========");
             }
@@ -74,7 +74,6 @@ public class SimulationModel<T>{
         // Copy first individual
         for (int ii = 1; ii < params.getIndividuals(); ii++) {
             individuals[ii] = (Individual<T>) individuals[0].clone();
-
         }
 
     }
