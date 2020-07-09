@@ -1,7 +1,9 @@
 package cgp.lib.simulation;
 
 import cgp.lib.function.factory.FunctionFactory;
+import cgp.lib.individual.samples.Sample;
 import cgp.lib.node.factory.NodeFactory;
+import cgp.lib.simulation.evaluation.IEvaluate;
 import cgp.lib.simulation.mutator.function.FunctionMutator;
 import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
@@ -9,6 +11,7 @@ import cgp.lib.individual.Individual;
 import cgp.user.simulation.input.InputParams;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
+import java.util.List;
 import java.util.Random;
 
 public class SimulationModel<T>{
@@ -22,14 +25,18 @@ public class SimulationModel<T>{
     private IMutator connectionMutator;
     private IMutator initialConnectionSetter;
     private IMutator functionMutator;
+    private IEvaluate<T> evaluator;
     private T[] inputValues;
+    private List<Sample<T>> samples;
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues) {
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues, IEvaluate<T> evaluator, List<Sample<T>> samples) {
         this.inputValues = inputValues;
         this.nodeAmount = params.getNodeAmount();
         this.generator = new Random();
         this.params = params;
         this.factory = factory;
+        this.evaluator = evaluator;
+        this.samples = samples;
 
         individuals = new Individual[params.getIndividuals()];
         connectionMutator = new RandomConnectionMutator<T>(params);
@@ -44,10 +51,13 @@ public class SimulationModel<T>{
 
 
             int currentGeneration = 0;
+
             while (currentGeneration++ < params.getGenerationThreshold()) {
                 for (int ii = 0; ii < params.getIndividuals(); ii++) {
-                    System.out.println(individuals[ii].compute());
-                    //System.out.println("-" + (ii + 1) + "-");
+                    for(Sample<T> sample : samples) {
+                        individuals[ii].compute(sample);
+                    }
+                    evaluator.evaluate(individuals[ii]);
                     mutate(individuals[ii]);
 
                     //individuals[ii].describe();

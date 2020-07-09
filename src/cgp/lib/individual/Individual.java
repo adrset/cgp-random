@@ -1,5 +1,6 @@
 package cgp.lib.individual;
 
+import cgp.lib.individual.samples.Sample;
 import cgp.user.simulation.input.InputParams;
 import cgp.lib.node.Node;
 import cgp.lib.node.OutputNode;
@@ -61,7 +62,7 @@ public class Individual<T>{
     /**
      * Computes active nodes from left to right (firstly determines which are active using respective methods).
      */
-    public List<T> compute() {
+    public List<T> compute(Sample<T> sample) {
         resetNodesActiveStatus();
         setActiveNodes();
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
@@ -77,7 +78,7 @@ public class Individual<T>{
     }
 
 
-    private List<T> getOutput(){
+    public List<T> getOutput(){
         /**
          * Get values of nodes that are outputs.
          */
@@ -95,7 +96,6 @@ public class Individual<T>{
      * Loops trough output nodes and recursively marks all nodes that it's connected to.
      */
     private void setActiveNodes() {
-        List<T> values = new ArrayList<>();
         List<Node<T>> outputs = allNodes.get(allNodes.size() - 1).getAdapter().getNodes();
         for (Node<T> o : outputs) {
             recursivelySetActiveNodes(allNodes.indexOf(o));
