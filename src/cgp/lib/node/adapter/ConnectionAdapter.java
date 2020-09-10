@@ -31,10 +31,10 @@ public class ConnectionAdapter<T> implements ICloneable {
     }
 
     @Override
-    public ConnectionAdapter clone() {
-        ConnectionAdapter ca = new ConnectionAdapter(this.inputs.size());
-        List<Node> clone = new ArrayList<>(this.inputs);
-        for (Node node: this.inputs) {
+    public ConnectionAdapter<T> clone() {
+        ConnectionAdapter<T> ca = new ConnectionAdapter<>(this.inputs.size());
+        List<Node<T>> clone = new ArrayList<>(this.inputs);
+        for (Node<T> node: this.inputs) {
             clone.add(node.clone());
         }
         ca.setInputs(clone);

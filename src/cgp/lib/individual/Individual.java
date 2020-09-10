@@ -34,7 +34,7 @@ public class Individual<T>{
      *
      * @param connectionMutator must be a connection mutator. Creates initial connections for all nodes.
      */
-    public void init(IMutator connectionMutator) {
+    public void init(IMutator<T> connectionMutator) {
         basicNodesNo = params.getNodeAmount();
         inputNodesNo = params.getInputs();
         outputNodesNo = params.getOutputs();
@@ -65,9 +65,13 @@ public class Individual<T>{
     public List<T> compute(Sample<T> sample) {
         resetNodesActiveStatus();
         setActiveNodes();
+        for (int i =0; i < inputNodesNo; i++) {
+            Node<T> n = allNodes.get(i);
+            n.setCurrentValue(sample.getInputs().get(i));
+        }
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
 
-            Node n = allNodes.get(i);
+            Node<T> n = allNodes.get(i);
             if (n.isActive()) {
                 allNodes.get(i).compute();
             }
@@ -109,8 +113,8 @@ public class Individual<T>{
      */
     private void resetNodesActiveStatus() {
 
-        for (int i = 0; i < allNodes.size(); i++) {
-            allNodes.get(i).setActive(false);
+        for (Node<T> allNode : allNodes) {
+            allNode.setActive(false);
         }
 
     }
@@ -148,7 +152,7 @@ public class Individual<T>{
      * Mutates all nodes.
      * @param mutator could be any user defined mutator, but initially meant for connection mutator and function mutator.
      */
-    public void mutate(IMutator mutator) {
+    public void mutate(IMutator<T> mutator) {
         allNodes = mutator.mutate(allNodes);
     }
 
@@ -172,9 +176,9 @@ public class Individual<T>{
 
             StringBuilder stringBuilder = new StringBuilder();
             List<Node<T>> nodes = a.getNodes();
-            for (int i = 0; i < nodes.size(); i++) {
+            for (Node<T> node : nodes) {
 
-                stringBuilder.append(nodes.get(i).getUID() + ", ");
+                stringBuilder.append(node.getUID()).append(", ");
 
             }
             System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
@@ -184,20 +188,20 @@ public class Individual<T>{
     }
 
     @Override
-    public Individual clone() {
-        Individual ind = new Individual(this.nodeNo, this.params, this.factory, inputValues);
+    public Individual<T> clone() {
+        Individual<T> ind = new Individual<>(this.nodeNo, this.params, this.factory, inputValues);
         List<Node<T>> copy = new ArrayList<>();
 
-        for (int i = 0; i < allNodes.size(); i++) {
-            copy.add(allNodes.get(i).clone());
+        for (Node<T> allNode : allNodes) {
+            copy.add(allNode.clone());
         }
 
         // Now let's create new adapters and recreate them basing on original ones
         for (int i = 0; i < this.allNodes.size(); i++) {
             Node<T> currentNode = this.allNodes.get(i);
-            List<Node> inputs = currentNode.getAdapter().getNodes();
-            ConnectionAdapter adapter = new ConnectionAdapter(currentNode.getAdapter().getMaxArity());
-            List<Node> newInputs = new ArrayList<>();
+            List<Node<T>> inputs = currentNode.getAdapter().getNodes();
+            ConnectionAdapter<T> adapter = new ConnectionAdapter<>(currentNode.getAdapter().getMaxArity());
+            List<Node<T>> newInputs = new ArrayList<>();
 
             for (Node<T> id : inputs) {
                 if (id == null) {

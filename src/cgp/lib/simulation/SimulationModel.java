@@ -11,54 +11,54 @@ import cgp.lib.individual.Individual;
 import cgp.user.simulation.input.InputParams;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SimulationModel<T>{
+public class SimulationModel<T> {
 
     private int nodeAmount;
     Random generator;
-    Individual<T> individuals[];
+    List<Individual<T>> individuals;
     private InputParams params;
-    private FunctionFactory factory;
-    private NodeFactory nodeFactory;
-    private IMutator connectionMutator;
-    private IMutator initialConnectionSetter;
-    private IMutator functionMutator;
+    private FunctionFactory<T> factory;
+    private NodeFactory<T> nodeFactory;
+    private IMutator<T> connectionMutator;
+    private IMutator<T> initialConnectionSetter;
+    private FunctionMutator<T> functionMutator;
     private IEvaluate<T> evaluator;
     private T[] inputValues;
-    private List<Sample<T>> samples;
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues, IEvaluate<T> evaluator, List<Sample<T>> samples) {
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, T[] inputValues, IEvaluate<T> evaluator) {
         this.inputValues = inputValues;
         this.nodeAmount = params.getNodeAmount();
         this.generator = new Random();
         this.params = params;
         this.factory = factory;
         this.evaluator = evaluator;
-        this.samples = samples;
 
-        individuals = new Individual[params.getIndividuals()];
+        individuals = new ArrayList<>();
         connectionMutator = new RandomConnectionMutator<T>(params);
         initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
-        functionMutator = new FunctionMutator(params, factory);
+        functionMutator = new FunctionMutator<>(params, factory);
         nodeFactory = new NodeFactory<>(params, factory, defaultValue);
     }
 
     public void run() {
         try {
             // System.setOut(new PrintStream(new File("output-file.txt")));
-
-
             int currentGeneration = 0;
 
             while (currentGeneration++ < params.getGenerationThreshold()) {
                 for (int ii = 0; ii < params.getIndividuals(); ii++) {
-                    for(Sample<T> sample : samples) {
-                        individuals[ii].compute(sample);
+                    for (Sample<T> sample : evaluator.getSamples()) {
+                        individuals.get(ii).compute(sample);
+                        // get invidual value here and save it
                     }
-                    evaluator.evaluate(individuals[ii]);
-                    mutate(individuals[ii]);
+
+
+                    evaluator.evaluate(individuals.get(ii));
+                    mutate(individuals.get(ii));
 
                     //individuals[ii].describe();
                 }
@@ -81,14 +81,13 @@ public class SimulationModel<T>{
 
     public void init() {
         for (int ii = 0; ii < 1; ii++) {
-            individuals[ii] = new Individual<T>(this.nodeAmount, params, nodeFactory, inputValues);
-
-            individuals[ii].init(initialConnectionSetter);
+            individuals.set(ii, new Individual<T>(this.nodeAmount, params, nodeFactory, inputValues));
+            individuals.get(ii).init(initialConnectionSetter);
         }
 
         // Copy first individual
         for (int ii = 1; ii < params.getIndividuals(); ii++) {
-            individuals[ii] = (Individual<T>) individuals[0].clone();
+            individuals.set(ii, individuals.get(0).clone());
         }
 
     }

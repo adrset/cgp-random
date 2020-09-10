@@ -26,13 +26,17 @@ public class Node<T> {
     }
 
 
+    public void setCurrentValue(T currentValue) {
+        this.currentValue = currentValue;
+    }
+
     protected int UID;
 
     // Default value required by recurrent CGP
     // Could be initial value for input nodes
     T currentValue;
 
-    public Node(ArityFunction fun, ConnectionAdapter adapter, T defaultValue) {
+    public Node(ArityFunction<T> fun, ConnectionAdapter<T> adapter, T defaultValue) {
         this.strategy = fun;
         this.adapter = adapter;
         this.currentValue = defaultValue;
@@ -52,19 +56,19 @@ public class Node<T> {
     public Node() {
     }
 
-    public void setStrategy(ArityFunction f) {
+    public void setStrategy(ArityFunction<T> f) {
         this.strategy = f;
     }
 
-    public ArityFunction getStrategy() {
+    public ArityFunction<T> getStrategy() {
         return strategy;
     }
 
-    public ConnectionAdapter getAdapter() {
+    public ConnectionAdapter<T> getAdapter() {
         return adapter;
     }
 
-    public void setAdapter(ConnectionAdapter adapter) {
+    public void setAdapter(ConnectionAdapter<T> adapter) {
         this.adapter = adapter;
     }
 
@@ -79,8 +83,8 @@ public class Node<T> {
     public T compute() {
         List<Node<T>> inputs = adapter.getNodes();
         List<T> inputValues = new ArrayList<>();
-        for (Node inputNode : inputs) {
-            inputValues.add((T) inputNode.getCurrentValue());
+        for (Node<T> inputNode : inputs) {
+            inputValues.add(inputNode.getCurrentValue());
         }
        
         currentValue = strategy.calculate(inputValues);
@@ -103,9 +107,6 @@ public class Node<T> {
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
         }
         clone.setUID(this.UID);
-        /**
-         * TODO: not setting the adapter works too!!! ???
-         */
         clone.setAdapter(this.adapter.clone());
         clone.currentValue = this.currentValue;
 

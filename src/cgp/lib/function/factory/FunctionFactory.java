@@ -15,5 +15,5 @@ public abstract class FunctionFactory<T> {
 //        }
 //        return (T) elementBuilder.get(targetType).build();
 //    }
-    public abstract ArityFunction getFunction() throws Exception;
+    public abstract ArityFunction<T> getFunction() throws Exception;
 }

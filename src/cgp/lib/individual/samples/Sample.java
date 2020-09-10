@@ -11,5 +11,7 @@ public class Sample<T> {
         this.outputs = outputs;
     }
 
-
+    public List<T> getInputs() {
+        return inputs;
+    }
 }

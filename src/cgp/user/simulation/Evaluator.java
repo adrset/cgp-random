@@ -24,4 +24,9 @@ public class Evaluator<Double> implements IEvaluate<Double> {
 
         return 0.;
     }
+
+    @Override
+    public List<Sample<Double>> getSamples() {
+        return samples;
+    }
 }
