@@ -16,11 +16,11 @@ public class Main {
     public Main() throws Exception {
         this.params = InputParams.getInstance();
         FunctionFactory<Double> factory = new RandomDoubleFunctionFactory();
-        InputSamples<Double> inputSamples = new InputSamples.Builder<Double>().setTargetClass(Double.class).setFileName("fib.json").build();
+        InputSamples<Double> inputSamples = new InputSamples.Builder<Double>().setTargetClass(Double.class).setFileName("sq.json").build();
 
         //load samples
 
-        this.simulation = new SimulationModel<>(params, factory, 0.1, new Evaluator(inputSamples.getSamples()));
+        this.simulation = new SimulationModel<>(params, factory, 0.1, new Evaluator(inputSamples.getSamples()), SimulationModel.Mode.CGP);
         this.simulation.init();
     }
 

@@ -4,6 +4,8 @@ import cgp.lib.function.factory.FunctionFactory;
 import cgp.lib.individual.pojo.samples.Sample;
 import cgp.lib.node.factory.NodeFactory;
 import cgp.lib.simulation.evaluation.IEvaluate;
+import cgp.lib.simulation.mutator.connection.resursive.InitialRecursiveRandomConnectionMutator;
+import cgp.lib.simulation.mutator.connection.resursive.RecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.function.FunctionMutator;
 import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
@@ -28,6 +30,28 @@ public class SimulationModel<T> {
     private FunctionMutator<T> functionMutator;
     private IEvaluate<T> evaluator;
 
+    public static enum Mode {CGP, RCGP};
+    Mode mode = Mode.CGP;
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator, Mode mode) {
+        this.generator = new Random();
+        this.params = params;
+        this.factory = factory;
+        this.evaluator = evaluator;
+        this.mode = mode;
+
+        individuals = new ArrayList<>();
+        if (mode == Mode.CGP) {
+            connectionMutator = new RandomConnectionMutator<T>(params);
+            initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
+        } else {
+            connectionMutator = new RecursiveRandomConnectionMutator<>(params);
+            initialConnectionSetter = new InitialRecursiveRandomConnectionMutator<>(params);
+
+        }
+        functionMutator = new FunctionMutator<>(params, factory);
+        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
+    }
+
     public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator) {
         this.generator = new Random();
         this.params = params;
@@ -47,7 +71,7 @@ public class SimulationModel<T> {
 
             // System.setOut(new PrintStream(new File("output-file.txt")));
             int currentGeneration = 0;
-
+            double fitness;
             while (currentGeneration++ < params.getGenerationThreshold()) {
                 //evaluacja
                 for (int ii = 0; ii < params.getIndividuals(); ii++) {
@@ -68,9 +92,17 @@ public class SimulationModel<T> {
                 for (int i = 1; i < params.getIndividuals(); i++) {
                     mutate(individuals.get(i));
                 }
-                //robisz dzieciaki
-                //mutacja dzieci
+                fitness = theFittest.getFitness();
 
+                if (fitness < params.getMinError()){
+                    System.out.println("Min error reached! [g:" + currentGeneration +"]");
+                    break;
+                }
+
+            }
+            for (Sample<T> sample : evaluator.getSamples()) {
+                //zbieraj odp.
+                System.out.println(theFittest.compute(sample));
             }
             System.out.println(theFittest.getFitness());
 

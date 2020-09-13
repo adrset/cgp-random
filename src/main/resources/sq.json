@@ -1,0 +1,36 @@
+{
+  "samples": [
+    {
+      "input" : [1.0],
+      "output": [1.0]
+    },
+    {
+      "input" : [2.0],
+      "output": [4.0]
+    },
+    {
+      "input" : [3.0],
+      "output": [9.0]
+    },
+    {
+      "input" : [4.0],
+      "output": [16.0]
+    },
+    {
+      "input" : [5.0],
+      "output": [25.0]
+    },
+    {
+      "input" : [6.0],
+      "output": [36.0]
+    },
+    {
+      "input" : [7.0],
+      "output": [49.0]
+    },
+    {
+      "input" : [8.0],
+      "output": [64.0]
+    }
+  ]
+}

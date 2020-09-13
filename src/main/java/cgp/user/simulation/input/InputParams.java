@@ -21,6 +21,7 @@ public class InputParams {
         return maxArity;
     }
 
+
     public float getMutationProbability() {
         return mutationProbability;
     }
