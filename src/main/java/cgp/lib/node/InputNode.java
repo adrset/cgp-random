@@ -12,7 +12,7 @@ public class InputNode<T> extends Node<T> {
         Node<T> clone = new InputNode<>(super.currentValue);
         clone.setStrategy(null);
         clone.setUID(this.UID);
-        clone.setAdapter(this.adapter.clone());
+
         return clone;
     }
 }

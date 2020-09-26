@@ -10,7 +10,7 @@ import cgp.lib.simulation.mutator.IMutator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Individual<T>{
+public class Individual<T> {
     private InputParams params;
     private AbstractNodeFactory<T> factory;
     private List<Node<T>> allNodes;
@@ -35,7 +35,6 @@ public class Individual<T>{
     }
 
     /**
-     *
      * @param connectionMutator must be a connection mutator. Creates initial connections for all nodes.
      */
     public void init(IMutator<T> connectionMutator) {
@@ -74,7 +73,7 @@ public class Individual<T>{
         return getOutput();
     }
 
-    private void computeNodes(){
+    private void computeNodes() {
         //TODO: iterate to otp nodes.
         for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
             Node<T> n = allNodes.get(i);
@@ -85,16 +84,15 @@ public class Individual<T>{
         }
     }
 
-    private void setInputValues(Sample<T> s){
-        for (int i =0; i < inputNodesNo; i++) {
+    private void setInputValues(Sample<T> s) {
+        for (int i = 0; i < inputNodesNo; i++) {
             Node<T> n = allNodes.get(i);
             n.setCurrentValue(s.getInput().get(i));
         }
     }
 
 
-
-    public List<T> getOutput(){
+    public List<T> getOutput() {
 
         List<T> values = new ArrayList<>();
         List<Node<T>> outputs = allNodes.get(allNodes.size() - 1).getAdapter().getNodes();
@@ -129,9 +127,14 @@ public class Individual<T>{
 
     /**
      * Recursively finds nodes that have valid connections and marks them as active.
+     *
      * @param index index of the node in the list
      */
     private void recursivelySetActiveNodes(int index) {
+        recursivelySetActiveNodes(index, false);
+    }
+
+    private void recursivelySetActiveNodes(int index, boolean describe) {
         // not checking for input nodes
         if (index < inputNodesNo) {
             return;
@@ -144,6 +147,10 @@ public class Individual<T>{
         }
 
         node.setActive(true);
+        if (describe){
+            System.out.println(node.getStrategy().describe());
+
+        }
         // TODO: IS ACTIVE
         //System.out.println("Node " + index + " is active!");
 
@@ -158,40 +165,27 @@ public class Individual<T>{
 
     /**
      * Mutates all nodes.
+     *
      * @param mutator could be any user defined mutator, but initially meant for connection mutator and function mutator.
      */
     public void mutate(IMutator<T> mutator) {
         allNodes = mutator.mutate(allNodes);
     }
 
+
+
     public void describe() {
-//        for (Node n : allNodes) {
-//            ConnectionAdapter<T> a = n.getAdapter();
-//
-//            StringBuilder stringBuilder = new StringBuilder();
-//            List<Node<T>> nodes = a.getNodes();
-//            for (int i = 0; i < nodes.size(); i++) {
-//
-//                stringBuilder.append(nodes.get(i).getUID() + ", ");
-//
-//            }
-//            System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
-//        }
 
-        for (int j = allNodes.size() - 1; j >= allNodes.size() - outputNodesNo; j--) {
-            Node<T> n = allNodes.get(j);
-            ConnectionAdapter<T> a = n.getAdapter();
-
-            StringBuilder stringBuilder = new StringBuilder();
-            List<Node<T>> nodes = a.getNodes();
-            for (Node<T> node : nodes) {
-
-                stringBuilder.append(node.getUID()).append(", ");
-
+        for (Node<T> n : allNodes) {
+            if (n.isActive()) {
+                String inputString = "";
+                List<Node<T>> nt = n.getAdapter().getNodes();
+                for (Node<T> nti:nt) {
+                    inputString += nti.getCurrentValue() + ", ";
+                }
+                System.out.print(n.getStrategy().describe() + "[" + inputString + "], ");
             }
-            System.out.println(n.getClass() + " " + n.getUID() + " -> [" + stringBuilder.toString() + "]");
         }
-
 
     }
 

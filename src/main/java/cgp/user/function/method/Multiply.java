@@ -1,7 +1,6 @@
 package cgp.user.function.method;
 
 import cgp.lib.function.method.ArityFunction;
-
 import java.util.List;
 
 public class Multiply implements ArityFunction<Double> {
@@ -15,5 +14,8 @@ public class Multiply implements ArityFunction<Double> {
     public Multiply clone() {
         return new Multiply();
     }
-
+    @Override
+    public String describe() {
+        return "*";
+    }
 }

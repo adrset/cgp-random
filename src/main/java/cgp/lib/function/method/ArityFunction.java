@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface ArityFunction<T> extends ICloneable {
     T calculate(List<T> args);
+    default String describe() {
+        return "EMPTY";
+    }
 }
 

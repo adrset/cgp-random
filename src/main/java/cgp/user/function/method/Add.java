@@ -15,4 +15,9 @@ public class Add implements ArityFunction<Double> {
     public Add clone() {
         return new Add();
     }
+
+    @Override
+    public String describe() {
+        return "+";
+    }
 }

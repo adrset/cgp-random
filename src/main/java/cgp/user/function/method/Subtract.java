@@ -1,8 +1,8 @@
 package cgp.user.function.method;
 
-import cgp.lib.function.method.ArityFunction;
+        import cgp.lib.function.method.ArityFunction;
 
-import java.util.List;
+        import java.util.List;
 
 public class Subtract implements ArityFunction<Double> {
 
@@ -14,5 +14,10 @@ public class Subtract implements ArityFunction<Double> {
     @Override
     public Subtract clone() {
         return new Subtract();
+    }
+
+    @Override
+    public String describe() {
+        return "-";
     }
 }

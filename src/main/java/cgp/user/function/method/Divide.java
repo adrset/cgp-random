@@ -15,4 +15,10 @@ public class Divide implements ArityFunction<Double> {
     public Double calculate(List<Double> args) {
         return args.get(0) / args.get(1);
     }
+
+    @Override
+    public String describe() {
+        return "/";
+    }
+
 }

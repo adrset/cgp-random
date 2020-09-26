@@ -29,9 +29,10 @@ public class SimulationModel<T> {
     private IMutator<T> initialConnectionSetter;
     private FunctionMutator<T> functionMutator;
     private IEvaluate<T> evaluator;
+    Individual<T> theFittest = null;
 
     public static enum Mode {CGP, RCGP};
-    Mode mode = Mode.CGP;
+    Mode mode;
     public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator, Mode mode) {
         this.generator = new Random();
         this.params = params;
@@ -52,22 +53,21 @@ public class SimulationModel<T> {
         nodeFactory = new NodeFactory<>(params, factory, defaultValue);
     }
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator) {
-        this.generator = new Random();
-        this.params = params;
-        this.factory = factory;
-        this.evaluator = evaluator;
-
-        individuals = new ArrayList<>();
-        connectionMutator = new RandomConnectionMutator<T>(params);
-        initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
-        functionMutator = new FunctionMutator<>(params, factory);
-        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
-    }
+//    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator) {
+//        this.generator = new Random();
+//        this.params = params;
+//        this.factory = factory;
+//        this.evaluator = evaluator;
+//
+//        individuals = new ArrayList<>();
+//        connectionMutator = new RandomConnectionMutator<T>(params);
+//        initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
+//        functionMutator = new FunctionMutator<>(params, factory);
+//        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
+//    }
 
     public void run() {
         try {
-            Individual<T> theFittest = null;
 
             // System.setOut(new PrintStream(new File("output-file.txt")));
             int currentGeneration = 0;
@@ -105,11 +105,15 @@ public class SimulationModel<T> {
                 System.out.println(theFittest.compute(sample));
             }
             System.out.println(theFittest.getFitness());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public Individual<T> getFittest() {
+        return theFittest;
+    }
+
 
     public void mutate(Individual<T> i) {
         i.mutate(connectionMutator);

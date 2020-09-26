@@ -17,7 +17,6 @@ public class OutputNode<T> extends Node<T> {
         Node<T> clone = new OutputNode<>();
         if (this.strategy != null){
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
-
         }
         clone.setUID(super.UID);
         return clone;

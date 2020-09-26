@@ -107,7 +107,6 @@ public class Node<T> {
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
         }
         clone.setUID(this.UID);
-        clone.setAdapter(this.adapter.clone());
         clone.currentValue = this.currentValue;
 
         return clone;
