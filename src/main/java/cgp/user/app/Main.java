@@ -25,7 +25,7 @@ public class Main {
 
         //load samples
 
-        this.simulation = new SimulationModel<>(params, factory, 0.1, new Evaluator(inputSamples.getSamples()), SimulationModel.Mode.CGP);
+        this.simulation = new SimulationModel<>(params, factory, 0.1, new Evaluator(inputSamples.getSamples()), SimulationModel.Mode.RCGP);
         this.simulation.init();
     }
 

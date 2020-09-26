@@ -3,7 +3,7 @@ package cgp.lib.simulation;
 import cgp.lib.function.factory.FunctionFactory;
 import cgp.lib.individual.pojo.samples.Sample;
 import cgp.lib.node.factory.NodeFactory;
-import cgp.lib.simulation.evaluation.IEvaluate;
+import cgp.lib.simulation.evaluation.AbstractEvaluate;
 import cgp.lib.simulation.mutator.connection.resursive.InitialRecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.connection.resursive.RecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.function.FunctionMutator;
@@ -28,12 +28,12 @@ public class SimulationModel<T> {
     private IMutator<T> connectionMutator;
     private IMutator<T> initialConnectionSetter;
     private FunctionMutator<T> functionMutator;
-    private IEvaluate<T> evaluator;
+    private AbstractEvaluate<T> evaluator;
     Individual<T> theFittest = null;
 
     public static enum Mode {CGP, RCGP};
     Mode mode;
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator, Mode mode) {
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
         this.generator = new Random();
         this.params = params;
         this.factory = factory;
@@ -53,7 +53,7 @@ public class SimulationModel<T> {
         nodeFactory = new NodeFactory<>(params, factory, defaultValue);
     }
 
-//    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, IEvaluate<T> evaluator) {
+//    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
 //        this.generator = new Random();
 //        this.params = params;
 //        this.factory = factory;
