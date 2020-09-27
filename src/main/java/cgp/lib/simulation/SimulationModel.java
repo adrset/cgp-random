@@ -31,8 +31,11 @@ public class SimulationModel<T> {
     private AbstractEvaluate<T> evaluator;
     Individual<T> theFittest = null;
 
-    public static enum Mode {CGP, RCGP};
+    public static enum Mode {CGP, RCGP}
+
+    ;
     Mode mode;
+
     public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
         this.generator = new Random();
         this.params = params;
@@ -53,23 +56,13 @@ public class SimulationModel<T> {
         nodeFactory = new NodeFactory<>(params, factory, defaultValue);
     }
 
-//    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
-//        this.generator = new Random();
-//        this.params = params;
-//        this.factory = factory;
-//        this.evaluator = evaluator;
-//
-//        individuals = new ArrayList<>();
-//        connectionMutator = new RandomConnectionMutator<T>(params);
-//        initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
-//        functionMutator = new FunctionMutator<>(params, factory);
-//        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
-//    }
+    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
+        this(params, factory, defaultValue, evaluator, Mode.CGP);
+    }
 
     public void run() {
         try {
 
-            // System.setOut(new PrintStream(new File("output-file.txt")));
             int currentGeneration = 0;
             double fitness;
             while (currentGeneration++ < params.getGenerationThreshold()) {
@@ -94,8 +87,8 @@ public class SimulationModel<T> {
                 }
                 fitness = theFittest.getFitness();
 
-                if (fitness < params.getMinError()){
-                    System.out.println("Min error reached! [g:" + currentGeneration +"]");
+                if (fitness < params.getMinError()) {
+                    System.out.println("Min error reached! [g:" + currentGeneration + "]");
                     break;
                 }
 
@@ -120,22 +113,14 @@ public class SimulationModel<T> {
         i.mutate(functionMutator);
     }
 
-
-    public double evaluate() {
-        return 1;
-    }
-
     public void init() {
         //TODO: All nodes should be random
         for (int ii = 0; ii < params.getIndividuals(); ii++) {
-            individuals.add(new Individual<T>(params, nodeFactory));
-            individuals.get(ii).init(initialConnectionSetter);
+            Individual<T> individual = new Individual<>(params, nodeFactory);
+            individual.init(initialConnectionSetter);
+            individual.setParent(true);
+            individuals.add(individual);
         }
-
-//        // Copy first individual
-//        for (int ii = 1; ii < params.getIndividuals(); ii++) {
-//            individuals.set(ii, individuals.get(0).clone());
-//        }
 
     }
 }

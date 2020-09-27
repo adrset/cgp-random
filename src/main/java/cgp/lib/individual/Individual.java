@@ -14,11 +14,20 @@ public class Individual<T> {
     private InputParams params;
     private AbstractNodeFactory<T> factory;
     private List<Node<T>> allNodes;
+    private boolean parent = false;
 
     int basicNodesNo;
     int inputNodesNo;
     int outputNodesNo;
     double fitness;
+
+    public boolean isParent() {
+        return parent;
+    }
+
+    public void setParent(boolean parent) {
+        this.parent = parent;
+    }
 
     public void setFitness(double fitness) {
         this.fitness = fitness;
@@ -75,7 +84,7 @@ public class Individual<T> {
 
     private void computeNodes() {
         //TODO: iterate to otp nodes.
-        for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo + outputNodesNo; i++) {
+        for (int i = inputNodesNo; i < allNodes.size(); i++) {
             Node<T> n = allNodes.get(i);
             if (n.isActive()) {
                 allNodes.get(i).compute();
@@ -107,6 +116,7 @@ public class Individual<T> {
      * Loops trough output nodes and recursively marks all nodes that it's connected to.
      */
     private void setActiveNodes() {
+        // assuming one otp
         List<Node<T>> outputs = allNodes.get(allNodes.size() - 1).getAdapter().getNodes();
         for (Node<T> o : outputs) {
             recursivelySetActiveNodes(allNodes.indexOf(o));
@@ -147,7 +157,7 @@ public class Individual<T> {
         }
 
         node.setActive(true);
-        if (describe){
+        if (describe) {
             System.out.println(node.getStrategy().describe());
 
         }
@@ -173,16 +183,16 @@ public class Individual<T> {
     }
 
 
-
     public void describe() {
 
         for (Node<T> n : allNodes) {
             if (n.isActive()) {
                 String inputString = "";
                 List<Node<T>> nt = n.getAdapter().getNodes();
-                for (Node<T> nti:nt) {
+                for (Node<T> nti : nt) {
                     inputString += nti.getCurrentValue() + ", ";
                 }
+                inputString = inputString.substring(0, inputString.length() - 2);
                 System.out.print(n.getStrategy().describe() + "[" + inputString + "], ");
             }
         }

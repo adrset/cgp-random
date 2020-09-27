@@ -1,0 +1,40 @@
+{
+  "config": {
+    "inputs" : 3,
+    "outputs" : 1,
+    "nodes" : 10,
+    "maxArity" : 2
+  },
+  "samples": [
+    {
+      "input" : [false, false, false],
+      "output": [false]
+    },
+    {
+      "input" : [false, true, false],
+      "output": [true]
+    },
+    {
+      "input" : [true, false, false],
+      "output": [true]
+    },
+    {
+      "input" : [true, true, false],
+      "output": [true]
+    },{
+      "input" : [true, true, true],
+      "output": [true]
+    },{
+      "input" : [false, false, false],
+      "output": [false]
+    },
+    {
+      "input" : [false, true, false],
+      "output": [true]
+    },
+    {
+      "input" : [false, false, true],
+      "output": [true]
+    }
+  ]
+}

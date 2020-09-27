@@ -1,7 +1,10 @@
 package cgp.user.function.factory;
 
 import cgp.lib.function.factory.RandomFunctionFactory;
-import cgp.user.function.method.*;
+import cgp.user.function.method.dbl.Add;
+import cgp.user.function.method.dbl.Divide;
+import cgp.user.function.method.dbl.Multiply;
+import cgp.user.function.method.dbl.Subtract;
 
 public class RandomDoubleFunctionFactory extends RandomFunctionFactory<Double> {
     {
@@ -10,6 +13,5 @@ public class RandomDoubleFunctionFactory extends RandomFunctionFactory<Double> {
         elementBuilder.put(Divide.class, Divide::new);
         elementBuilder.put(Multiply.class, Multiply::new);
         elementBuilder.put(Subtract.class, Subtract::new);
-        elementBuilder.put(Sqrt.class, Sqrt::new);
     }
 }

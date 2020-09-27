@@ -1,4 +1,4 @@
-package cgp.user.function.method;
+package cgp.user.function.method.dbl;
 
 import cgp.lib.function.method.ArityFunction;
 import java.util.List;

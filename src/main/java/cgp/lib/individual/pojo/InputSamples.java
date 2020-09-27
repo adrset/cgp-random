@@ -1,6 +1,7 @@
 package cgp.lib.individual.pojo;
 
 import cgp.lib.individual.pojo.samples.Sample;
+import cgp.user.simulation.input.Config;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +24,9 @@ public class InputSamples<T> {
     private InputSamples() {
 
     }
+
+    @JsonProperty("config")
+    Config config;
 
     @JsonProperty("samples")
     List<Sample<T>> samples;
@@ -89,5 +93,10 @@ public class InputSamples<T> {
         }
 
 
+    }
+
+
+    public Config getConfig() {
+        return config;
     }
 }

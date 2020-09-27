@@ -86,7 +86,7 @@ public class Node<T> {
         for (Node<T> inputNode : inputs) {
             inputValues.add(inputNode.getCurrentValue());
         }
-       
+
         currentValue = strategy.calculate(inputValues);
         return currentValue;
     }

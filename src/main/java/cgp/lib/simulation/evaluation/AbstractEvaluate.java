@@ -15,14 +15,16 @@ public abstract class AbstractEvaluate<T> {
         Individual<T> fittest = null;
         Iterator<Individual<T>> iterator = individuals.iterator();
         while (iterator.hasNext()) {
-            Individual<T> next =  iterator.next();
-            if (Double.isNaN(next.getFitness()) || Double.isInfinite(next.getFitness())) {
-                continue;
-            }
+            Individual<T> next = iterator.next();
+
             if (fittest == null) {
                 fittest = next;
             } else {
-                if (next.getFitness() < fittest.getFitness()){
+                if (Double.isNaN(next.getFitness()) || Double.isInfinite(next.getFitness())) {
+                    continue;
+                }
+                if (next.getFitness() < fittest.getFitness() ||
+                        next.getFitness() == fittest.getFitness() && !next.isParent() && fittest.isParent()) {
                     fittest = next;
                 }
             }

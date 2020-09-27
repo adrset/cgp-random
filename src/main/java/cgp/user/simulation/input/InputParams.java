@@ -2,23 +2,24 @@ package cgp.user.simulation.input;
 
 public class InputParams {
     static InputParams singleton;
-    int nodeAmount = 30;
-    int inputs = 1;
-    int outputs = 1;
-    int maxArity = 2;
+
+    private Config config;
     int memoryLength = 10;
-    double minError = 0.01;
-    int generationThreshold = 10000;
+    private double minError = 0.01;
+    private int generationThreshold = 10000;
 
     int individuals = 5;
 
+    public void setConfig(Config config) {
+        this.config = config;
+    }
 
     public int getIndividuals() {
         return individuals;
     }
 
     public int getMaxArity() {
-        return maxArity;
+        return config.getMaxArity();
     }
 
 
@@ -29,11 +30,13 @@ public class InputParams {
         return recursiveConnectionProbability;
     }
 
-    float mutationProbability = 0.2f;
+    float mutationProbability = 0.1f;
     float recursiveConnectionProbability = 0.1f;
 
 
-    InputParams() {    }
+    InputParams() {
+        config = new Config();
+    }
 
 
     public double getMinError() {
@@ -56,15 +59,15 @@ public class InputParams {
     }
 
     public int getNodeAmount() {
-        return nodeAmount;
+        return config.getNodeAmount();
     }
 
     public int getInputs() {
-        return inputs;
+        return config.getInputs();
     }
 
     public int getOutputs() {
-        return outputs;
+        return config.getOutputs();
     }
 
 }

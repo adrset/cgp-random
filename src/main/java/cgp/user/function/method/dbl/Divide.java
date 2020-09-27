@@ -1,23 +1,24 @@
-package cgp.user.function.method;
+package cgp.user.function.method.dbl;
 
 import cgp.lib.function.method.ArityFunction;
 
 import java.util.List;
 
-public class Sqrt implements ArityFunction<Double> {
+public class Divide implements ArityFunction<Double> {
 
     @Override
-    public Sqrt clone() {
-        return new Sqrt();
+    public Divide clone() {
+        return new Divide();
     }
 
     @Override
     public Double calculate(List<Double> args) {
-        return Math.sqrt(args.get(0));
+        return args.get(0) / args.get(1);
     }
 
     @Override
     public String describe() {
-        return "sqrt ";
+        return "/";
     }
+
 }
