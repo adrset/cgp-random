@@ -5,20 +5,20 @@ import cgp.lib.node.InputNode;
 import cgp.lib.node.OutputNode;
 import cgp.lib.node.Node;
 import cgp.lib.node.adapter.ConnectionAdapter;
-import cgp.user.simulation.input.InputParams;
+import cgp.lib.simulation.input.Config;
 
 public class NodeFactory<T> extends AbstractNodeFactory<T> {
     T defaultValue;
-    public NodeFactory(InputParams params, FunctionFactory<T> factory, T defaultValue){
+    public NodeFactory(Config config, FunctionFactory<T> factory, T defaultValue){
 
-        super(params, factory);
+        super(config, factory);
         this.defaultValue = defaultValue;
     }
 
     public Node<T> getNode(){
         Node<T> n = null;
         try {
-            n = new Node<>(factory.getFunction(), new ConnectionAdapter<>(params.getMaxArity()), defaultValue);
+            n = new Node<>(factory.getFunction(), new ConnectionAdapter<>(config.getMaxArity()), defaultValue);
             n.init();
             return n;
         } catch (Exception e) {
@@ -42,9 +42,9 @@ public class NodeFactory<T> extends AbstractNodeFactory<T> {
     
     @Override
     public Node<T> getOutputNode(){
-        Node<T> n = null;
+        OutputNode<T> n = null;
         try {
-            n = new OutputNode<>(factory.getFunction(), new ConnectionAdapter(params.getOutputs()), defaultValue);
+            n = new OutputNode<>(factory.getFunction(), new ConnectionAdapter(config.getOutputs()), defaultValue);
             n.init();
             return n;
         } catch (Exception e) {

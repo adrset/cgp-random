@@ -1,7 +1,7 @@
 package cgp.lib.individual.pojo;
 
 import cgp.lib.individual.pojo.samples.Sample;
-import cgp.user.simulation.input.Config;
+import cgp.lib.simulation.input.Config;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

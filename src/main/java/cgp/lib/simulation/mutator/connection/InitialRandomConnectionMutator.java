@@ -1,20 +1,20 @@
 package cgp.lib.simulation.mutator.connection;
 
-import cgp.user.simulation.input.InputParams;;
+import cgp.lib.simulation.input.Config;
 import cgp.lib.node.Node;
 import cgp.lib.node.adapter.ConnectionAdapter;
 
 import java.util.List;
 
 public class InitialRandomConnectionMutator<T> extends RandomConnectionMutator<T> {
-    public InitialRandomConnectionMutator(InputParams params) {
+    public InitialRandomConnectionMutator(Config params) {
         super(params);
     }
 
     @Override
     public List<Node<T>> mutate(List<Node<T>> nodes) {
 
-        for (int ii = params.getInputs(); ii < nodes.size(); ii++) {
+        for (int ii = config.getInputs(); ii < nodes.size(); ii++) {
             Node<T> node = nodes.get(ii);
 
             ConnectionAdapter<T> adapter = node.getAdapter();

@@ -1,7 +1,7 @@
 package cgp.lib.individual;
 
 import cgp.lib.individual.pojo.samples.Sample;
-import cgp.user.simulation.input.InputParams;
+import cgp.lib.simulation.input.Config;
 import cgp.lib.node.Node;
 import cgp.lib.node.adapter.ConnectionAdapter;
 import cgp.lib.node.factory.AbstractNodeFactory;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Individual<T> {
-    private InputParams params;
+    private Config config;
     private AbstractNodeFactory<T> factory;
     private List<Node<T>> allNodes;
     private boolean parent = false;
@@ -37,9 +37,9 @@ public class Individual<T> {
         return fitness;
     }
 
-    public Individual(InputParams params, AbstractNodeFactory<T> factory) {
+    public Individual(Config config, AbstractNodeFactory<T> factory) {
         this.factory = factory;
-        this.params = params;
+        this.config = config;
         allNodes = new ArrayList<>();
     }
 
@@ -47,9 +47,9 @@ public class Individual<T> {
      * @param connectionMutator must be a connection mutator. Creates initial connections for all nodes.
      */
     public void init(IMutator<T> connectionMutator) {
-        basicNodesNo = params.getNodeAmount();
-        inputNodesNo = params.getInputs();
-        outputNodesNo = params.getOutputs();
+        basicNodesNo = config.getNodeAmount();
+        inputNodesNo = config.getInputs();
+        outputNodesNo = config.getOutputs();
         for (int i = 0; i < inputNodesNo; i++) {
             allNodes.add(factory.getInputNode());
         }
@@ -201,7 +201,7 @@ public class Individual<T> {
 
     @Override
     public Individual<T> clone() {
-        Individual<T> ind = new Individual<>(this.params, this.factory);
+        Individual<T> ind = new Individual<>(this.config, this.factory);
         List<Node<T>> copy = new ArrayList<>();
 
         for (Node<T> allNode : allNodes) {
