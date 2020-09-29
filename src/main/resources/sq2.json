@@ -1,36 +1,42 @@
 {
+  "config": {
+    "inputs" : 1,
+    "outputs" : 1,
+    "nodes" : 20,
+    "maxArity" : 2
+  },
   "samples": [
     {
       "input" : [1.0],
-      "output": [-1.0]
+      "output": [11.0]
     },
     {
       "input" : [2.0],
-      "output": [0.0]
+      "output": [14.0]
     },
     {
       "input" : [3.0],
-      "output": [3.0]
+      "output": [19.0]
     },
     {
       "input" : [4.0],
-      "output": [8.0]
+      "output": [26.0]
     },
     {
       "input" : [5.0],
-      "output": [15.0]
-    },
-    {
-      "input" : [6.0],
-      "output": [24.0]
-    },
-    {
-      "input" : [7.0],
       "output": [35.0]
     },
     {
+      "input" : [6.0],
+      "output": [46.0]
+    },
+    {
+      "input" : [7.0],
+      "output": [59.0]
+    },
+    {
       "input" : [8.0],
-      "output": [48.0]
+      "output": [74.0]
     }
   ]
 }

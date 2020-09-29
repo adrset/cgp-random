@@ -42,7 +42,7 @@ public class NodeFactory<T> extends AbstractNodeFactory<T> {
     
     @Override
     public Node<T> getOutputNode(){
-        Node<T> n = null;
+        OutputNode<T> n = null;
         try {
             n = new OutputNode<>(factory.getFunction(), new ConnectionAdapter(params.getOutputs()), defaultValue);
             n.init();

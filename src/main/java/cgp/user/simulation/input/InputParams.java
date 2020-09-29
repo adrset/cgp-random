@@ -6,7 +6,7 @@ public class InputParams {
     private Config config;
     int memoryLength = 10;
     private double minError = 0.01;
-    private int generationThreshold = 10000;
+    private int generationThreshold = 100000;
 
     int individuals = 5;
 

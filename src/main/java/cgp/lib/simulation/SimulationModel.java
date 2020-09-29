@@ -98,6 +98,7 @@ public class SimulationModel<T> {
                 System.out.println(theFittest.compute(sample));
             }
             System.out.println(theFittest.getFitness());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +115,7 @@ public class SimulationModel<T> {
     }
 
     public void init() {
-        //TODO: All nodes should be random
+        System.out.println("Creating " + params.getIndividuals() + " individuals.");
         for (int ii = 0; ii < params.getIndividuals(); ii++) {
             Individual<T> individual = new Individual<>(params, nodeFactory);
             individual.init(initialConnectionSetter);

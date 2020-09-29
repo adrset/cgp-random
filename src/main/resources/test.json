@@ -1,0 +1,14 @@
+{
+  "config": {
+    "inputs" : 1,
+    "outputs" : 1,
+    "nodes" : 20,
+    "maxArity" : 2
+  },
+  "samples": [
+    {"input" : [1],"output": [-9]},
+    {"input" : [2],"output": [-6]},
+    {"input" : [3],"output": [-1]},
+    {"input" : [5],"output": [-15]},
+    {"input" : [6],"output": [-26]}]
+}

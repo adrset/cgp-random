@@ -43,7 +43,6 @@ public class MainBoolean {
         System.out.println(otp);
         theFittest.describe();
 
-
     }
 
     public static void main(String[] args) throws Exception {

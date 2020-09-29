@@ -15,7 +15,8 @@ public class RecursiveRandomConnectionMutator<T> extends RandomConnectionMutator
     @Override
     public List<Node<T>> mutate(List<Node<T>> nodes) {
 
-        for (int ii = params.getInputs(); ii < nodes.size(); ii++) {
+        // Only mutating
+        for (int ii = params.getInputs(); ii < nodes.size() - params.getOutputs(); ii++) {
             Node<T> node = nodes.get(ii);
             ConnectionAdapter<T> adapter = node.getAdapter();
             List<Node<T>> adapterNodes = adapter.getNodes();
@@ -25,7 +26,7 @@ public class RecursiveRandomConnectionMutator<T> extends RandomConnectionMutator
                 if (randomDouble > 1.0 - params.getMutationProbability()) {
                     double recursiveRandom = generator.nextDouble();
                     if (recursiveRandom > 1.0 - params.getRecursiveConnectionProbability()) {
-                        adapterNodes.set(kk, getRandomNode(nodes.subList(0, nodes.size() - params.getOutputs())));
+                        adapterNodes.set(kk, getRandomNode(nodes.subList(ii, nodes.size() - params.getOutputs())));
                     } else {
                         adapterNodes.set(kk, getRandomNode(nodes.subList(0, ii)));
                     }
