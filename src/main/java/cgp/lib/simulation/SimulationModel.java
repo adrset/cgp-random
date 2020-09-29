@@ -4,13 +4,13 @@ import cgp.lib.function.factory.FunctionFactory;
 import cgp.lib.individual.pojo.samples.Sample;
 import cgp.lib.node.factory.NodeFactory;
 import cgp.lib.simulation.evaluation.AbstractEvaluate;
+import cgp.lib.simulation.input.Config;
 import cgp.lib.simulation.mutator.connection.resursive.InitialRecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.connection.resursive.RecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.function.FunctionMutator;
 import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
 import cgp.lib.individual.Individual;
-import cgp.user.simulation.input.InputParams;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class SimulationModel<T> {
     Random generator;
     List<Individual<T>> individuals;
 
-    private InputParams params;
+    private Config config;
     private FunctionFactory<T> factory;
     private NodeFactory<T> nodeFactory;
     private IMutator<T> connectionMutator;
@@ -36,28 +36,28 @@ public class SimulationModel<T> {
     ;
     Mode mode;
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
+    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
         this.generator = new Random();
-        this.params = params;
+        this.config = config;
         this.factory = factory;
         this.evaluator = evaluator;
         this.mode = mode;
 
         individuals = new ArrayList<>();
         if (mode == Mode.CGP) {
-            connectionMutator = new RandomConnectionMutator<T>(params);
-            initialConnectionSetter = new InitialRandomConnectionMutator<T>(params);
+            connectionMutator = new RandomConnectionMutator<T>(config);
+            initialConnectionSetter = new InitialRandomConnectionMutator<T>(config);
         } else {
-            connectionMutator = new RecursiveRandomConnectionMutator<>(params);
-            initialConnectionSetter = new InitialRecursiveRandomConnectionMutator<>(params);
+            connectionMutator = new RecursiveRandomConnectionMutator<>(config);
+            initialConnectionSetter = new InitialRecursiveRandomConnectionMutator<>(config);
 
         }
-        functionMutator = new FunctionMutator<>(params, factory);
-        nodeFactory = new NodeFactory<>(params, factory, defaultValue);
+        functionMutator = new FunctionMutator<>(config, factory);
+        nodeFactory = new NodeFactory<>(config, factory, defaultValue);
     }
 
-    public SimulationModel(InputParams params, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
-        this(params, factory, defaultValue, evaluator, Mode.CGP);
+    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
+        this(config, factory, defaultValue, evaluator, Mode.CGP);
     }
 
     public void run() {
@@ -65,9 +65,9 @@ public class SimulationModel<T> {
 
             int currentGeneration = 0;
             double fitness;
-            while (currentGeneration++ < params.getGenerationThreshold()) {
+            while (currentGeneration++ < config.getGenerationThreshold()) {
                 //evaluacja
-                for (int ii = 0; ii < params.getIndividuals(); ii++) {
+                for (int ii = 0; ii < config.getIndividuals(); ii++) {
                     Individual<T> individual = individuals.get(ii);
                     for (Sample<T> sample : evaluator.getSamples()) {
                         //zbieraj odp.
@@ -78,16 +78,16 @@ public class SimulationModel<T> {
                 theFittest = evaluator.getFittest(individuals);
                 List<Individual<T>> newIndividuals = new ArrayList<>();
                 newIndividuals.add(theFittest);
-                for (int i = 0; i < params.getIndividuals() - 1; i++) {
+                for (int i = 0; i < config.getIndividuals() - 1; i++) {
                     newIndividuals.add(theFittest.clone());
                 }
                 individuals = newIndividuals;
-                for (int i = 1; i < params.getIndividuals(); i++) {
+                for (int i = 1; i < config.getIndividuals(); i++) {
                     mutate(individuals.get(i));
                 }
                 fitness = theFittest.getFitness();
 
-                if (fitness < params.getMinError()) {
+                if (fitness < config.getMinError()) {
                     System.out.println("Min error reached! [g:" + currentGeneration + "]");
                     break;
                 }
@@ -115,9 +115,9 @@ public class SimulationModel<T> {
     }
 
     public void init() {
-        System.out.println("Creating " + params.getIndividuals() + " individuals.");
-        for (int ii = 0; ii < params.getIndividuals(); ii++) {
-            Individual<T> individual = new Individual<>(params, nodeFactory);
+        System.out.println("Creating " + config.getIndividuals() + " individuals.");
+        for (int ii = 0; ii < config.getIndividuals(); ii++) {
+            Individual<T> individual = new Individual<>(config, nodeFactory);
             individual.init(initialConnectionSetter);
             individual.setParent(true);
             individuals.add(individual);

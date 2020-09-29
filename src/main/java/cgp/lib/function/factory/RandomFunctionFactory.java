@@ -22,9 +22,6 @@ public abstract class RandomFunctionFactory<T> extends FunctionFactory<T> {
      */
     private ArityFunction<T> randomFunction() throws Exception{
 
-        double numOfFunctions = elementBuilder.keySet().size();
-        double dx = 1.0 / numOfFunctions;
-        double x = dx;
         List<Class<?>> keysAsArray = new ArrayList<>(elementBuilder.keySet());
         return elementBuilder.get(keysAsArray.get(generator.nextInt(keysAsArray.size()))).build();
 
