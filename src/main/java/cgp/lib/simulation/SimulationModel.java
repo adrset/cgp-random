@@ -65,26 +65,12 @@ public class SimulationModel<T> {
         double fitness;
         do {
 
-            for (int ii = 0; ii < config.getIndividuals(); ii++) {
-                Individual<T> individual = individuals.get(ii);
-                for (Sample<T> sample : evaluator.getSamples()) {
-                    //zbieraj odp.
-                    sample.setComputedOutput(individual.compute(sample));
-                }
-                individual.setFitness(evaluator.evaluate());
-            }
+            computeIndividuals();
 
             theFittest = evaluator.getFittest(individuals);
 
-            List<Individual<T>> newIndividuals = new ArrayList<>();
-            newIndividuals.add(theFittest);
-            for (int i = 0; i < config.getIndividuals() - 1; i++) {
-                newIndividuals.add(theFittest.clone());
-            }
-            individuals = newIndividuals;
-            for (int i = 1; i < config.getIndividuals(); i++) {
-                mutate(individuals.get(i));
-            }
+            makeOffspring();
+            mutateGeneration();
             fitness = theFittest.getFitness();
 
             if (fitness < config.getMinError()) {
