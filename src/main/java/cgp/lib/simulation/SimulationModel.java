@@ -19,8 +19,8 @@ import java.util.Random;
 
 public class SimulationModel<T> {
 
-    Random generator;
-    List<Individual<T>> individuals;
+    private Random generator;
+    private List<Individual<T>> individuals;
 
     private Config config;
     private FunctionFactory<T> factory;
@@ -29,12 +29,11 @@ public class SimulationModel<T> {
     private IMutator<T> initialConnectionSetter;
     private FunctionMutator<T> functionMutator;
     private AbstractEvaluate<T> evaluator;
-    Individual<T> theFittest = null;
+    private Individual<T> theFittest = null;
 
-    public static enum Mode {CGP, RCGP}
+    public enum Mode {CGP, RCGP}
 
-    ;
-    Mode mode;
+    private Mode mode;
 
     public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
         this.generator = new Random();
@@ -61,48 +60,79 @@ public class SimulationModel<T> {
     }
 
     public void run() {
-        try {
+        int currentGeneration = 0;
 
-            int currentGeneration = 0;
-            double fitness;
-            while (currentGeneration++ < config.getGenerationThreshold()) {
-                //evaluacja
-                for (int ii = 0; ii < config.getIndividuals(); ii++) {
-                    Individual<T> individual = individuals.get(ii);
-                    for (Sample<T> sample : evaluator.getSamples()) {
-                        //zbieraj odp.
-                        sample.setComputedOutput(individual.compute(sample));
-                    }
-                    individual.setFitness(evaluator.evaluate());
-                }
-                theFittest = evaluator.getFittest(individuals);
-                List<Individual<T>> newIndividuals = new ArrayList<>();
-                newIndividuals.add(theFittest);
-                for (int i = 0; i < config.getIndividuals() - 1; i++) {
-                    newIndividuals.add(theFittest.clone());
-                }
-                individuals = newIndividuals;
-                for (int i = 1; i < config.getIndividuals(); i++) {
-                    mutate(individuals.get(i));
-                }
-                fitness = theFittest.getFitness();
+        double fitness;
+        do {
 
-                if (fitness < config.getMinError()) {
-                    System.out.println("Min error reached! [g:" + currentGeneration + "]");
-                    break;
+            for (int ii = 0; ii < config.getIndividuals(); ii++) {
+                Individual<T> individual = individuals.get(ii);
+                for (Sample<T> sample : evaluator.getSamples()) {
+                    //zbieraj odp.
+                    sample.setComputedOutput(individual.compute(sample));
                 }
-
+                individual.setFitness(evaluator.evaluate());
             }
+
+            theFittest = evaluator.getFittest(individuals);
+
+            List<Individual<T>> newIndividuals = new ArrayList<>();
+            newIndividuals.add(theFittest);
+            for (int i = 0; i < config.getIndividuals() - 1; i++) {
+                newIndividuals.add(theFittest.clone());
+            }
+            individuals = newIndividuals;
+            for (int i = 1; i < config.getIndividuals(); i++) {
+                mutate(individuals.get(i));
+            }
+            fitness = theFittest.getFitness();
+
+            if (fitness < config.getMinError()) {
+                System.out.println("Min error reached! [g:" + currentGeneration + "]");
+                break;
+            }
+
+        } while (currentGeneration++ < config.getGenerationThreshold());
+        log();
+
+    }
+
+
+    private void log() {
+        for (Sample<T> sample : evaluator.getSamples()) {
+            System.out.println(theFittest.compute(sample));
+        }
+        System.out.println(theFittest.getFitness());
+    }
+
+
+    private void computeIndividuals() {
+        for (int ii = 0; ii < config.getIndividuals(); ii++) {
+            Individual<T> individual = individuals.get(ii);
             for (Sample<T> sample : evaluator.getSamples()) {
                 //zbieraj odp.
-                System.out.println(theFittest.compute(sample));
+                sample.setComputedOutput(individual.compute(sample));
             }
-            System.out.println(theFittest.getFitness());
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            individual.setFitness(evaluator.evaluate());
         }
     }
+
+
+    private void makeOffspring() {
+        List<Individual<T>> newIndividuals = new ArrayList<>();
+        newIndividuals.add(theFittest);
+        for (int i = 0; i < config.getIndividuals() - 1; i++) {
+            newIndividuals.add(theFittest.clone());
+        }
+        individuals = newIndividuals;
+    }
+
+    private void mutateGeneration() {
+        for (int i = 1; i < config.getIndividuals(); i++) {
+            mutate(individuals.get(i));
+        }
+    }
+
 
     public Individual<T> getFittest() {
         return theFittest;
