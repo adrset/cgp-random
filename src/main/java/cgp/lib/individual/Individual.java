@@ -16,10 +16,10 @@ public class Individual<T> {
     private List<Node<T>> allNodes;
     private boolean parent = false;
 
-    int basicNodesNo;
-    int inputNodesNo;
-    int outputNodesNo;
-    double fitness;
+    private int basicNodesNo;
+    private int inputNodesNo;
+    private int outputNodesNo;
+    private double fitness;
 
     public boolean isParent() {
         return parent;

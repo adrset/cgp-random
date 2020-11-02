@@ -18,10 +18,10 @@ public class Main {
 
     public Main() throws Exception {
         FunctionFactory<Double> factory = new RandomDoubleFunctionFactory();
-        InputSamples<Double> inputSamples = new InputSamples.Builder<Double>().setTargetClass(Double.class).setFileName("sq2.json").build();
+        InputSamples<Double> inputSamples = new InputSamples.Builder<Double>().setTargetClass(Double.class).setFileName("sq.json").build();
         //load samples
 
-        this.simulation = new SimulationModel<>(inputSamples.getConfig(), factory, 0., new Evaluator(inputSamples.getSamples()), SimulationModel.Mode.CGP);
+        this.simulation = new SimulationModel<>(inputSamples.getConfig(), factory, 0., new Evaluator(inputSamples.getSamples()), SimulationModel.Mode.RCGP);
         this.simulation.init();
     }
 
