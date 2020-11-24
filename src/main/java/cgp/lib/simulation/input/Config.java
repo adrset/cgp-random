@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Config{
     @JsonProperty("nodes")
-    private int nodeAmount = 10;
+    private int nodeAmount = 50;
     @JsonProperty("inputs")
     private int inputs = 1;
     @JsonProperty("outputs")
@@ -16,17 +16,17 @@ public class Config{
     @JsonProperty("maxArity")
     private int maxArity = 2;
     @JsonProperty("mutationProbability")
-    float mutationProbability = 0.1f;
+    float mutationProbability = 0.10f;
 
     @JsonProperty("recursiveConnectionProbability")
-    float recursiveConnectionProbability = 0.1f;
+    float recursiveConnectionProbability = 0.12f;
 
     @JsonProperty("memoryLength")
     int memoryLength = 10;
     @JsonProperty("minError")
     private double minError = 0.01;
     @JsonProperty("generationThreshold")
-    private int generationThreshold = 100000;
+    private int generationThreshold = 10000000;
 
     int individuals = 5;
 

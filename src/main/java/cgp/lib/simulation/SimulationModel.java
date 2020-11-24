@@ -14,8 +14,11 @@ import cgp.lib.individual.Individual;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+import static java.lang.Double.NaN;
 
 public class SimulationModel<T> {
 
@@ -44,8 +47,8 @@ public class SimulationModel<T> {
 
         individuals = new ArrayList<>();
         if (mode == Mode.CGP) {
-            connectionMutator = new RandomConnectionMutator<T>(config);
-            initialConnectionSetter = new InitialRandomConnectionMutator<T>(config);
+            connectionMutator = new RandomConnectionMutator<>(config);
+            initialConnectionSetter = new InitialRandomConnectionMutator<>(config);
         } else {
             connectionMutator = new RecursiveRandomConnectionMutator<>(config);
             initialConnectionSetter = new InitialRecursiveRandomConnectionMutator<>(config);
@@ -61,22 +64,45 @@ public class SimulationModel<T> {
 
     public void run() {
         int currentGeneration = 0;
-
+        int printEvery = 1000;
         double fitness;
+        double oldFittness = Double.MAX_VALUE;
+        Individual<T> elder = null;
         do {
 
             computeIndividuals();
 
             theFittest = evaluator.getFittest(individuals);
-
+            fitness = theFittest.getFitness();
+//            if (oldFittness < fitness) {
+//                System.out.println("err");
+//                for (int i =0; i<10;i++){
+//                    computeIndividuals();
+//
+//                    theFittest = evaluator.getFittest(individuals);
+//                    fitness = theFittest.getFitness();
+//                    System.out.println("iter: " + i );
+//                    theFittest.describe();
+//                }
+//            }
+//            if (Double.isNaN(fitness)){
+//                theFittest.describe();
+//
+//            }
             makeOffspring();
             mutateGeneration();
-            fitness = theFittest.getFitness();
+
+            if (currentGeneration % printEvery == 0) {
+                System.out.println("\t" + theFittest.getFitness());
+            }
 
             if (fitness < config.getMinError()) {
                 System.out.println("Min error reached! [g:" + currentGeneration + "]");
                 break;
             }
+
+            oldFittness = theFittest.getFitness();
+            elder = theFittest;
 
         } while (currentGeneration++ < config.getGenerationThreshold());
         log();
@@ -93,7 +119,7 @@ public class SimulationModel<T> {
 
 
     private void computeIndividuals() {
-        for (int ii = 0; ii < config.getIndividuals(); ii++) {
+        for (int ii = 0; ii < individuals.size(); ii++) {
             Individual<T> individual = individuals.get(ii);
             for (Sample<T> sample : evaluator.getSamples()) {
                 //zbieraj odp.
@@ -108,14 +134,19 @@ public class SimulationModel<T> {
         List<Individual<T>> newIndividuals = new ArrayList<>();
         newIndividuals.add(theFittest);
         for (int i = 0; i < config.getIndividuals() - 1; i++) {
-            newIndividuals.add(theFittest.clone());
+            Individual<T> child = theFittest.clone();
+            child.setFitness(theFittest.getFitness());
+            newIndividuals.add(child);
         }
+
         individuals = newIndividuals;
     }
 
     private void mutateGeneration() {
-        for (int i = 1; i < config.getIndividuals(); i++) {
-            mutate(individuals.get(i));
+        for (int i = 0; i < config.getIndividuals(); i++) {
+            if (!individuals.get(i).isParent()) {
+                mutate(individuals.get(i));
+            }
         }
     }
 
@@ -135,7 +166,6 @@ public class SimulationModel<T> {
         for (int ii = 0; ii < config.getIndividuals(); ii++) {
             Individual<T> individual = new Individual<>(config, nodeFactory);
             individual.init(initialConnectionSetter);
-            individual.setParent(true);
             individuals.add(individual);
         }
 

@@ -23,13 +23,16 @@ public abstract class AbstractEvaluate<T> {
                 if (Double.isNaN(next.getFitness()) || Double.isInfinite(next.getFitness())) {
                     continue;
                 }
-                if (next.getFitness() < fittest.getFitness() ||
-                        next.getFitness() == fittest.getFitness() && !next.isParent() && fittest.isParent()) {
+                if (next.getFitness() < fittest.getFitness()) {
+                    fittest = next;
+                } else if (!next.isParent() && fittest.isParent() && next.getFitness() == fittest.getFitness()){
                     fittest = next;
                 }
             }
 
         }
+
+        fittest.setParent(true);
 
         return fittest;
     }

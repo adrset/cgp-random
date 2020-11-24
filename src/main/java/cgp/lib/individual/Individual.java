@@ -190,7 +190,7 @@ public class Individual<T> {
                 String inputString = "";
                 List<Node<T>> nt = n.getAdapter().getNodes();
                 for (Node<T> nti : nt) {
-                    inputString += nti.getCurrentValue() + ", ";
+                    inputString += "(" + nti.getUID() + ")" + nti.getCurrentValue() + ", ";
                 }
                 inputString = inputString.substring(0, inputString.length() - 2);
                 System.out.print(n.getStrategy().describe() + "[" + inputString + "], ");
@@ -232,6 +232,7 @@ public class Individual<T> {
 
         }
         ind.setNodes(copy);
+        ind.parent = false;
 
         ind.inputNodesNo = this.inputNodesNo;
         ind.basicNodesNo = this.basicNodesNo;
@@ -251,6 +252,10 @@ public class Individual<T> {
         }
 
         return null;
+    }
+
+    public String toString(){
+        return "" + fitness;
     }
 
 }

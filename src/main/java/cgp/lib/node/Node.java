@@ -9,6 +9,7 @@ import java.util.List;
 public class Node<T> {
     ArityFunction<T> strategy;
     ConnectionAdapter<T> adapter;
+    private final T defaultValue = null;
     private static int counter = 0;
 
     private boolean active = false;
