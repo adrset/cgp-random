@@ -29,6 +29,8 @@ public class NodeWithMemory<T> extends Node<T> {
         memorisedValues.add(val);
     }
 
+    // p - połączenie z aktualną wartością czy z którąś z poprzednich (losowe połączenie - (nr node, nr komórki w rejestrze))
+
 
 
 

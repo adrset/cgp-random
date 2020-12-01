@@ -29,9 +29,10 @@ public class Main {
         Individual<Double> theFittest = this.simulation.getFittest();
         Sample<Double> s = new Sample<>();
         s.setInput(Arrays.asList(1d));
+        System.out.println("kolejne wyrazy");
         for (int i = 0; i < 10 ; i++) {
             List<Double> otp = theFittest.compute(s);
-            System.out.printf("kolejny [%.0f]\n",otp.get(0));
+            System.out.printf("[%.0f]\n",otp.get(0));
         }
 
 
