@@ -28,10 +28,13 @@ public class Main {
         this.simulation.run();
         Individual<Double> theFittest = this.simulation.getFittest();
         Sample<Double> s = new Sample<>();
-        s.setInput(Arrays.asList(39088169d));
+        s.setInput(Arrays.asList(1d));
+        for (int i = 0; i < 10 ; i++) {
+            List<Double> otp = theFittest.compute(s);
+            System.out.printf("kolejny [%.0f]\n",otp.get(0));
+        }
 
-        List<Double> otp = theFittest.compute(s);
-        System.out.println("test" + otp);
+
         theFittest.describe();
 
 

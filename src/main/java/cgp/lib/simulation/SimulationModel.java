@@ -104,6 +104,7 @@ public class SimulationModel<T> {
 
 
     private void log() {
+        theFittest.zero();
         for (Sample<T> sample : evaluator.getSamples()) {
             List<T> output = theFittest.compute(sample);
             String tmp = "[" + String.join(",", output.stream().map(e -> String.format("%.0f", e)).collect(Collectors.toList())) + "]";
@@ -163,7 +164,7 @@ public class SimulationModel<T> {
         service.init(individuals.size());
         for (int ii = 0; ii < individuals.size(); ii++) {
             Individual<T> individual = individuals.get(ii);
-            //individual.zero();
+            individual.zero();
             for (Sample<T> sample : evaluator.getSamples()) {
                 List<T> values = individual.compute(sample);
                 if (guard != null) {
