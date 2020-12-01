@@ -23,11 +23,11 @@ public class FibEvaluator extends AbstractEvaluate<Double> {
             for (int i = 0; i < sample.getOutput().size(); i++) {
                 tmp = BIG_PENALTY;
                 boolean matching = Math.abs(sample.getComputedOutput().get(i) - sample.getOutput().get(i)) < MIN_ERROR;
-                if (!matching && !firstNonMatching) {
+                if (!matching && !firstNonMatching) { // pierwszy niepasujacy
                     firstNonMatching = true;
                 }
 
-                if (matching) {
+                if (matching) { // pasujacy
                     tmp = firstNonMatching ? SMALL_PRIZE : BIG_PRIZE;
                 }
 

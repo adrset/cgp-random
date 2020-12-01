@@ -32,8 +32,7 @@ public class Main {
 
         List<Double> otp = theFittest.compute(s);
         System.out.println("test" + otp);
-        theFittest.zero();
-       // theFittest.describe();
+        theFittest.describe();
 
 
     }

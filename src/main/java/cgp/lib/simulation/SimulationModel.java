@@ -13,10 +13,13 @@ import cgp.lib.simulation.mutator.IMutator;
 import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
 import cgp.lib.individual.Individual;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
+import cgp.lib.threading.ThreadPoolService;
+import cgp.user.simulation.Evaluator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 
@@ -34,6 +37,8 @@ public class SimulationModel<T> {
     private AbstractEvaluate<T> evaluator;
     private Individual<T> theFittest = null;
     private ComputedValueGuard<T> guard;
+    private List<IndividualCompute<T>> computors;
+    private ThreadPoolService service;
 
     public enum Mode {CGP, RCGP}
 
@@ -46,6 +51,7 @@ public class SimulationModel<T> {
         this.evaluator = evaluator;
         this.guard = guard;
         this.mode = mode;
+        this.service = new ThreadPoolService(config.getIndividuals());
 
         individuals = new ArrayList<>();
         if (mode == Mode.CGP) {
@@ -58,14 +64,12 @@ public class SimulationModel<T> {
         }
         functionMutator = new FunctionMutator<>(config, factory);
         nodeFactory = new NodeFactory<>(config, factory, defaultValue);
+        computors = new ArrayList<>();
+
     }
 
     public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard) {
         this(config, factory, defaultValue, evaluator, guard, Mode.CGP);
-    }
-
-    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
-        this(config, factory, defaultValue, evaluator, null, Mode.CGP);
     }
 
     public void run() {
@@ -96,7 +100,6 @@ public class SimulationModel<T> {
         } while (currentGeneration++ < config.getGenerationThreshold());
 
         log();
-
     }
 
 
@@ -109,25 +112,6 @@ public class SimulationModel<T> {
         }
         System.out.println(theFittest.getFitness());
     }
-
-
-    private void computeIndividuals() {
-        for (int ii = 0; ii < individuals.size(); ii++) {
-            Individual<T> individual = individuals.get(ii);
-            for (Sample<T> sample : evaluator.getSamples()) {
-                List<T> values = individual.compute(sample);
-                if (guard != null) {
-                    values = values.stream().map(e ->
-                            guard.guard(e)).collect(Collectors.toList());
-                }
-
-                sample.setComputedOutput(values);
-
-            }
-            individual.setFitness(evaluator.evaluate());
-        }
-    }
-
 
     private void makeOffspring() {
         List<Individual<T>> newIndividuals = new ArrayList<>();
@@ -168,5 +152,66 @@ public class SimulationModel<T> {
             individuals.add(individual);
         }
 
+        System.out.println("Initialising " + config.getIndividuals() + " workers.");
+        for (int i = 0; i < config.getIndividuals(); i++) {
+            computors.add(new IndividualCompute<>(guard, evaluator));
+        }
+
     }
+
+    private void computeIndividuals() {
+        service.init(individuals.size());
+        for (int ii = 0; ii < individuals.size(); ii++) {
+            Individual<T> individual = individuals.get(ii);
+            //individual.zero();
+            for (Sample<T> sample : evaluator.getSamples()) {
+                List<T> values = individual.compute(sample);
+                if (guard != null) {
+                    values = values.stream().map(e ->
+                            guard.guard(e)).collect(Collectors.toList());
+                }
+
+                sample.setComputedOutput(values);
+
+            }
+            individual.setFitness(evaluator.evaluate());
+        }
+    }
+
+    private static class IndividualCompute<T> implements Runnable {
+        private Individual<T> individual;
+        private AbstractEvaluate<T> evaluator;
+        private ComputedValueGuard<T> guard;
+        private CountDownLatch latch;
+        IndividualCompute(ComputedValueGuard<T> guard, AbstractEvaluate<T> evaluator) {
+            this.guard = guard;
+            this.evaluator = evaluator;
+
+        }
+
+        void setVariables(Individual<T> individual, CountDownLatch latch){
+            this.individual = individual;
+            this.latch = latch;
+        }
+
+
+
+        @Override
+        public void run() {
+            for (Sample<T> sample : evaluator.getSamples()) {
+                List<T> values = individual.compute(sample);
+                if (guard != null) {
+                    values = values.stream().map(e ->
+                            guard.guard(e)).collect(Collectors.toList());
+                }
+
+                sample.setComputedOutput(values);
+
+            }
+            individual.setFitness(evaluator.evaluate());
+            latch.countDown();
+        }
+    };
+
+
 }
