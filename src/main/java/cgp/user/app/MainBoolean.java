@@ -22,7 +22,7 @@ public class MainBoolean {
         InputSamples<Boolean> inputSamples = new InputSamples.Builder<Boolean>().setTargetClass(Boolean.class).setFileName("adder.json").build();
 
 
-        this.simulation = new SimulationModel<>(inputSamples.getConfig(), factory, false, new AdderEvaluator(inputSamples.getSamples()), SimulationModel.Mode.CGP);
+        this.simulation = new SimulationModel<>(inputSamples.getConfig(), factory, false, new AdderEvaluator(inputSamples.getSamples()), null, SimulationModel.Mode.CGP);
         this.simulation.init();
     }
 

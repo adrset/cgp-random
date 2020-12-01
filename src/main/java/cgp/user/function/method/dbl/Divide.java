@@ -14,7 +14,7 @@ public class Divide implements ArityFunction<Double> {
 
     @Override
     public Double calculate(List<Double> args) {
-        Double lowerValue = args.get(0);
+        Double lowerValue = args.get(1);
         if(Math.abs(lowerValue) < ERROR){
             return 1d;
         }

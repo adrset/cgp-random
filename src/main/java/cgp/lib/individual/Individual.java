@@ -43,6 +43,13 @@ public class Individual<T> {
         allNodes = new ArrayList<>();
     }
 
+    public void zero() {
+        T defaultVal = factory.getNode().getCurrentValue();
+        for (int i = inputNodesNo; i < basicNodesNo + inputNodesNo; i++) {
+            allNodes.get(i).setCurrentValue(defaultVal);
+        }
+    }
+
     /**
      * @param connectionMutator must be a connection mutator. Creates initial connections for all nodes.
      */

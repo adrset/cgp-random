@@ -3,6 +3,7 @@ package cgp.lib.simulation;
 import cgp.lib.function.factory.FunctionFactory;
 import cgp.lib.individual.pojo.samples.Sample;
 import cgp.lib.node.factory.NodeFactory;
+import cgp.lib.node.guard.ComputedValueGuard;
 import cgp.lib.simulation.evaluation.AbstractEvaluate;
 import cgp.lib.simulation.input.Config;
 import cgp.lib.simulation.mutator.connection.resursive.InitialRecursiveRandomConnectionMutator;
@@ -14,11 +15,10 @@ import cgp.lib.individual.Individual;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-import static java.lang.Double.NaN;
 
 public class SimulationModel<T> {
 
@@ -33,16 +33,18 @@ public class SimulationModel<T> {
     private FunctionMutator<T> functionMutator;
     private AbstractEvaluate<T> evaluator;
     private Individual<T> theFittest = null;
+    private ComputedValueGuard<T> guard;
 
     public enum Mode {CGP, RCGP}
 
     private Mode mode;
 
-    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, Mode mode) {
+    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard, Mode mode) {
         this.generator = new Random();
         this.config = config;
         this.factory = factory;
         this.evaluator = evaluator;
+        this.guard = guard;
         this.mode = mode;
 
         individuals = new ArrayList<>();
@@ -58,37 +60,26 @@ public class SimulationModel<T> {
         nodeFactory = new NodeFactory<>(config, factory, defaultValue);
     }
 
+    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard) {
+        this(config, factory, defaultValue, evaluator, guard, Mode.CGP);
+    }
+
     public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator) {
-        this(config, factory, defaultValue, evaluator, Mode.CGP);
+        this(config, factory, defaultValue, evaluator, null, Mode.CGP);
     }
 
     public void run() {
         int currentGeneration = 0;
         int printEvery = 1000;
         double fitness;
-        double oldFittness = Double.MAX_VALUE;
-        Individual<T> elder = null;
+
         do {
 
             computeIndividuals();
 
             theFittest = evaluator.getFittest(individuals);
             fitness = theFittest.getFitness();
-//            if (oldFittness < fitness) {
-//                System.out.println("err");
-//                for (int i =0; i<10;i++){
-//                    computeIndividuals();
-//
-//                    theFittest = evaluator.getFittest(individuals);
-//                    fitness = theFittest.getFitness();
-//                    System.out.println("iter: " + i );
-//                    theFittest.describe();
-//                }
-//            }
-//            if (Double.isNaN(fitness)){
-//                theFittest.describe();
-//
-//            }
+
             makeOffspring();
             mutateGeneration();
 
@@ -101,10 +92,9 @@ public class SimulationModel<T> {
                 break;
             }
 
-            oldFittness = theFittest.getFitness();
-            elder = theFittest;
 
         } while (currentGeneration++ < config.getGenerationThreshold());
+
         log();
 
     }
@@ -112,7 +102,10 @@ public class SimulationModel<T> {
 
     private void log() {
         for (Sample<T> sample : evaluator.getSamples()) {
-            System.out.println(theFittest.compute(sample));
+            List<T> output = theFittest.compute(sample);
+            String tmp = "[" + String.join(",", output.stream().map(e -> String.format("%.0f", e)).collect(Collectors.toList())) + "]";
+            System.out.println(tmp);
+
         }
         System.out.println(theFittest.getFitness());
     }
@@ -122,8 +115,14 @@ public class SimulationModel<T> {
         for (int ii = 0; ii < individuals.size(); ii++) {
             Individual<T> individual = individuals.get(ii);
             for (Sample<T> sample : evaluator.getSamples()) {
-                //zbieraj odp.
-                sample.setComputedOutput(individual.compute(sample));
+                List<T> values = individual.compute(sample);
+                if (guard != null) {
+                    values = values.stream().map(e ->
+                            guard.guard(e)).collect(Collectors.toList());
+                }
+
+                sample.setComputedOutput(values);
+
             }
             individual.setFitness(evaluator.evaluate());
         }

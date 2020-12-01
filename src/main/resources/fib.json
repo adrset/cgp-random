@@ -3,7 +3,9 @@
     "inputs" : 1,
     "outputs" : 1,
     "nodes" : 50,
-    "maxArity" : 2
+    "maxArity" : 2,
+    "recursiveConnectionProbability": 0.10,
+    "mutationProbability" : 0.03
   },
   "samples": [
     {"input" : [0],"output": [1]},
