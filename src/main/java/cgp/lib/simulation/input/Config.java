@@ -21,8 +21,11 @@ public class Config{
     @JsonProperty("recursiveConnectionProbability")
     float recursiveConnectionProbability = 0.12f;
 
+    @JsonProperty("memoryConnectionProbability")
+    float memoryConnectionProbability = 0.12f;
+
     @JsonProperty("memoryLength")
-    int memoryLength = 10;
+    int memoryLength = 5;
     @JsonProperty("minError")
     private double minError = 0.01;
     @JsonProperty("generationThreshold")
@@ -41,6 +44,10 @@ public class Config{
 
     public float getRecursiveConnectionProbability() {
         return recursiveConnectionProbability;
+    }
+
+    public float getMemoryConnectionProbability() {
+        return memoryConnectionProbability;
     }
 
     public int getMemoryLength() {

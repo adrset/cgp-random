@@ -13,7 +13,7 @@ public class InitialRecursiveRandomConnectionMutator<T> extends RecursiveRandomC
 
     @Override
     public List<Node<T>> mutate(List<Node<T>> nodes) {
-
+        // TODO: fix no recursion on init!
         for (int ii = super.config.getInputs(); ii < nodes.size(); ii++) {
             Node<T> node = nodes.get(ii);
 

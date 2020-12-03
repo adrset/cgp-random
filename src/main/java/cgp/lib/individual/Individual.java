@@ -1,6 +1,7 @@
 package cgp.lib.individual;
 
 import cgp.lib.individual.pojo.samples.Sample;
+import cgp.lib.node.adapter.MemoryConnectionAdapter;
 import cgp.lib.simulation.input.Config;
 import cgp.lib.node.Node;
 import cgp.lib.node.adapter.ConnectionAdapter;
@@ -219,7 +220,15 @@ public class Individual<T> {
         for (int i = 0; i < this.allNodes.size(); i++) {
             Node<T> currentNode = this.allNodes.get(i);
             List<Node<T>> inputs = currentNode.getAdapter().getNodes();
-            ConnectionAdapter<T> adapter = new ConnectionAdapter<>(currentNode.getAdapter().getMaxArity());
+            ConnectionAdapter<T> oldAdapter = currentNode.getAdapter();
+            ConnectionAdapter<T> adapter = null;
+            if (oldAdapter instanceof MemoryConnectionAdapter) {
+                adapter = new MemoryConnectionAdapter<>(currentNode.getAdapter().getMaxArity());
+                ((MemoryConnectionAdapter<T>) adapter).setInputLocations(new ArrayList<>(((MemoryConnectionAdapter<T>) oldAdapter).getInputLocations()));
+            } else {
+                adapter = new ConnectionAdapter<>(currentNode.getAdapter().getMaxArity());
+
+            }
             List<Node<T>> newInputs = new ArrayList<>();
 
             for (Node<T> id : inputs) {

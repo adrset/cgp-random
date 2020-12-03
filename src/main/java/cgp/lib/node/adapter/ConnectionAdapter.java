@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionAdapter<T> implements ICloneable {
-    List<Node<T>> inputs;
+    protected List<Node<T>> inputs;
     int maxArity;
     public ConnectionAdapter(int maxArity){
         inputs = new ArrayList<>();

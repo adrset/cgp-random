@@ -4,6 +4,7 @@ import cgp.lib.function.factory.FunctionFactory;
 import cgp.lib.individual.Individual;
 import cgp.lib.individual.pojo.InputSamples;
 import cgp.lib.individual.pojo.samples.Sample;
+import cgp.lib.node.factory.NodeFactory;
 import cgp.lib.simulation.SimulationModel;
 import cgp.user.function.factory.RandomBooleanFunctionFactory;
 import cgp.user.simulation.AdderEvaluator;
@@ -20,9 +21,10 @@ public class MainBoolean {
 
         FunctionFactory<Boolean> factory = new RandomBooleanFunctionFactory();
         InputSamples<Boolean> inputSamples = new InputSamples.Builder<Boolean>().setTargetClass(Boolean.class).setFileName("adder.json").build();
+        NodeFactory<Boolean> nodeFactory = new NodeFactory<>(inputSamples.getConfig(), factory, false);
 
 
-        this.simulation = new SimulationModel<>(inputSamples.getConfig(), factory, false, new AdderEvaluator(inputSamples.getSamples()), null, SimulationModel.Mode.CGP);
+        this.simulation = new SimulationModel<>(inputSamples.getConfig(), nodeFactory, new AdderEvaluator(inputSamples.getSamples()), null, SimulationModel.Mode.CGP);
         this.simulation.init();
     }
 

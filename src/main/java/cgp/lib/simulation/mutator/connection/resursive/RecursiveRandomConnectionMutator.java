@@ -26,9 +26,10 @@ public class RecursiveRandomConnectionMutator<T> extends RandomConnectionMutator
                 if (randomDouble > 1.0 - config.getMutationProbability()) {
                     double recursiveRandom = generator.nextDouble();
                     if (recursiveRandom > 1.0 - config.getRecursiveConnectionProbability()) {
-                        adapterNodes.set(kk, getRandomNode(nodes.subList(ii, nodes.size() - config.getOutputs())));
+                        updateNode(kk, adapterNodes, nodes.subList(ii, nodes.size() - config.getOutputs()));
                     } else {
-                        adapterNodes.set(kk, getRandomNode(nodes.subList(0, ii)));
+                        updateNode(kk, adapterNodes, nodes.subList(0, ii));
+
                     }
                 }
             }

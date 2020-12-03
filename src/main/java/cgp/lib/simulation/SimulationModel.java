@@ -6,6 +6,8 @@ import cgp.lib.node.factory.NodeFactory;
 import cgp.lib.node.guard.ComputedValueGuard;
 import cgp.lib.simulation.evaluation.AbstractEvaluate;
 import cgp.lib.simulation.input.Config;
+import cgp.lib.simulation.mutator.connection.memory.InitialRandomMemoryConnectionMutator;
+import cgp.lib.simulation.mutator.connection.memory.RandomMemoryConnectionMutator;
 import cgp.lib.simulation.mutator.connection.resursive.InitialRecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.connection.resursive.RecursiveRandomConnectionMutator;
 import cgp.lib.simulation.mutator.function.FunctionMutator;
@@ -14,7 +16,6 @@ import cgp.lib.simulation.mutator.connection.InitialRandomConnectionMutator;
 import cgp.lib.individual.Individual;
 import cgp.lib.simulation.mutator.connection.RandomConnectionMutator;
 import cgp.lib.threading.ThreadPoolService;
-import cgp.user.simulation.Evaluator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,6 @@ public class SimulationModel<T> {
     private List<Individual<T>> individuals;
 
     private Config config;
-    private FunctionFactory<T> factory;
     private NodeFactory<T> nodeFactory;
     private IMutator<T> connectionMutator;
     private IMutator<T> initialConnectionSetter;
@@ -40,14 +40,14 @@ public class SimulationModel<T> {
     private List<IndividualCompute<T>> computors;
     private ThreadPoolService service;
 
-    public enum Mode {CGP, RCGP}
+    public enum Mode {CGP, RCGP, MCGP}
 
     private Mode mode;
 
-    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard, Mode mode) {
+    public SimulationModel(Config config, NodeFactory<T> factory, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard, Mode mode) {
         this.generator = new Random();
         this.config = config;
-        this.factory = factory;
+        this.nodeFactory = factory;
         this.evaluator = evaluator;
         this.guard = guard;
         this.mode = mode;
@@ -57,19 +57,20 @@ public class SimulationModel<T> {
         if (mode == Mode.CGP) {
             connectionMutator = new RandomConnectionMutator<>(config);
             initialConnectionSetter = new InitialRandomConnectionMutator<>(config);
-        } else {
+        } else if (mode == Mode.RCGP){
             connectionMutator = new RecursiveRandomConnectionMutator<>(config);
             initialConnectionSetter = new InitialRecursiveRandomConnectionMutator<>(config);
-
+        } else if (mode == Mode.MCGP){
+            connectionMutator = new RandomMemoryConnectionMutator<>(config);
+            initialConnectionSetter = new InitialRandomMemoryConnectionMutator<>(config);
         }
-        functionMutator = new FunctionMutator<>(config, factory);
-        nodeFactory = new NodeFactory<>(config, factory, defaultValue);
+        functionMutator = new FunctionMutator<>(config, nodeFactory.getFunctionFactory());
         computors = new ArrayList<>();
 
     }
 
-    public SimulationModel(Config config, FunctionFactory<T> factory, T defaultValue, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard) {
-        this(config, factory, defaultValue, evaluator, guard, Mode.CGP);
+    public SimulationModel(Config config, NodeFactory<T> factory, AbstractEvaluate<T> evaluator, ComputedValueGuard<T> guard) {
+        this(config, factory, evaluator, guard, Mode.CGP);
     }
 
     public void run() {
@@ -107,7 +108,7 @@ public class SimulationModel<T> {
         theFittest.zero();
         for (Sample<T> sample : evaluator.getSamples()) {
             List<T> output = theFittest.compute(sample);
-            String tmp = "[" + String.join(",", output.stream().map(e -> String.format("%.0f", e)).collect(Collectors.toList())) + "]";
+            String tmp = "[" + output.stream().map(e -> String.format("%.0f", e)).collect(Collectors.joining(",")) + "]";
             System.out.println(tmp);
 
         }
