@@ -8,18 +8,36 @@ import java.util.*;
 public class NodeWithMemory<T> extends Node<T> {
     private LinkedList<T> memorisedValues;
     private int memoryLength;
+    private List<Integer> memoryInputLocations;
 
     public NodeWithMemory(ArityFunction<T> fun, ConnectionAdapter<T> adapter, T defaultValue, int memoryLength) {
         super(fun, adapter, defaultValue);
         this.memorisedValues = new LinkedList<>();
         this.memoryLength = memoryLength;
+        memoryInputLocations = new ArrayList<>();
     }
 
     @Override
+    public void init(){
+        super.init();
+        // Populate memory register with default values
+        for (int i = 0; i < memoryLength; i++) {
+            remember(super.currentValue);
+        }
+    }
+
+
+    /**
+     * Overriding without using super
+     * @return
+     */
+    @Override
     public T compute(){
-        T val = super.compute();
-        remember(val);
-        return val;
+        List<T> inputs = adapter.getInputValues();
+
+        currentValue = strategy.calculate(inputs);
+        remember(currentValue);
+        return currentValue;
     }
 
     private void remember(T val) {
@@ -28,6 +46,7 @@ public class NodeWithMemory<T> extends Node<T> {
         }
         memorisedValues.add(val);
     }
+
 
     // p - połączenie z aktualną wartością czy z którąś z poprzednich (losowe połączenie - (nr node, nr komórki w rejestrze))
 

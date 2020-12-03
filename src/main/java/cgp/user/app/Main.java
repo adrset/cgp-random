@@ -30,7 +30,7 @@ public class Main {
         Sample<Double> s = new Sample<>();
         s.setInput(Arrays.asList(1d));
         System.out.println("kolejne wyrazy");
-        for (int i = 0; i < 10 ; i++) {
+        for (int i = 0; i < 100 ; i++) {
             List<Double> otp = theFittest.compute(s);
             System.out.printf("[%.0f]\n",otp.get(0));
         }
