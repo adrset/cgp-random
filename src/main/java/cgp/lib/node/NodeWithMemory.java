@@ -33,11 +33,9 @@ public class NodeWithMemory<T> extends Node<T> {
      */
     @Override
     public T compute(){
-        List<T> inputs = adapter.getInputValues();
-
-        currentValue = strategy.calculate(inputs);
-        remember(currentValue);
-        return currentValue;
+        T value = super.compute();
+        remember(value);
+        return value;
     }
 
     private void remember(T val) {

@@ -80,14 +80,9 @@ public class Node<T> {
         this.UID = uid;
     }
 
-    public T compute() {
-        List<Node<T>> inputs = adapter.getNodes();
-        List<T> inputValues = new ArrayList<>();
-        for (Node<T> inputNode : inputs) {
-            inputValues.add(inputNode.getCurrentValue());
-        }
-
-        currentValue = strategy.calculate(inputValues);
+    public T compute(){
+        List<T> inputs = adapter.getInputValues();
+        currentValue = strategy.calculate(inputs);
         return currentValue;
     }
 
