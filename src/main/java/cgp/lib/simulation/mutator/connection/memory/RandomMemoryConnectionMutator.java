@@ -1,6 +1,7 @@
 package cgp.lib.simulation.mutator.connection.memory;
 
 import cgp.lib.node.Node;
+import cgp.lib.node.NodeWithMemory;
 import cgp.lib.node.adapter.ConnectionAdapter;
 import cgp.lib.node.adapter.MemoryConnectionAdapter;
 import cgp.lib.simulation.input.Config;
@@ -31,19 +32,8 @@ public class RandomMemoryConnectionMutator<T> implements IMutator<T> {
                 double randomDouble = generator.nextDouble();
                 if (randomDouble > 1.0 - config.getMutationProbability()) {
                     double memoryMutation = generator.nextDouble();
-                    if (memoryMutation > 1.0 - config.getMemoryConnectionProbability()) {
-                        if (adapter instanceof MemoryConnectionAdapter) {
-                            MemoryConnectionAdapter<T> memoryConnectionAdapter = (MemoryConnectionAdapter) adapter;
-                            updateNode(kk, adapterNodes, availableNodes);
-                            List<Integer> inputLocations = memoryConnectionAdapter.getInputLocations();
-                            int memorySize = inputLocations.size();
-                            inputLocations.set(kk, generator.nextInt(memorySize));
-                        } else {
-
-                            updateNode(kk, adapterNodes, availableNodes);
-
-                        }
-
+                    if (memoryMutation > 1.0 - config.getMemoryConnectionProbability() && adapter instanceof MemoryConnectionAdapter) {
+                        memoryMutation(kk, adapter, adapterNodes, availableNodes);
                     } else {
                         updateNode(kk, adapterNodes, availableNodes);
                     }
@@ -53,6 +43,20 @@ public class RandomMemoryConnectionMutator<T> implements IMutator<T> {
         }
 
         return nodes;
+    }
+
+    private void memoryMutation(int kk, ConnectionAdapter<T> adapter, List<Node<T>> adapterNodes, List<Node<T>> availableNodes) {
+        MemoryConnectionAdapter<T> memoryConnectionAdapter = (MemoryConnectionAdapter) adapter;
+        updateNode(kk, adapterNodes, availableNodes);
+        Node<T> theNode = adapterNodes.get(kk);
+        List<Integer> inputLocations = memoryConnectionAdapter.getInputLocations();
+        int memorySize = inputLocations.size();
+        if (theNode instanceof NodeWithMemory) {
+            int rand = generator.nextInt(memorySize);
+            inputLocations.set(kk, rand);
+        } else {
+            inputLocations.set(kk, 0);
+        }
     }
 
 

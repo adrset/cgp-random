@@ -20,7 +20,6 @@ import cgp.lib.threading.ThreadPoolService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 
@@ -37,7 +36,6 @@ public class SimulationModel<T> {
     private AbstractEvaluate<T> evaluator;
     private Individual<T> theFittest = null;
     private ComputedValueGuard<T> guard;
-    private List<IndividualCompute<T>> computors;
     private ThreadPoolService service;
 
     public enum Mode {CGP, RCGP, MCGP}
@@ -65,7 +63,6 @@ public class SimulationModel<T> {
             initialConnectionSetter = new InitialRandomMemoryConnectionMutator<>(config);
         }
         functionMutator = new FunctionMutator<>(config, nodeFactory.getFunctionFactory());
-        computors = new ArrayList<>();
 
     }
 
@@ -79,7 +76,7 @@ public class SimulationModel<T> {
         double fitness;
 
         do {
-
+            System.out.println("gen " + currentGeneration);
             computeIndividuals();
 
             theFittest = evaluator.getFittest(individuals);
@@ -154,19 +151,14 @@ public class SimulationModel<T> {
             individuals.add(individual);
         }
 
-        System.out.println("Initialising " + config.getIndividuals() + " workers.");
-        for (int i = 0; i < config.getIndividuals(); i++) {
-            computors.add(new IndividualCompute<>(guard, evaluator));
-        }
-
     }
 
     private void computeIndividuals() {
         service.init(individuals.size());
-        for (int ii = 0; ii < individuals.size(); ii++) {
-            Individual<T> individual = individuals.get(ii);
+        individuals.stream().peek(individual -> {
             individual.zero();
             for (Sample<T> sample : evaluator.getSamples()) {
+                // do not store output in sample!!!!
                 List<T> values = individual.compute(sample);
                 if (guard != null) {
                     values = values.stream().map(e ->
@@ -177,43 +169,8 @@ public class SimulationModel<T> {
 
             }
             individual.setFitness(evaluator.evaluate());
-        }
+        }).collect(Collectors.toList());
     }
-
-    private static class IndividualCompute<T> implements Runnable {
-        private Individual<T> individual;
-        private AbstractEvaluate<T> evaluator;
-        private ComputedValueGuard<T> guard;
-        private CountDownLatch latch;
-        IndividualCompute(ComputedValueGuard<T> guard, AbstractEvaluate<T> evaluator) {
-            this.guard = guard;
-            this.evaluator = evaluator;
-
-        }
-
-        void setVariables(Individual<T> individual, CountDownLatch latch){
-            this.individual = individual;
-            this.latch = latch;
-        }
-
-
-
-        @Override
-        public void run() {
-            for (Sample<T> sample : evaluator.getSamples()) {
-                List<T> values = individual.compute(sample);
-                if (guard != null) {
-                    values = values.stream().map(e ->
-                            guard.guard(e)).collect(Collectors.toList());
-                }
-
-                sample.setComputedOutput(values);
-
-            }
-            individual.setFitness(evaluator.evaluate());
-            latch.countDown();
-        }
-    };
 
 
 }

@@ -26,14 +26,14 @@ public class MemoryConnectionAdapter<T> extends ConnectionAdapter<T> {
     }
 
     @Override
-    public MemoryConnectionAdapter<T> clone() {
-        MemoryConnectionAdapter<T> ca = new MemoryConnectionAdapter<>(this.inputs.size());
-        List<Node<T>> clone = new ArrayList<>(this.inputs);
-        for (Node<T> node: super.inputs) {
-            clone.add(node.clone());
-        }
-        ca.setInputs(clone);
-        ca.inputLocations = new ArrayList<>(inputLocations);
-        return ca;
+        public MemoryConnectionAdapter<T> clone() {
+            MemoryConnectionAdapter<T> ca = new MemoryConnectionAdapter<>(this.inputs.size());
+            List<Node<T>> clone = new ArrayList<>(this.inputs);
+            for (Node<T> node: super.inputs) {
+                clone.add(node.clone());
+            }
+            ca.setInputs(clone);
+            ca.inputLocations = new ArrayList<>(inputLocations);
+            return ca;
     }
 }

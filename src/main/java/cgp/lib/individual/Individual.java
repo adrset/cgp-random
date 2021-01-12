@@ -16,6 +16,7 @@ public class Individual<T> {
     private AbstractNodeFactory<T> factory;
     private List<Node<T>> allNodes;
     private boolean parent = false;
+    private List<Node<T>> activeNodes;
 
     private int basicNodesNo;
     private int inputNodesNo;
@@ -136,7 +137,7 @@ public class Individual<T> {
      * Set all node statuses to inactive.
      */
     private void resetNodesActiveStatus() {
-
+        activeNodes = new ArrayList<>();
         for (Node<T> allNode : allNodes) {
             allNode.setActive(false);
         }
@@ -165,6 +166,7 @@ public class Individual<T> {
         }
 
         node.setActive(true);
+        activeNodes.add(node);
         if (describe) {
             System.out.println(node.getStrategy().describe());
 

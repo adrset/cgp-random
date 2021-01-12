@@ -43,6 +43,7 @@ public class NodeWithMemory<T> extends Node<T> {
     }
 
     protected void remember(T val) {
+        System.out.println("remembereing " + val + " " + super.UID);
         if (memorisedValues.size() >= memoryLength) {
             memorisedValues.removeFirst();
         }
@@ -54,6 +55,7 @@ public class NodeWithMemory<T> extends Node<T> {
 
     @Override
     public Node<T> clone() {
+
         NodeWithMemory<T> clone = new NodeWithMemory<>();
         if (this.strategy != null) {
             clone.setStrategy((ArityFunction<T>) this.strategy.clone());
